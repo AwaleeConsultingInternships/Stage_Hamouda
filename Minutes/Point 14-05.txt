@@ -1,0 +1,12 @@
+Voici le résumé du point :
+	-	Consultation des classes de fonctions créées
+	-	Discussion des propriétés et les termes « Private » et « Public »
+	-	Création du répertoire de stage dans Github
+	-	L’utilisation de l’interpolation linéaire sur le yield pour déterminer les valeurs manquantes des ZC
+	-	On peut utiliser aussi l’interpolation sur les valeurs des swaps tout simplement
+
+A faire (prochain point à priori jeudi) :
+	-	Compléter la classe de la fonction « Composite »
+	-	Implémenter la classe de la fonction « Piecewise Linear »
+	-	Utiliser ces fonctions pour compléter le code principal
+	-	Faire une recherche sur les questions mentionnées dans le point précédent

@@ -71,7 +71,7 @@ namespace Interpolation
                 // définir la fonction t -> y(0, t)
 
 
-                // finalité : t -> P(0, t)
+                // finalité : t -> P(0, t) = Exp(-y(0,t)*t)
                 Console.WriteLine("\nYield values: ");
                 foreach (var yield in yields)
                 {
