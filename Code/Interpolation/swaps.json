@@ -1,0 +1,36 @@
+{
+  "swaps": [
+    {
+      "maturity": "1Y",
+      "rate": 0.05181
+    },
+    {
+      "maturity": "2Y",
+      "rate": 0.04816
+    },
+    {
+      "maturity": "3Y",
+      "rate": 0.04582
+    },
+    {
+      "maturity": "5Y",
+      "rate": 0.04340
+    },
+    {
+      "maturity": "7Y",
+      "rate": 0.04250
+    },
+    {
+      "maturity": "10Y",
+      "rate": 0.04203
+    },
+    {
+      "maturity": "15Y",
+      "rate": 0.04197
+    },
+    {
+      "maturity": "30Y",
+      "rate": 0.03959
+    }
+  ]
+}

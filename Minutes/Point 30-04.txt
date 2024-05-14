@@ -1,0 +1,19 @@
+Voici les points discutés lors de notre réunion :
+	-	Discussion des notes et du code en librairie
+	-	Comprendre des différentes notions en C# comme les propriétés
+	-	Installer Visual Studio Community / VS code
+	-	Pourquoi on fait une classe des compteurs ?
+		o	Pour avoir une base solide de code
+		o	Pour que ça soit générique, quel que soit le calendrier et la convention prise (30 jours par mois, 360 jours par an, calcul exact des jours ouvrés …)
+	-	Lien entre les mathématiques et le code dans l’exemple de Geometric Averaging et Compound pour ImpliedRate
+	-	Il faut toujours annualiser les taux et utiliser les durées en fraction d’années
+	-	On se concentre dans le stage par le stripping, mais aussi par l’interpolation (les deux sont importants)
+	-	Un des objectifs est d’implémenter manuellement les méthodes d’interpolation (ça aide aussi à bien comprendre C#)
+	-	On peut utiliser Excel après pour faire visualiser les résultats
+	-	Pas d’accord avec la différence entre LIBOR et OIS sur l’argument de la maturité : les deux peut servir pour le long terme (le tenor est à bien comprendre aussi)
+	-	Le prochain but c’est de construire une courbe de taux spot en utilisant des taux swap
+	-	Il serait bien de pricer des instruments à la fin pour tester nos courbes
+
+Pour le prochain point (mardi prochain à midi) :
+	-	Créer un fichier JSON qui contient les données (market data). Par exemple, les swap à chaque maturité et les taux correspondants
+	-	Ecrire un petit code C# qui extraire de ce fichier les données et les stocker dans des listes

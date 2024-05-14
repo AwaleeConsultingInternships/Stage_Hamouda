@@ -1,0 +1,9 @@
+Voici le résumé de notre point :
+	-	On a discuté quelques détails sur les articles consultés, notamment les conséquences de la crise financière de 2008 dans le contexte des taux d’intérêts, la construction de la Discount Curve et de la Forward Curve.
+	-	On a consulté ensemble le répertoire contenant la librairie de pricing d’Awalee, et on a tous eu accès à la répertoire en Git.
+	-	On a entendu l’expérience de Ali en stage chez Awalee et comment était le commencement.
+
+Pour le prochain point (à priori jeudi à midi) :
+	-	Préparer une présentation simple comportant les idées vues en documentation, des questions et un plan par ordre chronologique (qui peut être un peu vague).
+	-	Forker le répertoire pour ajouter tout fichier/document, et peut-être créer un autre nouveau répertoire personnel, seulement pour le stage.
+	-	Consulter la librairie de pricing et préparer quelques notes.

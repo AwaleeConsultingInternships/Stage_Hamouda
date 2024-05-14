@@ -1,0 +1,22 @@
+Voici le résumé du point de vendredi :
+	-	Discussion des nouvelles lignes de code pour calculer les prix des Zéro-coupons et les valeurs du Yield
+	-	Discussion de l’idée d’implémentation de la méthode d’interpolation :
+		o	Calculer la valeur à une maturité spécifiée par l’utilisateur
+		o	Sous forme de fonction
+		o	On peut utiliser la bibliothèque MathNet.Numerics.Interpoalte pour comparer (valeurs de référence)
+	-	Installation des logiciels utiles pour le stage : Git Extensions, .NET Desktop Runtime, Git, Notepad++, KDiff3
+	-	Organisation des projets (les noms et les chemins)
+
+A faire :
+	-	Réglage des logiciels installés
+	-	Création d’une interface « IFunction » avec une méthode « Evaluate » et des classes des fonctions : identité, constante, carrée, constante par morceaux, linéaire par morceaux
+	-	On peut ajouter aussi une classe pour la fonction composée
+	-	Voir comment gérer les prix à des maturités intermédiaires manquantes
+	-	Créer des fichiers .txt pour les minutes de point
+	-	D’autres questions importantes :
+		o	Une propriété en C# (getter, setter) ? Différence entre propriété et attribut ?
+		o	Comment débugger un code C# avec Microsoft Visual Studio ?
+		o	Différence entre une application console et une bibliothèque des classes ?
+		o	Comment faire un chemin relatif ?
+		o	Différence entre une classe/fonction abstraite et une interface ?
+		o	La mémoire entre « x*x » et « Math.Pow(x,2) » ?

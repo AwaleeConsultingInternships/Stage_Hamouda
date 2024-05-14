@@ -1,0 +1,17 @@
+Voici le résumé du point :
+	-	Présentation interactive du document que j’ai préparé (contenant : contexte financière, contexte mathématique, planning et questions).
+	-	Les points dont on s’est concentré :
+		o	Différence entre LIBOR et Overnight rates/OIS ? financièrement et mathématiquement.
+		o	Pourquoi « Geometric Average » ? et il y a quoi d’autres comme méthodes d’Averaging ?
+		o	Le terme « Bond yield » contre le yield utilsé dans notre projet.
+		o	Le yield « fictif ».
+		o	La positivité des Forward rates et sa relation avec l’arbitrage. Différencier entre le cas d’une seule économie et pour le multi-curve framework.
+		o	La dérivée de Forward en pratique : soit par calcul de limite (difficile) ou bien par dérivée de chaque intervalle où on a une expression unique.
+		o	Les degrés de liberté et les contraintes pour les méthodes d’interpolation (mais ce n’est pas important maintenant).
+		o	Changer le planning en intégrant les tâches de « Learning » dans les tâches principaux, comme sous-tâches.
+		o	Réponses aux questions de la présentation : On utilise ESTER, tous les instruments pour le Forward curve, bien comprendre après l’interpolation, et les Git sont juste pour l’initiation.
+
+Pour le prochain point (à priori mardi prochain à midi) :
+	-	Mieux comprendre les points discutés et répondre aux questions.
+	-	Consulter encore la librairie en détail, particulièrement le fichier « InterestRate.cs ».
+	-	Commencer à se renseigner sur C# (Ali donnera des documents utiles).

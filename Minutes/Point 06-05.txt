@@ -1,0 +1,12 @@
+Voici le résumé de notre point :
+	-	Consultation du contenu du fichier JSON (le format et les valeurs)
+	-	Consultation du code C# qui sert à extraire le contenu du fichier JSON dans des objets créés manuellement (classes) et dans des listes
+	-	Discussion sur l’utilisation de ces données pour calculer les prix des zéro-coupons, ou en utilisant d’autres instruments (FRA/futures)
+	-	Discussion sur le type de yield à calculer (continu, composé, …)
+	-	L’utilisation d’une méthode de Root-Finding : Newton-Raphson est un exemple
+	-	On ne se concentre pas sur le Web Scraping pour le moment
+
+Pour le prochain point (à priori vendredi à midi) :
+	-	Améliorer le code pour qu’il calcule les prix des zéros-coupons à chaque maturité donnée dans l’input
+	-	Facultatif : le calcul des yields à partir des prix ZC
+	-	Facultatif : Essayer une méthode d’interpolation (pour les ZC ou les yields)
