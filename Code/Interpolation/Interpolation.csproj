@@ -54,5 +54,11 @@
     <None Include="packages.config" />
     <None Include="swaps.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MathematicalFunctions\MathematicalFunctions.csproj">
+      <Project>{2ec0eafe-ee6a-4fd7-b157-741157a9be34}</Project>
+      <Name>MathematicalFunctions</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

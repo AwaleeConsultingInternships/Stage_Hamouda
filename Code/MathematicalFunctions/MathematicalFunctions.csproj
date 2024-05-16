@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Discount.cs" />
+    <Compile Include="Piecewise_Linear.cs" />
     <Compile Include="Linear.cs" />
     <Compile Include="Identity.cs" />
     <Compile Include="Constant.cs" />

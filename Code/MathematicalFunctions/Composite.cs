@@ -14,21 +14,27 @@ namespace MathematicalFunctions
         private IFunction g;
 
         // récuparation des variables à l'aide de propriétés
-        public IFunction F { get; set; }
-        public IFunction G { get; set; }
-
-        //une propriété ? implémenter des Getters et des setters en utilisant des propriétés
-
-        public Composite(IFunction f, IFunction g)
+        public IFunction F
         {
-            F = f;
-            G = g;
+            get { return f; }
+            set { f = value; }
+        }
+        public IFunction G 
+        {
+            get { return g; }
+            set { g = value; }
+        }
+
+        public Composite(IFunction ff, IFunction gg)
+        {
+            f = ff;
+            g = gg;
         }
 
         public double Evaluate(double x)
         {
-            double gx = G.Evaluate(x);
-            return F.Evaluate(gx);
+            double gx = g.Evaluate(x);
+            return f.Evaluate(gx);
         }
     }
 }
