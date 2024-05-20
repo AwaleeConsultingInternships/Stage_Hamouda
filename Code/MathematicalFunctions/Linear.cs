@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MathematicalTools;
 
 namespace MathematicalFunctions
 {
-    internal class Linear : IFunction
+    public class Linear : IFunction
     {
         private readonly double _x1, _y1, _x2, _y2;
         //On peut définir la fonction autrement, par la pente et l'interception
@@ -23,11 +20,16 @@ namespace MathematicalFunctions
             _y2 = y2;
         }
 
+        public Linear(Point left, Point right)
+        {
+
+        }
+
         public double Evaluate(double x)
         {
             //Ajout de condidtion pour que x soit dans l'intervalle
             if (x < _x1 || x > _x2)
-                throw new ArgumentException("x is out of the interval");
+                throw new ArgumentException("x=" + x + " is out of the interval [" + _x1 + ", " + _x2 + "].");
 
             double t = (x - _x1) / (_x2 - _x1);
             return _y1 + t * (_y2 - _y1);
