@@ -8,11 +8,16 @@ namespace Interpolation
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static string GetMarketDataPath()
         {
             // Create relative path
             string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string projectDirectory = Directory.GetParent(exeDirectory).Parent.Parent.FullName;
+            return Directory.GetParent(exeDirectory).Parent.Parent.Parent.Parent.FullName + "\\MarketData\\";
+        }
+
+        static void Main(string[] args)
+        {
+            var projectDirectory = GetMarketDataPath();
             string filePath = Path.Combine(projectDirectory, "swaps.json");
 
             Console.WriteLine(filePath);
@@ -60,6 +65,8 @@ namespace Interpolation
                 yields.Add(y);
                 Console.WriteLine(P);
 
+                // Ce n'est pas bon pour le swap 5Y : D'abord, la formule du swap 5Y fait intervenir le bond 4Y et le bond 5Y.
+                // Mais, P est prise au niveau des maturités dans ce qui est implémenté, ce qui veut dire que tu passes du bond 3Y au bond 5Y. Ce qui n'est pas bon.
                 for (int i = 1; i < maturities.Count; i++)
                 {
                     Q += P * delta;
@@ -80,10 +87,10 @@ namespace Interpolation
                 }
 
                 // Define the function: t -> y(0, t)
-                Piecewise_Linear YieldF = new Piecewise_Linear();
-                for (int i=1; i < maturities.Count; i++)
+                PiecewiseLinear YieldF = new PiecewiseLinear();
+                for (int i = 1; i < maturities.Count; i++)
                 {
-                    double x1 = int.Parse(maturities[i-1].Substring(0, maturities[i-1].Length - 1));
+                    double x1 = int.Parse(maturities[i - 1].Substring(0, maturities[i - 1].Length - 1));
                     double y1 = yields[i - 1];
                     double x2 = int.Parse(maturities[i].Substring(0, maturities[i].Length - 1));
                     double y2 = yields[i];
@@ -101,9 +108,9 @@ namespace Interpolation
                 // Compute P(0, 4Y)
                 double ZC4Y = ZCFunc.Evaluate(4);
                 Console.WriteLine($"\nInterpolated ZC price at 4Y: {ZC4Y}");
-                
 
-                
+
+
             }
             else
             {

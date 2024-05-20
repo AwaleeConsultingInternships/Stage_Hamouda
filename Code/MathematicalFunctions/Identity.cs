@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathematicalFunctions
 {
-    internal class Identity : IFunction
+    public class Identity : IFunction
     {
         public double Evaluate(double x)
         {

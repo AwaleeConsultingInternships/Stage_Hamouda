@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace MathematicalFunctions
 {
-    public class Square : IFunction
+    public class Exp : IFunction
     {
+        private readonly double _a;
+        public Exp(double a)
+        {
+            _a = a;
+        }
+
         public double Evaluate(double x)
         {
-            // return Math.Pow(x, 2);
-            return x * x;
+            return Math.Exp(_a * x);
         }
     }
 }

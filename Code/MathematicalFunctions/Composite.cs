@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathematicalFunctions
 {
-    internal class Composite : IFunction
+    public class Composite : IFunction
     {
         // declaration des variables
         private IFunction f;
