@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathematicalTools
 {
-    internal class Segment
+    public class Segment
     {
         private readonly Point left;
         private readonly Point right;

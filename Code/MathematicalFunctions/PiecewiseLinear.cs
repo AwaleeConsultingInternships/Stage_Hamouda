@@ -24,18 +24,12 @@ namespace MathematicalFunctions
 
         public double Evaluate(double x)
         {
+            double s = 0;
             foreach (Linear interval in intervals) 
             {
-                try
-                {
-                    return interval.Evaluate(x);
-                }
-                catch 
-                {
-                    // Ignore
-                }
+                s += interval.Evaluate(x); 
             }
-
+            return s;
             throw new ArgumentException("x=" + x + " is out of the defined intervals.");
         }
     }

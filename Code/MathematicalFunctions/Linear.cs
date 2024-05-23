@@ -22,14 +22,14 @@ namespace MathematicalFunctions
 
         public Linear(Point left, Point right)
         {
-
+            // à compléter en utilisant Interval class et Point class
         }
 
         public double Evaluate(double x)
         {
             //Ajout de condidtion pour que x soit dans l'intervalle
             if (x < _x1 || x > _x2)
-                throw new ArgumentException("x=" + x + " is out of the interval [" + _x1 + ", " + _x2 + "].");
+                return 0;
 
             double t = (x - _x1) / (_x2 - _x1);
             return _y1 + t * (_y2 - _y1);

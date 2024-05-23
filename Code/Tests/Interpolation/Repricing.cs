@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathematicalTools
+namespace Tests.Interpolation
 {
-    public class Interval
+    internal class Repricing
     {
-        private readonly double left;
-        private readonly double right;
+
     }
 }
