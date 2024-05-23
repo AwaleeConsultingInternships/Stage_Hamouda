@@ -7,9 +7,9 @@ using Bootstrapping;
 
 namespace Interpolation
 {
-    internal class Program
+    public class Program
     {
-        private static string GetMarketDataPath()
+        public static string GetMarketDataPath()
         {
             // Create relative path
             string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;

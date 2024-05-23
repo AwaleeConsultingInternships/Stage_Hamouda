@@ -28,7 +28,7 @@ namespace MathematicalFunctions
         public double Evaluate(double x)
         {
             //Ajout de condidtion pour que x soit dans l'intervalle
-            if (x < _x1 || x > _x2)
+            if (x < _x1 || x >= _x2)
                 return 0;
 
             double t = (x - _x1) / (_x2 - _x1);

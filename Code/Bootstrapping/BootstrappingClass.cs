@@ -85,9 +85,11 @@ namespace Bootstrapping
                 YieldF.AddInterval(x1, y1, x2, y2);
             }
 
+            YieldF.AddInterval(maturities.Last(), yields.Last(), Double.PositiveInfinity, yields.Last());
+
             // Compute y(0, 3.5Y)
-            double yieldInt = YieldF.Evaluate(3.5);
-            Console.WriteLine($"\nInterpolated yield value at 3.5Y: {yieldInt}");
+            //double yieldInt = YieldF.Evaluate(3.5);
+            //Console.WriteLine($"\nInterpolated yield value at 3.5Y: {yieldInt}");
 
 
             return new Discount(YieldF);
