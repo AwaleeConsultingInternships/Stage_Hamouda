@@ -15,8 +15,8 @@ namespace Tests.Interpolation
         [Test]
         public void Eval()
         {
-            var projectDirectory = Program.GetMarketDataPath();
-            string filePath = Path.Combine(projectDirectory, "swaps.json");
+            var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
+            string filePath = Path.Combine(marketDataDirectory, "swaps.json");
 
             string jsonContent = File.ReadAllText(filePath);
             //Console.WriteLine(jsonContent);

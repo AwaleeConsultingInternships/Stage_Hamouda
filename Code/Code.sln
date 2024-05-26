@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interpolation", "Interpolat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootstrapping", "Bootstrapping\Bootstrapping.csproj", "{44C4799E-FD16-438A-B1B8-A7AF90AC632D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{01863172-A772-4119-B480-52C02325E636}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{44C4799E-FD16-438A-B1B8-A7AF90AC632D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44C4799E-FD16-438A-B1B8-A7AF90AC632D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44C4799E-FD16-438A-B1B8-A7AF90AC632D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01863172-A772-4119-B480-52C02325E636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01863172-A772-4119-B480-52C02325E636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01863172-A772-4119-B480-52C02325E636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01863172-A772-4119-B480-52C02325E636}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
