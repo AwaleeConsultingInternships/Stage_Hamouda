@@ -9,17 +9,10 @@ namespace Interpolation
 {
     public class Program
     {
-        public static string GetMarketDataPath()
-        {
-            // Create relative path
-            string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            return Directory.GetParent(exeDirectory)?.Parent?.Parent?.Parent?.Parent?.FullName + "\\MarketData\\";
-        }
-
         static void Main(string[] args)
         {
-            var projectDirectory = GetMarketDataPath();
-            string filePath = Path.Combine(projectDirectory, "swaps.json");
+            var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
+            string filePath = Path.Combine(marketDataDirectory, "swaps.json");
 
             Console.WriteLine(filePath);
 

@@ -18,8 +18,6 @@ namespace MathematicalFunctions
         public double Evaluate(double x)
         {
             double yield = _yieldF.Evaluate(x);
-            Console.WriteLine("\nyield =");
-            Console.WriteLine(yield);
             return Math.Exp(-yield * x);
         }
     }

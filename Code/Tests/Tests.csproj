@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Bootstrapping\Bootstrapping.csproj" />
     <ProjectReference Include="..\Interpolation\Interpolation.csproj" />
     <ProjectReference Include="..\MathematicalFunctions\MathematicalFunctions.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
 </Project>

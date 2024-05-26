@@ -53,7 +53,6 @@ namespace Bootstrapping
             y = -Math.Log(P) / delta_total;
             ZC.Add(P);
             yields.Add(y);
-            Console.WriteLine(P);
 
             for (int i = 1; i < maturities.Length; i++)
             {
@@ -65,15 +64,9 @@ namespace Bootstrapping
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);
                 yields.Add(y);
-                Console.WriteLine(P);
             }
 
             Console.WriteLine("\nYield values: ");
-            foreach (var yield in yields)
-            {
-                Console.WriteLine(yield);
-            }
-
             // Define the function: t -> y(0, t)
             PiecewiseLinear YieldF = new PiecewiseLinear();
             for (int i = 1; i < maturities.Length; i++)
