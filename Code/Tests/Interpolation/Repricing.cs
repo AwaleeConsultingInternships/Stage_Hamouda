@@ -7,6 +7,7 @@ using MathematicalFunctions;
 using Bootstrapping;
 using Interpolation;
 using Newtonsoft.Json;
+using Time;
 
 namespace Tests.Interpolation
 {
@@ -19,13 +20,12 @@ namespace Tests.Interpolation
             string filePath = Path.Combine(marketDataDirectory, "swaps.json");
 
             string jsonContent = File.ReadAllText(filePath);
-            //Console.WriteLine(jsonContent);
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
             Dictionary<double, double> swapRates = new Dictionary<double, double>();
             foreach (var swap in deserializedObject.swaps)
             {
-                var dd = int.Parse(swap.maturity.Substring(0, swap.maturity.Length - 1));
+                var dd = Time.Time.GetMaturity(swap.maturity);
                 swapRates.Add(dd, swap.rate);
             }
 

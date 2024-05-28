@@ -15,7 +15,6 @@ namespace Tests.Interpolation
             string marketDataFilePath = Path.Combine(projectDirectory, "swaps.json");
 
             string jsonContent = File.ReadAllText(marketDataFilePath);
-            //Console.WriteLine(jsonContent);
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
             Dictionary<double, double> swapRates = new Dictionary<double, double>();

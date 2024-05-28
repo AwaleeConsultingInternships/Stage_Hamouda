@@ -26,15 +26,12 @@ namespace Interpolation
                 Console.WriteLine(jsonContent);
                 RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
-                // Store and display the swaps maturities and rates
-                Console.WriteLine("Swaps' maturities and rates: ");
+                // Store the swaps maturities and rates in a dictionnary
                 foreach (var swap in deserializedObject.swaps)
                 {
                     var dd = int.Parse(swap.maturity.Substring(0, swap.maturity.Length - 1));
                     swapRates.Add(dd, swap.rate);
-
                 }
-
                 var discount = BootstrappingClass.Curve(swapRates);
             }
             else

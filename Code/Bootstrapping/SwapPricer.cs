@@ -19,7 +19,6 @@ namespace Bootstrapping
                 denum += Bi * delta;
             }
             double BT = discount.Evaluate(maturity);
-            //Console.WriteLine(BT);
             return (1-BT)/denum;
         }
     }

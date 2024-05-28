@@ -44,8 +44,7 @@ namespace Bootstrapping
             maturities = swapRates.Keys.ToArray();
 
 
-            // Compute and display the ZC prices and yield curve values for the given maturities only
-            Console.WriteLine("\nZero-Coupon prices: ");
+            // Compute and store the ZC prices and yield curve values for the given maturities
             double delta = maturities.First();
             double delta_total = delta;
             double Q = 0;
@@ -66,7 +65,6 @@ namespace Bootstrapping
                 yields.Add(y);
             }
 
-            Console.WriteLine("\nYield values: ");
             // Define the function: t -> y(0, t)
             PiecewiseLinear YieldF = new PiecewiseLinear();
             for (int i = 1; i < maturities.Length; i++)
