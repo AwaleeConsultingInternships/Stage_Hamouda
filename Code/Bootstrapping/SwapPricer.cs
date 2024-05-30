@@ -9,13 +9,13 @@ namespace Bootstrapping
 {
     public static class SwapPricer 
     {
-        public static double Pricer(double maturity, Discount discount)
+        public static double Pricer(double maturity, Discount discount, double freq)
         {
             double denum = 0;
-            for (int i = 1; i <= (int)maturity; i++)
+            for (int i = 1; i <= (int)(maturity/freq); i++)
             {
-                double Bi = discount.Evaluate(i);
-                double delta = 1;
+                double Bi = discount.Evaluate(i * freq);
+                double delta = freq;
                 denum += Bi * delta;
             }
             double BT = discount.Evaluate(maturity);

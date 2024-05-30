@@ -24,7 +24,7 @@ namespace Tests.Interpolation
                 swapRates.Add(dd, swap.rate);
             }
 
-            var discount = BootstrappingClass.Curve(swapRates);
+            var discount = BootstrappingClass.Curve(swapRates, 1);
 
             var nbYears = 40;
             var shift = 21;

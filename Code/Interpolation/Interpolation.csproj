@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="QuantitativeLibrary">
+      <HintPath>..\DllReferences\QuantitativeLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

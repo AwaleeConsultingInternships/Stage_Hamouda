@@ -21,8 +21,13 @@
     <ProjectReference Include="..\Bootstrapping\Bootstrapping.csproj" />
     <ProjectReference Include="..\Interpolation\Interpolation.csproj" />
     <ProjectReference Include="..\MathematicalFunctions\MathematicalFunctions.csproj" />
-    <ProjectReference Include="..\Time\Time.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="QuantitativeLibrary">
+      <HintPath>..\DllReferences\QuantitativeLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
