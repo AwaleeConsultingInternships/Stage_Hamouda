@@ -1,0 +1,12 @@
+Voici le résumé du point :
+	-	Discussion sur les changements du code, faites par Hamouda et par Mountassir.
+	-	Discussion sur la méthode du stripping et la manière à utiliser l’interpolation : on complètera les données de marché par une interpolation linéaire.
+	-	Changement de l’implémentation des fonctions linéaire et linéaire par morceaux.
+	-	Explication des méthodes du test.
+
+A faire (prochain point à priori jeudi) :
+	-	Implémenter de l’interpolation des swaps (à priori pour maturité 4 ans)
+	-	Gérer les extrémités pour la fonction linéaire par morceaux
+	-	Essayer de voir si on peut organiser le code mieux (particulièrement le long code du Program.cs)
+	-	Implémenter une classe Repricing, qui calculer les prix ZC et recalcule les taux swaps pour vérifier (on peut faire des classes ou une seule méthode)
+	-	Installer .NET core 6.0 et l’intégrer dans Microsoft VS.

@@ -1,0 +1,12 @@
+Voici le résumé de notre point:
+-	Discussion sur mon implémentation de la classe Time
+-	Réussite à référencier le code de la librairie d’Awalee dans mon code
+-	Discussion des différents changements faits par Mountassir, particulièrement le Plotting des résultats en fichier HTML
+
+A faire :
+-	Ajouter un fichier « To Do List » pour ne pas perdre les idées
+-	Modifier le calcul de maturité par différence des dates, et non pas par prendre la durée directement
+-	Généraliser le code pour qu’il prend comme input l’hypothèse de la liquidité des swaps (1Y, 9M, 6M, 3M, …)
+-	Intégrer les propriétés pour chacune des classes
+-	Gérer l’interpolation du Yield et du ZC pour t entre 0 et la première maturité présente
+-	Générer la documentation (soit indépendamment, soit avec des techniques à voir avec Mountassir)
