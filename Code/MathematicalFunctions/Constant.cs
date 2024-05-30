@@ -8,12 +8,19 @@ namespace MathematicalFunctions
 {
     internal class Constant : IFunction
     {
-        private readonly double _value;
-        public Constant(double value) 
+        private double _value;
+
+        public double Value
+        {
+            get { return _value; }
+            set { _value = value; }
+        }
+
+        public Constant(double value)
         {
             _value = value;
         }
-        
+
         public double Evaluate(double x)
         {
             return _value;

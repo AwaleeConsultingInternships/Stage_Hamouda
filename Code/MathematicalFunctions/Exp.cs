@@ -8,7 +8,14 @@ namespace MathematicalFunctions
 {
     public class Exp : IFunction
     {
-        private readonly double _a;
+        private double _a;
+
+        public double A
+        {
+            get { return _a; }
+            set { _a = value; }
+        }
+
         public Exp(double a)
         {
             _a = a;

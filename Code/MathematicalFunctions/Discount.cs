@@ -8,7 +8,12 @@ namespace MathematicalFunctions
 {
     public class Discount : IFunction
     {
-        private readonly IFunction _yieldF;
+        private IFunction _yieldF;
+        public IFunction YieldF
+        {
+            get { return _yieldF; }
+            set { _yieldF = value; }
+        }
 
         public Discount(IFunction yieldF)
         {

@@ -5,12 +5,45 @@ namespace MathematicalFunctions
 {
     public class Linear : IFunction
     {
-        private readonly double _x1, _y1, _x2, _y2;
-        //On peut définir la fonction autrement, par la pente et l'interception
+        private double _x1, _y1, _x2, _y2;
+
+        public double X1
+        {
+            get { return _x1; }
+            set
+            {
+                if (value >= _x2)
+                    throw new ArgumentException("Invalid interval");
+                _x1 = value;
+            }
+
+        }
+
+        public double Y1
+        {
+            get { return _y1; }
+            set { _y1 = value; }
+        }
+
+        public double X2
+        {
+            get { return _x2; }
+            set
+            {
+                if (value <= _x1)
+                    throw new ArgumentException("Invalid interval");
+                _x2 = value;
+            }
+        }
+
+        public double Y2
+        {
+            get { return _y2; }
+            set { _y2 = value; }
+        }
 
         public Linear(double x1, double y1, double x2, double y2)
         {
-            //Ajout de condition pour que x1 < x2
             if (x1 >= x2)
                 throw new ArgumentException("Invalid interval");
 
@@ -27,7 +60,6 @@ namespace MathematicalFunctions
 
         public double Evaluate(double x)
         {
-            //Ajout de condidtion pour que x soit dans l'intervalle
             if (x < _x1 || x >= _x2)
                 return 0;
 

@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace MathematicalFunctions
 {
-    // Todo: Le mieux est de la définir comme f = Sum_i f_i où f_i est linéaire pour chaque i
-    // Todo: C'est mieux aussi de définir f_i(x) = a_i * x + b_i sur son segment et 0 ailleurs
     public class PiecewiseLinear : IFunction
     {
-        private readonly List<Linear> intervals;
+        private List<Linear> intervals;
+
+        public List<Linear> Intervals
+        {
+            get { return intervals; }
+            set { intervals = value; }
+        }
 
         public PiecewiseLinear()
         {
