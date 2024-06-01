@@ -1,6 +1,5 @@
 -	Intégrer les propriétés pour chacune des classes
 -	Gérer l’interpolation du Yield et du ZC pour t entre 0 et la première maturité présente
--	Générer la documentation
 -	Installer .NET core 6.0 et l’intégrer dans Microsoft VS.
 -	Complétér Linear class constrcutor using Interval class and Point class
--	Fix the Git Extensions settings
+-	Continuer la documentation des classes
