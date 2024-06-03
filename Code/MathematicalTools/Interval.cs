@@ -1,53 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MathematicalTools
+﻿namespace MathematicalTools
 {
+    /// <summary>
+    /// A class that represent an interval in the real number line.
+    /// </summary>
     public class Interval : IInterval
     {
-        private Interval(double Left, double Right, bool IsLeftIncluded, bool IsRightIncluded) 
+        private double _left;
+        private double _right;
+        private bool _isLeftIncluded;
+        private bool _isRightIncluded;
+
+        public double Left
         {
-            left = Left;
-            right = Right;
-            isRightIncluded = IsRightIncluded;
-            isLeftIncluded = IsLeftIncluded;
+            get { return _left; }
+            set { _left = value; }
         }
 
-        public Interval CreateClosedInterval(double Left, double Right)
+        public double Right
         {
-            return new Interval(Left, Right, true, true);
+            get { return _right; }
+            set { _right = value; }
         }
 
-        private readonly double left;
-        private readonly double right;
-        private readonly bool isLeftIncluded;
-        private readonly bool isRightIncluded;
+        public bool IsLeftIncluded
+        {
+            get { return _isLeftIncluded; }
+            set { _isLeftIncluded = value; }
+        }
 
+        public bool IsRightIncluded
+        {
+            get { return _isRightIncluded; }
+            set { _isRightIncluded = value; }
+        }
+
+        /// <summary>
+        /// Creates an interval.
+        /// </summary>
+        /// <param name="left"> The left bound of the interval.</param>
+        /// <param name="right"> The right bound of the interval. </param>
+        /// <param name="isLeftIncluded"> True if the left bound is included. False if not. </param>
+        /// <param name="isRightIncluded"> True if the right bound is included. False if not. </param>
+        private Interval(double left, double right, bool isLeftIncluded, bool isRightIncluded) 
+        {
+            _left = left;
+            _right = right;
+            _isLeftIncluded = isLeftIncluded;
+            _isRightIncluded = isRightIncluded;
+        }
+
+        /// <summary>
+        /// Creates a closed interval.
+        /// </summary>
+        /// <param name="left"> The left bound of the interval.</param>
+        /// <param name="right"> The right bound of the interval. </param>
+        /// <returns></returns>
+        public Interval CreateClosedInterval(double left, double right)
+        {
+            return new Interval(left, right, true, true);
+        }
+
+        /// <summary>
+        /// True if the interal contains x.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public bool Contains(double x)
         {
-            if (isLeftIncluded)
+            if (_isLeftIncluded)
             {
-                if(isRightIncluded)
+                if(_isRightIncluded)
                 {
-                    return (x <= left || x >= right);
+                    return (x <= _left || x >= _right);
                 }
                 else
                 {
-                    return (x <= left || x > right);
+                    return (x <= _left || x > _right);
                 }
             }
             else
             {
-                if (isRightIncluded)
+                if (_isRightIncluded)
                 {
-                    return (x < left || x >= right);
+                    return (x < _left || x >= _right);
                 }
                 else
                 {
-                    return (x < left || x > right);
+                    return (x < _left || x > _right);
                 }
             }
         }
