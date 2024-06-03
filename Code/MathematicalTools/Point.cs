@@ -1,5 +1,8 @@
 ﻿namespace MathematicalTools
 {
+    /// <summary>
+    /// A class that represent a point in a two-dimensional plan.
+    /// </summary>
     public class Point
     {
         private double _x;
@@ -15,6 +18,11 @@
             set { _y = value; }
         }
 
+        /// <summary>
+        /// Creates a Point with two coordinates.
+        /// </summary>
+        /// <param name="x"> The abscissa of the point. </param>
+        /// <param name="y"> The ordinate of the point. </param>
         public Point(double x, double y)
         {
             _x = x;
