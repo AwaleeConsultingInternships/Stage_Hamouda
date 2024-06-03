@@ -36,14 +36,17 @@ namespace Tests.Interpolation
                 swapRates.Add(dd, swap.rate);
             }
 
-            var discount = BootstrappingClass.Curve(swapRates, 0.25);
-
-            for (int maturity = 1; maturity <= (int)(30 / 0.25); maturity++)
+            List<double> freqs = new List<double> {1};
+            foreach (var freq in freqs)
             {
-                var price = SwapPricer.Pricer(maturity * 0.25, discount, 0.25);
-                Console.WriteLine(maturity * 0.25);
-                Console.WriteLine(price);
-                Assert.That(price, Is.EqualTo(swapRates[maturity * 0.25]).Within(1e-10));
+                var discount = BootstrappingClass.Curve(swapRates, freq);
+                for (int maturity = 1; maturity <= (int)(30 / freq); maturity++)
+                {
+                    var price = SwapPricer.Pricer(maturity * freq, discount, freq);
+                    Console.WriteLine(maturity * freq);
+                    Console.WriteLine(price);
+                    Assert.That(price, Is.EqualTo(swapRates[maturity * freq]).Within(1e-10));
+                }
             }
         }
     }

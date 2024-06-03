@@ -1,12 +1,14 @@
-﻿using System;
+﻿using MathematicalFunctions;
+using QuantitativeLibrary.Time;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathematicalFunctions
+namespace Bootstrapping
 {
-    public class Discount : IFunction
+    public class Discount : IFunction, IDiscountCurve
     {
         private IFunction _yieldF;
         public IFunction YieldF
@@ -24,6 +26,11 @@ namespace MathematicalFunctions
         {
             double yield = _yieldF.Evaluate(x);
             return Math.Exp(-yield * x);
+        }
+
+        public double At(Date date)
+        {
+            throw new NotImplementedException();
         }
     }
 }

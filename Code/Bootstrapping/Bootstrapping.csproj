@@ -10,4 +10,10 @@
     <ProjectReference Include="..\MathematicalFunctions\MathematicalFunctions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="QuantitativeLibrary">
+      <HintPath>..\DllReferences\QuantitativeLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

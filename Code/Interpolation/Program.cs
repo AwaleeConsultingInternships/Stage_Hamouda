@@ -13,21 +13,22 @@ namespace Interpolation
     {
         public static Period GetMaturity(string maturity)
         {
+            var mat = int.Parse(maturity.Substring(0, maturity.Length - 1));
             if (maturity.EndsWith("Y"))
             {
-                return new Period(int.Parse(maturity.Substring(0, maturity.Length - 1)), Unit.Years);
+                return new Period(mat, Unit.Years);
             }
             else if (maturity.EndsWith("M"))
             {
-                return new Period(int.Parse(maturity.Substring(0, maturity.Length - 1)), Unit.Months);
+                return new Period(mat, Unit.Months);
             }
             else if (maturity.EndsWith("W"))
             {
-                return new Period(int.Parse(maturity.Substring(0, maturity.Length - 1)), Unit.Weeks);
+                return new Period(mat, Unit.Weeks);
             }
             else if (maturity.EndsWith("D"))
             {
-                return new Period(int.Parse(maturity.Substring(0, maturity.Length - 1)), Unit.Days);
+                return new Period(mat, Unit.Days);
             }
             else
             {
@@ -51,12 +52,12 @@ namespace Interpolation
                 RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
                 // Store the swaps maturities and rates in a dictionnary
+                DayCounter maturityDouble = new DayCounter(DayConvention.ACT365);
                 foreach (var swap in deserializedObject.swaps)
                 {
                     string maturity = swap.maturity;
                     Period p = GetMaturity(maturity);
                     Date maturityDate = pricingDate.Advance(p);
-                    DayCounter maturityDouble = new DayCounter(DayConvention.ACT365);
                     double dd = maturityDouble.YearFraction(pricingDate, maturityDate);
                     Console.WriteLine(dd);
                     swapRates.Add(dd, swap.rate);
