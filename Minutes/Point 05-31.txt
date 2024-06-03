@@ -1,0 +1,18 @@
+Voici le résumé du point :
+-	Discussion des changements du code (méthode GetMaturity, utilisation des objets Period, ajout de fréquence de paiement du swap)
+-	Le problème des dates qui ne sont pas arrondies et le traiement par Period au lieu des entiers et des doubles
+-	L’étape suivante sur le Newton root-finder
+-	Le suivi des réunions par un message en Whatsapp
+
+A faire pour le prochain réunion (Mardi) :
+-	Remplacer le If Else par Switch Case
+-	Créer une classe contenant ue variable DayCounter et une variable Period
+-	Stocker dans le dictionnaire une variable Period au lieu de double
+-	Modifier le reste du code pour l’utilisation d’une variable Period
+-	Implémenter At(Date, Date) de Discount héritée de IDiscountCurve
+-	Modifier le test en ajoutet des Test cases
+-	Faire un root-find pour des fonctions simples
+
+Pour Mountassir :
+-	Chercher des références pour l’utilisation de Newton pour l’interpolation
+-	Générer la documentation

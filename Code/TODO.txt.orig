@@ -1,0 +1,8 @@
+-	Gérer l’interpolation du Yield et du ZC pour t entre 0 et la première maturité présente
+-	Installer .NET core 6.0 et l’intégrer dans Microsoft VS.
+-	Complétér Linear class constrcutor using Interval class and Point class
+<<<<<<< HEAD:Code/To Do List.txt
+- 
+=======
+-	Continuer la documentation des classes
+>>>>>>> 5385d7176940fcb9a390ea44f5f774332971d7bb:Code/TODO.txt
