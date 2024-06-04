@@ -17,36 +17,35 @@ namespace Tests.Interpolation
         [Test]
         public void Eval()
         {
-            var pricingDate = new Date(01, 05, 2024);
+            //var pricingDate = new Date(01, 05, 2024);
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
             string filePath = Path.Combine(marketDataDirectory, "swaps.json");
 
             string jsonContent = File.ReadAllText(filePath);
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
-            Dictionary<double, double> swapRates = new Dictionary<double, double>();
+            Dictionary<Period, double> swapRates = new Dictionary<Period, double>();
+            
             foreach (var swap in deserializedObject.swaps)
             {
                 string maturity = swap.maturity;
                 Period p = Program.GetMaturity(maturity);
-                Date maturityDate = pricingDate.Advance(p);
-                DayCounter maturityDouble = new DayCounter(DayConvention.ACT365);
-                double dd = maturityDouble.YearFraction(pricingDate, maturityDate);
-                Console.WriteLine(dd);
-                swapRates.Add(dd, swap.rate);
+                swapRates.Add(p, swap.rate);
             }
 
-            List<double> freqs = new List<double> {1};
-            foreach (var freq in freqs)
+            var freq = new PeriodConventioned(new Period(6, Unit.Months), new DayCounter(DayConvention.ACT365));
+
+            var discount = BootstrappingClass.Curve(swapRates, freq);
+            var pricingDate = new Date(01, 05, 2024);
+            var f = BootstrappingClass.Duration(freq.period, pricingDate, freq.dayCounter);
+
+            for (int i = 1; i <= (int)(30 / f); i++)
             {
-                var discount = BootstrappingClass.Curve(swapRates, freq);
-                for (int maturity = 1; maturity <= (int)(30 / freq); maturity++)
-                {
-                    var price = SwapPricer.Pricer(maturity * freq, discount, freq);
-                    Console.WriteLine(maturity * freq);
-                    Console.WriteLine(price);
-                    Assert.That(price, Is.EqualTo(swapRates[maturity * freq]).Within(1e-10));
-                }
+                var maturity = new Period(i * freq.period.NbUnit, freq.period.Unit);
+                var price = SwapPricer.Pricer(maturity, discount, freq);
+                //Console.WriteLine(i * f);
+                //Console.WriteLine(price);
+                Assert.That(price, Is.EqualTo(swapRates[maturity]).Within(1e-10));
             }
         }
     }

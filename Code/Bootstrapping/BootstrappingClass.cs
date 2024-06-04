@@ -5,12 +5,19 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MathematicalFunctions;
+using QuantitativeLibrary.Time;
 
 namespace Bootstrapping
 {
     public static class BootstrappingClass
     {
-        public static Discount Curve(Dictionary<double, double> swapRates, double freq)
+        public static double Duration(Period p, Date pricingDate, DayCounter counter)
+        {
+            Date maturityDate = pricingDate.Advance(p);
+            return counter.YearFraction(pricingDate, maturityDate);
+        }
+
+        public static Discount Curve(Dictionary<Period, double> swapRates, PeriodConventioned freq)
         {
             List<double> ZC = new List<double>();
             List<double> yields = new List<double>();
@@ -18,27 +25,35 @@ namespace Bootstrapping
             double P;
             double y;
 
+            var pricingDate = new Date(01, 05, 2024);
+            var counter = freq.dayCounter;
+
             // Interpoalte the missing values for the swap rates
             PiecewiseLinear SwapInt = new PiecewiseLinear();
 
             var maturities = swapRates.Keys.ToArray();
             for (int i = 1; i < swapRates.Keys.Count; i++)
             {
-                double x1 = maturities[i - 1];
-                double y1 = swapRates[x1];
-                double x2 = maturities[i];
-                double y2 = swapRates[x2];
+                Period p1 = maturities[i - 1];
+                double x1 = Duration(p1, pricingDate, counter);
+                double y1 = swapRates[p1];
+                Period p2 = maturities[i];
+                double x2 = Duration(p2, pricingDate, counter);
+                double y2 = swapRates[p2];
                 SwapInt.AddInterval(x1, y1, x2, y2);
             }
 
-            double Final_maturity = swapRates.Keys.Last();
+            Period Final_maturity = swapRates.Keys.Last();
             int j = 1;
-            while (j * freq < Final_maturity)
+            int f = freq.period.NbUnit;
+            while (j * f < Final_maturity.NbUnit)
             {
-                if (!maturities.Contains(j * freq))
+                var p = new Period (j*f, freq.period.Unit);
+                if (!maturities.Contains(p))
                 {
-                    double sw = SwapInt.Evaluate(j * freq);
-                    swapRates.Add(j * freq, sw);
+                    double x = Duration(p, pricingDate, counter);
+                    double sw = SwapInt.Evaluate(x);
+                    swapRates.Add(p, sw);
                 }
                 j++;
             }
@@ -49,53 +64,40 @@ namespace Bootstrapping
 
 
             // Compute and store the ZC prices and yield curve values for the given maturities
-            double delta_total = freq;
+            double delta_total = f;
             double Q = 0;
-            P = 1 / (1 + swapRates[freq] * freq);
+            P = 1 / (1 + swapRates[freq.period] * f);
             y = -Math.Log(P) / delta_total;
             ZC.Add(P);
-            Console.WriteLine(swapRates[freq]);
-            Console.WriteLine(P);
             yields.Add(y);
 
             j = 2;
-            while (j * freq <= Final_maturity)
+            while (j * f <= Final_maturity.NbUnit)
             {
-                Q += P * freq;
-                delta_total = j * freq;
-                P = (1 - swapRates[j * freq] * Q) / (1 + swapRates[j * freq] * freq);
+                Q += P * f;
+                delta_total = j * f;
+                Period fi = new Period(j * f, freq.period.Unit);
+                P = (1 - swapRates[fi] * Q) / (1 + swapRates[fi] * f);
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);
                 yields.Add(y);
                 j++;
             }
 
-            /*for (int i = 1; i < maturities.Length; i++)
-            {
-                Q += P * delta;
-                delta = maturities[i] - maturities[i - 1];
-                delta_total = maturities[i];
-
-                P = (1 - swapRates[maturities[i]] * Q) / (1 + swapRates[maturities[i]] * delta);
-                y = -Math.Log(P) / delta_total;
-                ZC.Add(P);
-                yields.Add(y);
-            }*/
-
             // Define the function: t -> y(0, t)
             PiecewiseLinear YieldF = new PiecewiseLinear();
-            YieldF.AddInterval(0, 0, freq, yields[0]);
+            YieldF.AddInterval(0, 0, f, yields[0]);
 
             for (int i = 1; i < yields.Count; i++)
             {
-                double x1 = i * freq;
+                double x1 = i * f;
                 double y1 = yields[i - 1];
-                double x2 = (i + 1) * freq;
+                double x2 = (i + 1) * f;
                 double y2 = yields[i];
                 YieldF.AddInterval(x1, y1, x2, y2);
             }
 
-            YieldF.AddInterval(yields.Count * freq, yields.Last(), Double.PositiveInfinity, yields.Last());
+            YieldF.AddInterval(yields.Count * f, yields.Last(), Double.PositiveInfinity, yields.Last());
 
             // Compute y(0, 3.5Y)
             //double yieldInt = YieldF.Evaluate(3.5);
