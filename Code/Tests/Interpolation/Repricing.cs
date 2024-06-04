@@ -14,8 +14,10 @@ namespace Tests.Interpolation
 {
     public class Repricing
     {
-        [Test]
-        public void Eval()
+        [TestCase(3, Unit.Months)]
+        [TestCase(6, Unit.Months)]
+        [TestCase(1, Unit.Years)]
+        public void Eval(int testP, Unit U)
         {
             //var pricingDate = new Date(01, 05, 2024);
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -33,7 +35,7 @@ namespace Tests.Interpolation
                 swapRates.Add(p, swap.rate);
             }
 
-            var freq = new PeriodConventioned(new Period(6, Unit.Months), new DayCounter(DayConvention.ACT365));
+            var freq = new PeriodConventioned(new Period(testP, U), new DayCounter(DayConvention.ACT365));
 
             var discount = BootstrappingClass.Curve(swapRates, freq);
             var pricingDate = new Date(01, 05, 2024);

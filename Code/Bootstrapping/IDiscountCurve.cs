@@ -9,6 +9,6 @@ namespace Bootstrapping
 {
     internal interface IDiscountCurve
     {
-        double At(Date date);
+        double At(Date startDate, Date endDate);
     }
 }

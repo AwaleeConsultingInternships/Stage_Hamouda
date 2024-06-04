@@ -20,11 +20,11 @@ namespace Interpolation
                 case 'Y':
                     return new Period(mat, Unit.Years);
                 case 'M':
-                    return new Period(mat, Unit.Years);
+                    return new Period(mat, Unit.Months);
                 case 'D':
-                    return new Period(mat, Unit.Years);
+                    return new Period(mat, Unit.Days);
                 case 'W':
-                    return new Period(mat, Unit.Years);
+                    return new Period(mat, Unit.Weeks);
                 default:
                     throw new ArgumentException("Invalid period format. Expected format is '1Y', '2M', or '30D'.");
             }

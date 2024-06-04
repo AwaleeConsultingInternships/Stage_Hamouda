@@ -1,0 +1,10 @@
+Voici le résumé de notre point :
+-	Discussion des changements de code (utilisation des objets Period, création de classe, amélioration du code)
+-	Les généralisations qui peuvent être ajoutés (Unit différents, maturités non-multiples de fréquence)
+-	Prochaine étape de Newton solver
+
+A faire pour Jeudi :
+-	Modifier la classe PeriodConventioned
+-	Modifier la classe Discount
+-	Implémenter l’utilisation de Newton solver pour une fonction quelconque (polynomiale puis avec exponentielle)
+-	Ajouter la partie de calcul de swap interpolé par Newton solver (swap linéaire chaque 3M puis constant le long d’un an)
