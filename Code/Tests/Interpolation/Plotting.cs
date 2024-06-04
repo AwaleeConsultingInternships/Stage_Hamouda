@@ -2,7 +2,9 @@
 using Interpolation;
 using MathematicalTools;
 using Newtonsoft.Json;
+using QuantitativeLibrary.Time;
 using Utilities;
+using static QuantitativeLibrary.Time.Time;
 
 namespace Tests.Interpolation
 {
@@ -17,14 +19,14 @@ namespace Tests.Interpolation
             string jsonContent = File.ReadAllText(marketDataFilePath);
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
-            Dictionary<double, double> swapRates = new Dictionary<double, double>();
-            foreach (var swap in deserializedObject.swaps)
-            {
-                var dd = int.Parse(swap.maturity.Substring(0, swap.maturity.Length - 1));
-                swapRates.Add(dd, swap.rate);
-            }
+            var pricingDate = new Date(01, 05, 2024);
+            var period = new Period(3, Unit.Months);
+            var dayCouner = new DayCounter(DayConvention.ACT365);
+            var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner);
 
-            var discount = BootstrappingClass.Curve(swapRates, 1);
+            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
+
+            var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters);
 
             var nbYears = 40;
             var shift = 21;
