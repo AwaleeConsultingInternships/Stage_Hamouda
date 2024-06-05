@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathematicalFunctions;
-using Bootstrapping;
+﻿using Bootstrapping;
 using Interpolation;
 using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
@@ -14,10 +8,10 @@ namespace Tests.Interpolation
 {
     public class Repricing
     {
-        [TestCase(3, Unit.Months)]
-        [TestCase(6, Unit.Months)]
-        [TestCase(1, Unit.Years)]
-        public void Eval(int testP, Unit U)
+        [TestCase(3)]
+        [TestCase(6)]
+        [TestCase(12)]
+        public void Eval(int testP)
         {
             //var pricingDate = new Date(01, 05, 2024);
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -26,27 +20,20 @@ namespace Tests.Interpolation
             string jsonContent = File.ReadAllText(filePath);
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
-            Dictionary<Period, double> swapRates = new Dictionary<Period, double>();
-            
-            foreach (var swap in deserializedObject.swaps)
-            {
-                string maturity = swap.maturity;
-                Period p = Program.GetMaturity(maturity);
-                swapRates.Add(p, swap.rate);
-            }
+            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
 
-            var freq = new PeriodConventioned(new Period(testP, U), new DayCounter(DayConvention.ACT365));
-
-            var discount = BootstrappingClass.Curve(swapRates, freq);
             var pricingDate = new Date(01, 05, 2024);
-            var f = BootstrappingClass.Duration(freq.period, pricingDate, freq.dayCounter);
+            var period = new Period(testP, Unit.Months);
+            var dayCouner = new DayCounter(DayConvention.ACT365);
+            var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner);
 
-            for (int i = 1; i <= (int)(30 / f); i++)
+            var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters);
+            var f = Bootstrapping.Utilities.Duration(bootstrappingParameters.Period, pricingDate, bootstrappingParameters.DayCounter);
+
+            foreach(var swap in swapRates)
             {
-                var maturity = new Period(i * freq.period.NbUnit, freq.period.Unit);
-                var price = SwapPricer.Pricer(maturity, discount, freq);
-                //Console.WriteLine(i * f);
-                //Console.WriteLine(price);
+                var maturity = swap.Key;
+                var price = SwapPricer.Pricer(maturity, discount, bootstrappingParameters);
                 Assert.That(price, Is.EqualTo(swapRates[maturity]).Within(1e-10));
             }
         }
