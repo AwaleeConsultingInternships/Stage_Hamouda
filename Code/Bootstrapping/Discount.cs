@@ -1,11 +1,5 @@
 ﻿using MathematicalFunctions;
 using QuantitativeLibrary.Time;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static QuantitativeLibrary.Time.Time;
 
 namespace Bootstrapping
@@ -35,6 +29,11 @@ namespace Bootstrapping
             var counter = new DayCounter(DayConvention.ACT365);
             double x = counter.YearFraction(startDate, endDate);
             return Evaluate(x);
+        }
+
+        public override string ToString()
+        {
+            return "Discount curve: Exp[-t * " + _yieldF.ToString() + "]";
         }
     }
 }

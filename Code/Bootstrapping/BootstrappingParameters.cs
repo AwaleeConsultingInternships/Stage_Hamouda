@@ -5,7 +5,7 @@ namespace Bootstrapping
     public class BootstrappingParameters
     {
         private Date _pricingDate;
-        private Period _period;
+        private Period _periodicity;
         private DayCounter _dayCounter;
 
         public Date PricingDate
@@ -14,10 +14,10 @@ namespace Bootstrapping
             set { _pricingDate = value; }
         }
 
-        public Period Period
+        public Period Periodicity
         {
-            get { return _period; }
-            set { _period = value; }
+            get { return _periodicity; }
+            set { _periodicity = value; }
         }
 
         public DayCounter DayCounter
@@ -29,8 +29,13 @@ namespace Bootstrapping
         public BootstrappingParameters(Date pricingDate, Period period, DayCounter dayCounter)
         {
             _pricingDate = pricingDate;
-            _period = period;
+            _periodicity = period;
             _dayCounter = dayCounter;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Pricing date = {0}, Periodicity = {1}, Day counter = {2}", _pricingDate, _periodicity, _dayCounter);
         }
     }
 }
