@@ -1,5 +1,5 @@
-﻿using System;
-using MathematicalTools;
+﻿using MathematicalTools;
+using System.Globalization;
 
 namespace MathematicalFunctions
 {
@@ -66,6 +66,10 @@ namespace MathematicalFunctions
             double t = (x - _x1) / (_x2 - _x1);
             return _y1 + t * (_y2 - _y1);
         }
-    }
 
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Linear on [({0},{1}), ({2},{3})]", _x1, _y1, _x2, _y2);
+        }
+    }
 }

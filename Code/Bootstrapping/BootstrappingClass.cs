@@ -21,7 +21,7 @@ namespace Bootstrapping
 
             var pricingDate = bootstrappedParameters.PricingDate;
             var counter = bootstrappedParameters.DayCounter;
-            var periodicity = bootstrappedParameters.Period;
+            var periodicity = bootstrappedParameters.Periodicity;
 
             // Interpoalte the missing values for the swap rates
             PiecewiseLinear SwapInt = new PiecewiseLinear();
@@ -46,7 +46,7 @@ namespace Bootstrapping
             var f = periodicity.NbUnit;
             double delta_total = f;
             double Q = 0;
-            P = 1 / (1 + interpolatedSwapRates[bootstrappedParameters.Period] * f);
+            P = 1 / (1 + interpolatedSwapRates[bootstrappedParameters.Periodicity] * f);
             y = -Math.Log(P) / delta_total;
             ZC.Add(P);
             yields.Add(y);
@@ -56,7 +56,7 @@ namespace Bootstrapping
             {
                 Q += P * f;
                 delta_total = j * f;
-                Period fi = new Period(j * f, bootstrappedParameters.Period.Unit);
+                Period fi = new Period(j * f, bootstrappedParameters.Periodicity.Unit);
                 P = (1 - interpolatedSwapRates[fi] * Q) / (1 + interpolatedSwapRates[fi] * f);
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);

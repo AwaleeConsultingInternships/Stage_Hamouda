@@ -22,7 +22,7 @@ namespace Bootstrapping
                 case 'W':
                     return new Period(mat, Unit.Weeks);
                 default:
-                    throw new ArgumentException("Invalid Period format. Expected format is '1Y', '2M', or '30D'.");
+                    throw new ArgumentException("Invalid Periodicity format. Expected format is '1Y', '2M', or '30D'.");
             }
         }
 
@@ -57,7 +57,7 @@ namespace Bootstrapping
             Dictionary<Period, double> swapRates, BootstrappingParameters bootstrappingParameters)
         {
             var pricingDate = bootstrappingParameters.PricingDate;
-            var periodicity = bootstrappingParameters.Period;
+            var periodicity = bootstrappingParameters.Periodicity;
             var counter = bootstrappingParameters.DayCounter;
 
             var maturities = swapRates.Keys.ToArray();

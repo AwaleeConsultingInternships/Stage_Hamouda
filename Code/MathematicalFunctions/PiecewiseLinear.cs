@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 
 namespace MathematicalFunctions
 {
@@ -35,6 +31,14 @@ namespace MathematicalFunctions
             }
             return s;
             throw new ArgumentException("x=" + x + " is out of the defined intervals.");
+        }
+
+        public override string ToString()
+        {
+            var firstInterval = intervals.First();
+            var lastInterval = intervals.Last();
+            return string.Format(CultureInfo.InvariantCulture, "Piecewise linear on [({0},{1}), ({2},{3})]",
+                firstInterval.X1, firstInterval.Y1, lastInterval.X2, lastInterval.Y2);
         }
     }
 }
