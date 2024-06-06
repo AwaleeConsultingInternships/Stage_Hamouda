@@ -37,30 +37,41 @@ namespace Bootstrapping
                 double y2 = swapRates[p2];
                 SwapInt.AddInterval(x1, y1, x2, y2);
             }
+            Period lastPeriod = maturities[maturities.Length - 1];
+            double lastX = Utilities.Duration(lastPeriod, pricingDate, counter);
+            SwapInt.AddInterval(lastX, swapRates[lastPeriod], Double.PositiveInfinity, swapRates[lastPeriod]);
 
             var lastMaturity = Utilities.ConvertYearsToMonths(swapRates.Keys.Last());
 
             var interpolatedSwapRates = Utilities.InterpolateSwapRate(SwapInt, swapRates, bootstrappedParameters);
 
             // Compute and store the ZC prices and yield curve values for the given maturities
-            var f = periodicity.NbUnit;
+            var f = Utilities.Duration(periodicity, pricingDate, counter);
             double delta_total = f;
             double Q = 0;
-            P = 1 / (1 + interpolatedSwapRates[bootstrappedParameters.Periodicity] * f);
+            var firstSwap = interpolatedSwapRates[periodicity];
+            P = 1 / (1 + firstSwap * f);
             y = -Math.Log(P) / delta_total;
             ZC.Add(P);
             yields.Add(y);
 
+            var datePrevious = pricingDate;
+            var date = pricingDate.Advance(periodicity);
+
             var j = 2;
-            while (j * f <= lastMaturity.NbUnit)
+            while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
             {
+                datePrevious = date;
+                date = date.Advance(periodicity);
                 Q += P * f;
-                delta_total = j * f;
-                Period fi = new Period(j * f, bootstrappedParameters.Periodicity.Unit);
+                f = counter.YearFraction(datePrevious, date);
+                Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
                 P = (1 - interpolatedSwapRates[fi] * Q) / (1 + interpolatedSwapRates[fi] * f);
+                delta_total += f;
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);
                 yields.Add(y);
+                
                 j++;
             }
 
