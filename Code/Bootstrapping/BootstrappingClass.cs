@@ -12,7 +12,7 @@ namespace Bootstrapping
 {
     public static class BootstrappingClass
     {
-        public static Discount Curve(Dictionary<Period, double> swapRates, BootstrappingParameters bootstrappedParameters)
+        public static Discount Curve(Dictionary<Period, double> swapRates, BootstrappingParameters bootstrappedParameters, bool solveRoot = false)
         {
             List<double> ZC = new List<double>();
             List<double> yields = new List<double>();
@@ -28,6 +28,14 @@ namespace Bootstrapping
             PiecewiseLinear SwapInt = new PiecewiseLinear();
 
             var maturities = swapRates.Keys.ToArray();
+            var x00 = Utilities.Duration(periodicity, pricingDate, counter);
+            var x0 = Utilities.Duration(maturities[0], pricingDate, counter);
+            var y0 = swapRates[maturities[0]];
+            if (x00 < x0)
+            {
+                SwapInt.AddInterval(x00, y0, x0, y0);
+            }
+            
             for (int i = 1; i < swapRates.Keys.Count; i++)
             {
                 Period p1 = maturities[i - 1];

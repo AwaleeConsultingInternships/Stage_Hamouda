@@ -20,7 +20,7 @@ namespace Tests.Interpolation
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
-            var period = new Period(12, Unit.Months);
+            var period = new Period(3, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner);
 
