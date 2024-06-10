@@ -77,18 +77,28 @@ namespace Bootstrapping
 
             // Define the function: t -> y(0, t)
             PiecewiseLinear YieldF = new PiecewiseLinear();
+
+            datePrevious = pricingDate;
+            date = pricingDate.Advance(periodicity);
+
+            f = counter.YearFraction(datePrevious, date);
+
             YieldF.AddInterval(0, 0, f, yields[0]);
 
             for (int i = 1; i < yields.Count; i++)
             {
-                double x1 = i * f;
+                datePrevious = date;
+                date = date.Advance(periodicity);
+
+                double x1 = counter.YearFraction(pricingDate, datePrevious);
                 double y1 = yields[i - 1];
-                double x2 = (i + 1) * f;
+                double x2 = counter.YearFraction(pricingDate, date);
                 double y2 = yields[i];
                 YieldF.AddInterval(x1, y1, x2, y2);
             }
+            double xFinal = counter.YearFraction(pricingDate, date);
 
-            YieldF.AddInterval(yields.Count * f, yields.Last(), Double.PositiveInfinity, yields.Last());
+            YieldF.AddInterval(xFinal, yields.Last(), Double.PositiveInfinity, yields.Last());
 
             // Compute y(0, 3.5Y)
             //double yieldInt = YieldF.Evaluate(3.5);

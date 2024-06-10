@@ -28,8 +28,6 @@ namespace Tests.Interpolation
             var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner);
 
             var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters);
-            var f = Bootstrapping.Utilities.Duration(bootstrappingParameters.Periodicity, pricingDate, bootstrappingParameters.DayCounter);
-
             foreach(var swap in swapRates)
             {
                 var maturity = swap.Key;
