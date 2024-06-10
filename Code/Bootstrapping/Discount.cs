@@ -1,24 +1,25 @@
 ﻿using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
+using QuantitativeLibrary.Maths.Functions;
 
 namespace Bootstrapping
 {
-    public class Discount : IFunction, IDiscountCurve
+    public class Discount : RFunction, IDiscountCurve
     {
-        private IFunction _yieldF;
-        public IFunction YieldF
+        private RFunction _yieldF;
+        public RFunction YieldF
         {
             get { return _yieldF; }
             set { _yieldF = value; }
         }
 
-        public Discount(IFunction yieldF)
+        public Discount(RFunction yieldF)
         {
             _yieldF = yieldF;
         }
 
-        public double Evaluate(double x)
+        public override double Evaluate(double x)
         {
             double yield = _yieldF.Evaluate(x);
             return Math.Exp(-yield * x);

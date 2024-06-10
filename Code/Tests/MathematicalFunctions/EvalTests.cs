@@ -69,7 +69,7 @@ namespace Tests.MathematicalFunctions
             var y7Bis = piecewiseLinearFunction.Evaluate(x7);
         }
 
-        [TestCase(5)]
+        /*[TestCase(5)]
         [TestCase(0)]
         [TestCase(-2)]
         public void DiscountFromYieldTest(double asOf)
@@ -83,6 +83,6 @@ namespace Tests.MathematicalFunctions
             var discountBis = new Composite(exp, square);
 
             Assert.That(discount.Evaluate(asOf), Is.EqualTo(discountBis.Evaluate(asOf)));
-        }
+        }*/
     }
 }

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
-    public class Exp : IFunction
+    public class Exp : RFunction
     {
         private double _a;
+
+        public override RFunction FirstDerivative => GetFirstDerivative();
 
         public double A
         {
@@ -21,9 +24,14 @@ namespace MathematicalFunctions
             _a = a;
         }
 
-        public double Evaluate(double x)
+        public override double Evaluate(double x)
         {
             return Math.Exp(_a * x);
+        }
+
+        protected override RFunction GetFirstDerivative()
+        {
+            return new FuncMult(new ConstantFunction(_a), new Exp(_a));
         }
     }
 }

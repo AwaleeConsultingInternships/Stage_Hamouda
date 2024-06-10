@@ -1,12 +1,15 @@
 ﻿using MathematicalTools;
 using System.Globalization;
+using QuantitativeLibrary.Maths.Functions;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace MathematicalFunctions
 {
-    public class Linear : IFunction
+    public class Linear : RFunction
     {
         private double _x1, _y1, _x2, _y2;
 
+        public override Linear FirstDerivative => GetFirstDerivative();
         public double X1
         {
             get { return _x1; }
@@ -58,13 +61,19 @@ namespace MathematicalFunctions
             // à compléter en utilisant Interval class et Point class
         }
 
-        public double Evaluate(double x)
+        public override double Evaluate(double x)
         {
             if (x < _x1 || x >= _x2)
                 return 0;
 
             double t = (x - _x1) / (_x2 - _x1);
             return _y1 + t * (_y2 - _y1);
+        }
+
+        protected override Linear GetFirstDerivative()
+        {
+            double slope = (_y2 - _y1) / (_x2 - _x1);
+            return new Linear(_x1, slope, _x2, slope);
         }
 
         public override string ToString()

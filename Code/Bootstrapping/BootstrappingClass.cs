@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathematicalFunctions;
 using QuantitativeLibrary.Time;
+using QuantitativeLibrary.Maths.Functions;
 
 namespace Bootstrapping
 {

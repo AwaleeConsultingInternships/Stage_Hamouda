@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
-    public class Square : IFunction
+    public class Square : RFunction
     {
-        public double Evaluate(double x)
+        public override RFunction FirstDerivative => GetFirstDerivative();
+        public override double Evaluate(double x)
         {
             // return Math.Pow(x, 2);
             return x * x;
+        }
+
+        protected override RFunction GetFirstDerivative()
+        {
+            return new AffineFunction(0, 2);
         }
     }
 }

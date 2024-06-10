@@ -1,10 +1,13 @@
 ﻿using System.Globalization;
+using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
-    public class PiecewiseLinear : IFunction
+    public class PiecewiseLinear : RFunction
     {
         private List<Linear> intervals;
+
+        public override RFunction FirstDerivative => GetFirstDerivative();
 
         public List<Linear> Intervals
         {
@@ -22,7 +25,12 @@ namespace MathematicalFunctions
             intervals.Add(new Linear(x1, y1, x2, y2));
         }
 
-        public double Evaluate(double x)
+        public void AddInterval(Linear linear)
+        {
+            intervals.Add(linear);
+        }
+
+        public override double Evaluate(double x)
         {
             double s = 0;
             foreach (Linear interval in intervals) 
@@ -31,6 +39,16 @@ namespace MathematicalFunctions
             }
             return s;
             throw new ArgumentException("x=" + x + " is out of the defined intervals.");
+        }
+
+        protected override RFunction GetFirstDerivative()
+        {
+            PiecewiseLinear derivFunc = new PiecewiseLinear();
+            foreach (Linear interval in intervals)
+            {
+                derivFunc.AddInterval(interval.FirstDerivative);
+            }
+            return derivFunc;
         }
 
         public override string ToString()
