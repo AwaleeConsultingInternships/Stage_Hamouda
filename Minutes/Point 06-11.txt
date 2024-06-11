@@ -1,0 +1,13 @@
+Voici le résumé de notre point :
+	-	Lecture et Commentaires sur le code et les modifications faites
+	-	Discussion du la librairie d’Awalee et l’utilisation de l’interface RFunction
+	-	Explication de la formule d’un prix de swap
+	-	Fixer des étapes ultérieures dans le projet et des modifications à faire (moins important)
+
+A faire pour le prochain point (jeudi à midi) :
+	-	Résoudre le problème de généralisation de calcul de yield par la méthode de Newton, en utilisant les valeurs précédentes des ZC calculés de manière générique
+
+D’autres modifications à faire :
+	-	Mettre la variable de type Boolean et les paramètres de NewtonSolver dans BootstrappingParameters
+	-	Modifier PiecewiseLinear (utilisation d’une liste d’intervalles et une liste de fonctions)
+	-	Problème de surcharge d’opérateur pour FuncSum et FuncMult

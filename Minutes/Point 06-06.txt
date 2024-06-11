@@ -1,0 +1,20 @@
+Voici le résumé de notre point :
+	-	Débogage du code pour la partie de repricing
+	-	Discussion sur l’utilisation de la librairie d’Awalee pour performer la méthode de Newton
+	-	Discussion sur la méthode de Newton implémenté par Hamouda et les tests faits
+
+A faire (par ordre de priorité) :
+	-	Correction du test Repricing
+	-	Eliminer l’interface de fonctions Ifunction et hériter de la classe de la librairie
+	-	Ajouter d’autres fonctions (affine …)
+	-	Modifier les tests unitaires de Newton conformément et vérifier que ça marche
+	-	Implémenter la fonction de calcul de prix du swap (en introduisant les jambes …) et résoudre les zéros en se basant sur les commentaires suivants :
+		// On a P = Exp (- yield * t) et on veut trouver yield
+		// Il faut faire une fonction de prix 
+		// Pour un swap : Jambe flottante - jambe fixe 
+		// Pour le 1er swap : rate_float * delta * ZC(1Y) - rate_market * delta * ZC(1Y)
+		// 2 problèmes : y apparait dans ZC(1Y) et dans rate_float
+		// car rate_float(1Y) = 1/delta * (1/ZC(1Y) - 1) et ZC dépend de y
+		// Maintenant, tu peux définir f(y) en utilisant des combinaisons linéaires d'Exp qui dépendent de y
+		// Il faut trouver le zéro de cette fonction
+		// En d'autres termes, tu fais Newtion pour trouver y* tel que f(y*) = 0
