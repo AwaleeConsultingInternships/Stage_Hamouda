@@ -55,57 +55,64 @@ namespace Bootstrapping
             var interpolatedSwapRates = Utilities.InterpolateSwapRate(SwapInt, swapRates, bootstrappedParameters);
 
             // Compute and store the ZC prices and yield curve values for the given maturities
-            var f = Utilities.Duration(periodicity, pricingDate, counter);
-            double delta_total = f;
-            double Q = 0;
-            var firstSwap = interpolatedSwapRates[periodicity];
-            P = 1 / (1 + firstSwap * f);
-            y = -Math.Log(P) / delta_total;
-            ZC.Add(P);
-            yields.Add(y);
-
-            var datePrevious = pricingDate;
-            var date = pricingDate.Advance(periodicity);
-
-            var j = 2;
-            while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
+            if (solveRoot)
             {
-                datePrevious = date;
-                date = date.Advance(periodicity);
-                Q += P * f;
-                f = counter.YearFraction(datePrevious, date);
-                Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
-                P = (1 - interpolatedSwapRates[fi] * Q) / (1 + interpolatedSwapRates[fi] * f);
-                delta_total += f;
+                Console.WriteLine("Root");
+            }
+            else
+            {
+                var f = Utilities.Duration(periodicity, pricingDate, counter);
+                double delta_total = f;
+                double Q = 0;
+                var firstSwap = interpolatedSwapRates[periodicity];
+                P = 1 / (1 + firstSwap * f);
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);
                 yields.Add(y);
+
+                var datePrevious = pricingDate;
+                var date = pricingDate.Advance(periodicity);
+
+                var j = 2;
+                while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
+                {
+                    datePrevious = date;
+                    date = date.Advance(periodicity);
+                    Q += P * f;
+                    f = counter.YearFraction(datePrevious, date);
+                    Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
+                    P = (1 - interpolatedSwapRates[fi] * Q) / (1 + interpolatedSwapRates[fi] * f);
+                    delta_total += f;
+                    y = -Math.Log(P) / delta_total;
+                    ZC.Add(P);
+                    yields.Add(y);
                 
-                j++;
+                    j++;
+                }
             }
 
             // Define the function: t -> y(0, t)
             PiecewiseLinear YieldF = new PiecewiseLinear();
 
-            datePrevious = pricingDate;
-            date = pricingDate.Advance(periodicity);
+            var datePreviousN = pricingDate;
+            var dateN = pricingDate.Advance(periodicity);
 
-            f = counter.YearFraction(datePrevious, date);
+            var fN = counter.YearFraction(datePreviousN, dateN);
 
-            YieldF.AddInterval(0, 0, f, yields[0]);
+            YieldF.AddInterval(0, 0, fN, yields[0]);
 
             for (int i = 1; i < yields.Count; i++)
             {
-                datePrevious = date;
-                date = date.Advance(periodicity);
+                datePreviousN = dateN;
+                dateN = dateN.Advance(periodicity);
 
-                double x1 = counter.YearFraction(pricingDate, datePrevious);
+                double x1 = counter.YearFraction(pricingDate, datePreviousN);
                 double y1 = yields[i - 1];
-                double x2 = counter.YearFraction(pricingDate, date);
+                double x2 = counter.YearFraction(pricingDate, dateN);
                 double y2 = yields[i];
                 YieldF.AddInterval(x1, y1, x2, y2);
             }
-            double xFinal = counter.YearFraction(pricingDate, date);
+            double xFinal = counter.YearFraction(pricingDate, dateN);
 
             YieldF.AddInterval(xFinal, yields.Last(), Double.PositiveInfinity, yields.Last());
 
