@@ -27,7 +27,7 @@ namespace Tests.Interpolation
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner);
 
-            var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters);
+            var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters, true);
             foreach(var swap in swapRates)
             {
                 var maturity = swap.Key;

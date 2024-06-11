@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using QuantitativeLibrary.Maths.Functions;
+using QuantitativeLibrary.Maths.Solver.RootFinder;
 
 namespace Bootstrapping
 {
@@ -57,7 +58,46 @@ namespace Bootstrapping
             // Compute and store the ZC prices and yield curve values for the given maturities
             if (solveRoot)
             {
-                Console.WriteLine("Root");
+                double target = 0;
+                double firstGuess = 1;
+                double tolerance = 1e-6;
+
+                var f = Utilities.Duration(periodicity, pricingDate, counter);
+                double delta_total = f;
+                double Q = 0;
+                var firstSwap = interpolatedSwapRates[periodicity];
+                var swapFunc = new AffineFunction(1, -1 - firstSwap * f);
+                //var sswapFunc = new Composite(new AffineFunction(1, -1 - firstSwap * f), new Exp(-f));
+                NewtonSolver solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
+                NewtonResult result = solver.Solve();
+                P = result.Solution;
+                y = -Math.Log(P) / delta_total;
+                ZC.Add(P);
+                yields.Add(y);
+
+                var datePrevious = pricingDate;
+                var date = pricingDate.Advance(periodicity);
+
+                var j = 2;
+                while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
+                {
+                    datePrevious = date;
+                    date = date.Advance(periodicity);
+                    Q += P * f;
+                    f = counter.YearFraction(datePrevious, date);
+                    Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
+                    swapFunc = new AffineFunction(1 - interpolatedSwapRates[fi] * Q, -1 - interpolatedSwapRates[fi] * f);
+                    solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
+                    result = solver.Solve();
+                    P = result.Solution;
+                    delta_total += f;
+                    y = -Math.Log(P) / delta_total;
+                    ZC.Add(P);
+                    yields.Add(y);
+
+                    j++;
+                }
+
             }
             else
             {
