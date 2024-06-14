@@ -41,7 +41,7 @@
         /// <param name="right"> The right bound of the interval. </param>
         /// <param name="isLeftIncluded"> True if the left bound is included. False if not. </param>
         /// <param name="isRightIncluded"> True if the right bound is included. False if not. </param>
-        private Interval(double left, double right, bool isLeftIncluded, bool isRightIncluded) 
+        public Interval(double left, double right, bool isLeftIncluded = true, bool isRightIncluded = false) 
         {
             _left = left;
             _right = right;

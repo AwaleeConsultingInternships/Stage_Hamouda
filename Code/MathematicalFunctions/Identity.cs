@@ -20,5 +20,10 @@ namespace MathematicalFunctions
         {
             return new ConstantFunction(1);
         }
+
+        public override string ToString()
+        {
+            return $"Identity Function: f(x) = x";
+        }
     }
 }

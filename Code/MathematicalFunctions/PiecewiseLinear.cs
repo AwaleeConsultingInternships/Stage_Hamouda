@@ -1,15 +1,16 @@
 ﻿using System.Globalization;
+using MathematicalTools;
 using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
     public class PiecewiseLinear : RFunction
     {
-        private List<Linear> intervals;
+        private Dictionary<Interval, AffineFunction> intervals;
 
         public override RFunction FirstDerivative => GetFirstDerivative();
 
-        public List<Linear> Intervals
+        public Dictionary<Interval, AffineFunction> Intervals
         {
             get { return intervals; }
             set { intervals = value; }
@@ -17,36 +18,41 @@ namespace MathematicalFunctions
 
         public PiecewiseLinear()
         {
-            intervals = new List<Linear>();
+            intervals = new Dictionary<Interval, AffineFunction>();
         }
 
         public void AddInterval(double x1, double y1, double x2, double y2)
         {
-            intervals.Add(new Linear(x1, y1, x2, y2));
+            intervals.Add(new Interval(x1, x2), AffineFunction.Create(x1, x2, y1, y2));
         }
 
-        public void AddInterval(Linear linear)
+        public void AddInterval(double x1, double x2, AffineFunction linear)
         {
-            intervals.Add(linear);
+            intervals.Add(new Interval(x1, x2), linear);
+        }
+
+        public void AddInterval(Interval interval, AffineFunction linear)
+        {
+            intervals.Add(interval, linear);
         }
 
         public override double Evaluate(double x)
         {
-            double s = 0;
-            foreach (Linear interval in intervals) 
+            foreach (Interval interval in intervals.Keys) 
             {
-                s += interval.Evaluate(x); 
+                if (x >= interval.Left && x < interval.Right)
+                    return intervals[interval].Evaluate(x); 
             }
-            return s;
+
             throw new ArgumentException("x=" + x + " is out of the defined intervals.");
         }
 
         protected override RFunction GetFirstDerivative()
         {
-            PiecewiseLinear derivFunc = new PiecewiseLinear();
-            foreach (Linear interval in intervals)
+            PiecewiseConstant derivFunc = new PiecewiseConstant();
+            foreach (Interval interval in intervals.Keys)
             {
-                derivFunc.AddInterval(interval.FirstDerivative);
+                derivFunc.AddInterval(interval, intervals[interval].FirstDerivative);
             }
             return derivFunc;
         }

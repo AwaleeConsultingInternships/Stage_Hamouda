@@ -19,5 +19,10 @@ namespace MathematicalFunctions
         {
             return new Composite(new FuncMult(new ConstantFunction(-1), new Inverse()), new Square());
         }
+
+        public override string ToString()
+        {
+            return $"Inverse Function: f(x) = 1/x";
+        }
     }
 }

@@ -45,5 +45,10 @@ namespace MathematicalFunctions
         {
             return new FuncMult(new Composite(f.FirstDerivative, g), g.FirstDerivative);
         }
+
+        public override string ToString()
+        {
+            return $"Composite function: f(g(x)), where f = {f.ToString}, g = {g.ToString}";
+        }
     }
 }
