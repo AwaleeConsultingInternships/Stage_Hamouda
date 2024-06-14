@@ -13,10 +13,12 @@ namespace Bootstrapping
 {
     public static class BootstrappingClass
     {
-        public static Discount Curve(Dictionary<Period, double> swapRates, BootstrappingParameters bootstrappedParameters, bool solveRoot = false)
+        public static Discount Curve(Dictionary<Period, double> swapRates, BootstrappingParameters bootstrappedParameters)
         {
             List<double> ZC = new List<double>();
             List<double> yields = new List<double>();
+
+            Dictionary<Period, double> ZCDict = new Dictionary<Period, double>();
 
             double P;
             double y;
@@ -24,6 +26,10 @@ namespace Bootstrapping
             var pricingDate = bootstrappedParameters.PricingDate;
             var counter = bootstrappedParameters.DayCounter;
             var periodicity = bootstrappedParameters.Periodicity;
+            var solveRoot = bootstrappedParameters.SolveRoot;
+            var target = bootstrappedParameters.Target;
+            var firstGuess = bootstrappedParameters.FirstGuess;
+            var tolerance = bootstrappedParameters.Tolerance;
 
             // Interpoalte the missing values for the swap rates
             PiecewiseLinear SwapInt = new PiecewiseLinear();
@@ -58,15 +64,10 @@ namespace Bootstrapping
             // Compute and store the ZC prices and yield curve values for the given maturities
             if (solveRoot)
             {
-                double target = 0;
-                double firstGuess = 1;
-                double tolerance = 1e-6;
-
                 var f = Utilities.Duration(periodicity, pricingDate, counter);
                 double delta_total = f;
-                double Q = 0;
                 var firstSwap = interpolatedSwapRates[periodicity];
-                var swapFunc = new AffineFunction(1, -1 - firstSwap * f);
+                RFunction swapFunc = new AffineFunction(1, -1 - firstSwap * f);
                 //var sswapFunc = new Composite(new AffineFunction(1, -1 - firstSwap * f), new Exp(-f));
                 NewtonSolver solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                 NewtonResult result = solver.Solve();
@@ -74,6 +75,8 @@ namespace Bootstrapping
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);
                 yields.Add(y);
+
+                ZCDict.Add(periodicity, P);
 
                 var datePrevious = pricingDate;
                 var date = pricingDate.Advance(periodicity);
@@ -83,17 +86,20 @@ namespace Bootstrapping
                 {
                     datePrevious = date;
                     date = date.Advance(periodicity);
-                    Q += P * f;
                     f = counter.YearFraction(datePrevious, date);
+
                     Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
-                    swapFunc = new AffineFunction(1 - interpolatedSwapRates[fi] * Q, -1 - interpolatedSwapRates[fi] * f);
+                    swapFunc = SwapFunc.SwapValue(ZCDict, interpolatedSwapRates[fi], bootstrappedParameters);
                     solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                     result = solver.Solve();
                     P = result.Solution;
+
                     delta_total += f;
                     y = -Math.Log(P) / delta_total;
+
                     ZC.Add(P);
                     yields.Add(y);
+                    ZCDict.Add(fi, P);
 
                     j++;
                 }
@@ -155,10 +161,6 @@ namespace Bootstrapping
             double xFinal = counter.YearFraction(pricingDate, dateN);
 
             YieldF.AddInterval(xFinal, yields.Last(), Double.PositiveInfinity, yields.Last());
-
-            // Compute y(0, 3.5Y)
-            //double yieldInt = YieldF.Evaluate(3.5);
-            //Console.WriteLine($"\nInterpolated yield value at 3.5Y: {yieldInt}");
 
 
             return new Discount(YieldF);

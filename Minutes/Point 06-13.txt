@@ -1,0 +1,13 @@
+Voici le résumé de notre point :
+	•	Observation du code ajouté (fonction théorique de calcul de swap)
+	•	Explication de la génération de la fonction en utilisant les arguments nécessaires
+
+A faire pour le prochain point (mardi à midi), par ordre de priorité :
+	1.	Nettoyer le code :
+		•	Ajouter les méthodes To_String
+		•	Gérer les surcharges d’opérateurs pour FuncMult et FuncSum
+		•	Stocker tous les paramètres dans BootstrappingParameters
+		•	Modifier PiecewiseLinear (utilisation d’une liste d’intervalles et une liste de fonctions)
+	2.	Ajouter les 2 cas du boolean dans le test et débogguer le code pour le cas true
+	3.	Modéliser le calcul des ZC avec raw data (non interpolée) : modéliser le ZC dont la maturité n’a pas de correspondant en swap rate, par interpolation des plus proches ZC avec des correspondants. PS : faire attention aux périodicités
+	4.	Essayer avec yield comme variable principale
