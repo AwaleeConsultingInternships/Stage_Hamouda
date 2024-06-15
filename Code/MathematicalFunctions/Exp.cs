@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QuantitativeLibrary.Maths.Functions;
+﻿using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
@@ -32,12 +26,12 @@ namespace MathematicalFunctions
 
         protected override RFunction GetFirstDerivative()
         {
-            return new FuncMult(new ConstantFunction(_a), new Exp(_a));
+            return _a * new Exp(_a);
         }
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "Exponential function with parameter a = {0}", _a);
+            return "Exp(" + _a.ToString() + "*x)";
         }
     }
 }

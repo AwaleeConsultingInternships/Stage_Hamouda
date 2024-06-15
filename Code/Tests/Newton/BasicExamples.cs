@@ -1,15 +1,10 @@
 ﻿using MathematicalFunctions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 
 namespace Tests.Newton
 {
-    public class Test1
+    public class BasicExamples
     {
         [Test]
         public void Affine() 
@@ -50,7 +45,7 @@ namespace Tests.Newton
             var f2 = AffineFunction.Create(0, 1, -1, 1);
             var f3 = new Composite(f1, f2);
             var f4 = new ConstantFunction(-Math.E * Math.E);
-            var function = new FuncSum(f3, f4);
+            var function = f3 + f4;
 
             double target = 0;
             double firstGuess = 1;

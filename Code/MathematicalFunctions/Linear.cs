@@ -1,15 +1,14 @@
 ﻿using MathematicalTools;
 using System.Globalization;
 using QuantitativeLibrary.Maths.Functions;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace MathematicalFunctions
 {
-    public class Linearr : RFunction
+    public class Linear : RFunction
     {
         private double _x1, _y1, _x2, _y2;
 
-        public override Linearr FirstDerivative => GetFirstDerivative();
+        public override Linear FirstDerivative => GetFirstDerivative();
         public double X1
         {
             get { return _x1; }
@@ -45,7 +44,7 @@ namespace MathematicalFunctions
             set { _y2 = value; }
         }
 
-        public Linearr(double x1, double y1, double x2, double y2)
+        public Linear(double x1, double y1, double x2, double y2)
         {
             if (x1 >= x2)
                 throw new ArgumentException("Invalid interval");
@@ -56,7 +55,7 @@ namespace MathematicalFunctions
             _y2 = y2;
         }
 
-        public Linearr(Point left, Point right)
+        public Linear(Point left, Point right)
         {
             // à compléter en utilisant Interval class et Point class
         }
@@ -67,10 +66,10 @@ namespace MathematicalFunctions
             return _y1 + t * (_y2 - _y1);
         }
 
-        protected override Linearr GetFirstDerivative()
+        protected override Linear GetFirstDerivative()
         {
             double slope = (_y2 - _y1) / (_x2 - _x1);
-            return new Linearr(_x1, slope, _x2, slope);
+            return new Linear(_x1, slope, _x2, slope);
         }
 
         public override string ToString()
