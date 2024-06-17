@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QuantitativeLibrary.Maths.Functions;
-using static System.Formats.Asn1.AsnWriter;
+﻿using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
@@ -43,12 +37,12 @@ namespace MathematicalFunctions
 
         protected override RFunction GetFirstDerivative()
         {
-            return new FuncMult(new Composite(f.FirstDerivative, g), g.FirstDerivative);
+            return new Composite(f.FirstDerivative, g) * g.FirstDerivative;
         }
 
         public override string ToString()
         {
-            return $"Composite function: f(g(x)), where f = {f.ToString}, g = {g.ToString}";
+            return f.ToString() + "o" + f.ToString();
         }
     }
 }

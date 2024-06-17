@@ -1,6 +1,4 @@
 using MathematicalFunctions;
-using Bootstrapping;
-using System.Xml.XPath;
 
 namespace Tests.MathematicalFunctions
 {

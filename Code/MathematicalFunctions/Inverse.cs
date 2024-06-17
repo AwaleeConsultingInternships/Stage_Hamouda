@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QuantitativeLibrary.Maths.Functions;
+﻿using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
@@ -17,12 +12,12 @@ namespace MathematicalFunctions
 
         protected override RFunction GetFirstDerivative()
         {
-            return new Composite(new FuncMult(new ConstantFunction(-1), new Inverse()), new Square());
+            return -1 / new Square();
         }
 
         public override string ToString()
         {
-            return $"Inverse Function: f(x) = 1/x";
+            return "1/x";
         }
     }
 }

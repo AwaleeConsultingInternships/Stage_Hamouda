@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QuantitativeLibrary.Maths.Functions;
-using static System.Formats.Asn1.AsnWriter;
+﻿using QuantitativeLibrary.Maths.Functions;
 
 namespace MathematicalFunctions
 {
@@ -23,7 +17,7 @@ namespace MathematicalFunctions
 
         public override string ToString()
         {
-            return $"Identity Function: f(x) = x";
+            return "x";
         }
     }
 }

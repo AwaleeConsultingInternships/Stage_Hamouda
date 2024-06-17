@@ -55,7 +55,7 @@ namespace Bootstrapping
             }
             Period lastPeriod = maturities[maturities.Length - 1];
             double lastX = Utilities.Duration(lastPeriod, pricingDate, counter);
-            SwapInt.AddInterval(lastX, swapRates[lastPeriod], Double.PositiveInfinity, swapRates[lastPeriod]);
+            SwapInt.AddInterval(lastX, swapRates[lastPeriod], double.PositiveInfinity, swapRates[lastPeriod]);
 
             var lastMaturity = Utilities.ConvertYearsToMonths(swapRates.Keys.Last());
 
