@@ -12,7 +12,7 @@ namespace Bootstrapping
             var counter = bootstrappedParameters.DayCounter;
             var periodicity = bootstrappedParameters.Periodicity;
 
-            Date datePrevious;
+            Date datePrevious = pricingDate;
             Date date;
 
             RFunction fixedLeg = new AffineFunction(0, 0);
@@ -24,8 +24,7 @@ namespace Bootstrapping
 
             foreach (var period in ZCDict.Keys) 
             {
-                datePrevious = pricingDate.Advance(period);
-                date = datePrevious.Advance(periodicity);
+                date = pricingDate.Advance(period);
                 delta = counter.YearFraction(datePrevious, date);
                 deltaTotal = counter.YearFraction(pricingDate, date);
 
@@ -36,8 +35,11 @@ namespace Bootstrapping
 
                 RR = (RR / P - 1) / delta;
                 floatingLeg = floatingLeg + new AffineFunction(RR * delta * P, 0);
+
+                datePrevious = date;
             }
-            datePrevious = pricingDate.Advance(periodicity);
+
+            //datePrevious = pricingDate.Advance(periodicity);
             date = datePrevious.Advance(periodicity);
             delta = counter.YearFraction(datePrevious, date);
 
@@ -45,6 +47,8 @@ namespace Bootstrapping
 
             RFunction R = 1/delta * (P * new Inverse() -1);
             floatingLeg = floatingLeg + R * new AffineFunction(0, delta);
+
+            //floatingLeg = new ConstantFunction(1) - new AffineFunction(0, 1);
 
             return fixedLeg - floatingLeg;
         }

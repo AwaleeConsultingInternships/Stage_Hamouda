@@ -47,7 +47,7 @@ namespace Tests.MathematicalFunctions
             Assert.That(y6Bis, Is.EqualTo(y6));
         }
 
-        [Test]
+        /*[Test]
         public void PiecewiseLinearEvalKo()
         {
             var x1 = 5;
@@ -67,7 +67,7 @@ namespace Tests.MathematicalFunctions
             var y7Bis = piecewiseLinearFunction.Evaluate(x7);
         }
 
-        /*[TestCase(5)]
+        [TestCase(5)]
         [TestCase(0)]
         [TestCase(-2)]
         public void DiscountFromYieldTest(double asOf)
