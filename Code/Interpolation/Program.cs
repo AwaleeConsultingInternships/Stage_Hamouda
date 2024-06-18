@@ -27,7 +27,8 @@ namespace Interpolation
                 // Store the swaps maturities and rates in a dictionnary
                 var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
 
-                var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters); //Exp: 3M
+                var bootstrapping = new BootstrappingUsingNewton(bootstrappingParameters);
+                var discount = bootstrapping.Curve(swapRates);
             }
             else
             {
