@@ -6,11 +6,11 @@ namespace Bootstrapping
 {
     public class SwapFunc
     {
-        public static RFunction SwapValue(Dictionary<Period, double> ZCDict, double swapRate, BootstrappingParameters bootstrappedParameters)
+        public static RFunction SwapValue(Dictionary<Period, double> ZCDict, double swapRate, Parameters parameters)
         {
-            var pricingDate = bootstrappedParameters.PricingDate;
-            var counter = bootstrappedParameters.DayCounter;
-            var periodicity = bootstrappedParameters.Periodicity;
+            var pricingDate = parameters.PricingDate;
+            var counter = parameters.DayCounter;
+            var periodicity = parameters.Periodicity;
 
             Date datePrevious = pricingDate;
             Date date;

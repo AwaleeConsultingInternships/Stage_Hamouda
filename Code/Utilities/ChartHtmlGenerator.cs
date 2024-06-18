@@ -1,8 +1,5 @@
 ﻿using MathematicalTools;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
 using System.Text;
 
 public class ChartHtmlGenerator

@@ -15,7 +15,10 @@ namespace Interpolation
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(3, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
-            var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner);
+            var newtonSolverParameters = new NewtonSolverParameters();
+            var interpolationChoice = InterpolationChoice.UsingDirecSolving;
+            var bootstrappingParameters = new Parameters(pricingDate, period,
+                dayCouner, newtonSolverParameters, interpolationChoice);
 
             if (File.Exists(filePath))
             {
@@ -27,8 +30,8 @@ namespace Interpolation
                 // Store the swaps maturities and rates in a dictionnary
                 var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
 
-                var bootstrapping = new BootstrappingUsingNewton(bootstrappingParameters);
-                var discount = bootstrapping.Curve(swapRates);
+                var algorithm = new Algorithm(bootstrappingParameters);
+                var discount = algorithm.Curve(swapRates);
             }
             else
             {

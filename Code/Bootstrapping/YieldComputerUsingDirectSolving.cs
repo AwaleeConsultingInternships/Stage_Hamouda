@@ -2,22 +2,25 @@
 
 namespace Bootstrapping
 {
-    public class BootstrappingUsingDirectSolving : BootstrappingAlgorithm
+    public class YieldComputerUsingDirectSolving : IYieldComputer
     {
-        public BootstrappingUsingDirectSolving(BootstrappingParameters bootstrappedParameters)
-            : base(bootstrappedParameters)
+        public Parameters _parameters;
+        public Parameters Parameters
         {
+            get { return _parameters; }
+            set { _parameters = value; }
         }
 
-        public override List<double> ComputeYieldsAtMaturities(Period lastMaturity, Dictionary<Period, double> interpolatedSwapRates)
+        public YieldComputerUsingDirectSolving(Parameters parameters)
         {
-            var pricingDate = _bootstrappedParameters.PricingDate;
-            var counter = _bootstrappedParameters.DayCounter;
-            var periodicity = _bootstrappedParameters.Periodicity;
-            var solveRoot = _bootstrappedParameters.SolveRoot;
-            var target = _bootstrappedParameters.Target;
-            var firstGuess = _bootstrappedParameters.FirstGuess;
-            var tolerance = _bootstrappedParameters.Tolerance;
+            _parameters = parameters;
+        }
+
+        public List<double> Compute(Period lastMaturity, Dictionary<Period, double> interpolatedSwapRates)
+        {
+            var pricingDate = _parameters.PricingDate;
+            var counter = _parameters.DayCounter;
+            var periodicity = _parameters.Periodicity;
 
             List<double> yields = new List<double>();
             List<double> ZC = new List<double>();

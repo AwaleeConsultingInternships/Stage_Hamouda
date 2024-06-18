@@ -4,7 +4,7 @@ using QuantitativeLibrary.Maths.Functions;
 
 namespace Bootstrapping
 {
-    public class Discount : RFunction, IDiscountCurve
+    public class Discount : RFunction, IDiscount
     {
         private RFunction _yieldF;
         public RFunction YieldF

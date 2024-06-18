@@ -3,32 +3,50 @@ using QuantitativeLibrary.Time;
 
 namespace Bootstrapping
 {
-    public abstract class BootstrappingAlgorithm
+    public enum InterpolationChoice
     {
-        public BootstrappingParameters _bootstrappedParameters;
-        public BootstrappingParameters BootstrappedParameters
+        UsingDirecSolving,
+        UsingNewtonSolver
+    }
+
+    public class Algorithm
+    {
+        public Parameters _parameters;
+        public Parameters Parameters
         {
-            get { return _bootstrappedParameters; }
-            set { _bootstrappedParameters = value; }
+            get { return _parameters; }
+            set { _parameters = value; }
         }
 
-        public BootstrappingAlgorithm(BootstrappingParameters bootstrappedParameters)
+        public Algorithm(Parameters parameters)
         {
-            _bootstrappedParameters = bootstrappedParameters;
+            _parameters = parameters;
         }
+
+        public IYieldComputer GetYieldComputer()
+        {
+            switch (_parameters.InterpolationChoice)
+            {
+                case InterpolationChoice.UsingDirecSolving:
+                    return new YieldComputerUsingDirectSolving(_parameters);
+
+                case InterpolationChoice.UsingNewtonSolver:
+                    return new YieldComputerUsingNewtonSolver(_parameters);
+                default:
+                    throw new ArgumentException("Unknown interpolation choice");
+            }
+        }
+
 
         public Discount Curve(Dictionary<Period, double> swapRates)
         {
-            var pricingDate = _bootstrappedParameters.PricingDate;
-            var counter = _bootstrappedParameters.DayCounter;
-            var periodicity = _bootstrappedParameters.Periodicity;
-
             // Interpoalte the missing values for the swap rates
             var interpolatedSwapRates = InterpolateSwapRates(swapRates);
 
             // Compute and store the ZC prices and yield curve values for the given maturities
             var lastMaturity = Utilities.ConvertYearsToMonths(swapRates.Keys.Last());
-            var yields = ComputeYieldsAtMaturities(lastMaturity, interpolatedSwapRates);
+            var yieldComputer = GetYieldComputer();
+            var yields = yieldComputer.Compute(lastMaturity, interpolatedSwapRates);
 
             // Define the function: t -> y(0, t)
             var YieldF = ComputeYields(yields);
@@ -36,13 +54,12 @@ namespace Bootstrapping
             return new Discount(YieldF);
         }
 
-        public abstract List<double> ComputeYieldsAtMaturities(Period lastMaturity, Dictionary<Period, double> interpolatedSwapRates);
 
         private Dictionary<Period, double> InterpolateSwapRates(Dictionary<Period, double> swapRates)
         {
-            var pricingDate = _bootstrappedParameters.PricingDate;
-            var counter = _bootstrappedParameters.DayCounter;
-            var periodicity = _bootstrappedParameters.Periodicity;
+            var pricingDate = _parameters.PricingDate;
+            var counter = _parameters.DayCounter;
+            var periodicity = _parameters.Periodicity;
 
             PiecewiseLinear SwapInt = new PiecewiseLinear();
 
@@ -69,14 +86,14 @@ namespace Bootstrapping
             double lastX = Utilities.Duration(lastPeriod, pricingDate, counter);
             SwapInt.AddInterval(lastX, swapRates[lastPeriod], double.PositiveInfinity, swapRates[lastPeriod]);
 
-            return Utilities.InterpolateSwapRate(SwapInt, swapRates, _bootstrappedParameters);
+            return Utilities.InterpolateSwapRate(SwapInt, swapRates, _parameters);
         }
 
         private PiecewiseLinear ComputeYields(List<double> yields)
         {
-            var pricingDate = _bootstrappedParameters.PricingDate;
-            var counter = _bootstrappedParameters.DayCounter;
-            var periodicity = _bootstrappedParameters.Periodicity;
+            var pricingDate = _parameters.PricingDate;
+            var counter = _parameters.DayCounter;
+            var periodicity = _parameters.Periodicity;
 
             PiecewiseLinear YieldF = new PiecewiseLinear();
 
