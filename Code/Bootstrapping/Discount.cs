@@ -1,5 +1,4 @@
-﻿using MathematicalFunctions;
-using QuantitativeLibrary.Time;
+﻿using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
 using QuantitativeLibrary.Maths.Functions;
 

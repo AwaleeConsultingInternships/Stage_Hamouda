@@ -20,6 +20,7 @@ namespace Tests.Newton
             var xBar = -7.0 / 3;
             Assert.That(xStar, Is.EqualTo(xBar).Within(1e-6));
         }
+
         [Test]
         public void Quadratic()
         {

@@ -26,7 +26,8 @@ namespace Tests.Interpolation
 
             var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
 
-            var discount = BootstrappingClass.Curve(swapRates, bootstrappingParameters);
+            var bootstrapping = new BootstrappingUsingNewton(bootstrappingParameters);
+            var discount = bootstrapping.Curve(swapRates);
 
             var nbYears = 40;
             var shift = 21;
