@@ -4,22 +4,30 @@ using QuantitativeLibrary.Time;
 
 namespace Bootstrapping
 {
-    public class BootstrappingUsingNewton : BootstrappingAlgorithm
+    public class YieldComputerUsingNewtonSolver : IYieldComputer
     {
-        public BootstrappingUsingNewton(BootstrappingParameters bootstrappedParameters)
-            : base(bootstrappedParameters)
+        public Parameters _parameters;
+        public Parameters Parameters
         {
+            get { return _parameters; }
+            set { _parameters = value; }
         }
 
-        public override List<double> ComputeYieldsAtMaturities(Period lastMaturity, Dictionary<Period, double> interpolatedSwapRates)
+        public YieldComputerUsingNewtonSolver(Parameters parameters)
         {
-            var pricingDate = _bootstrappedParameters.PricingDate;
-            var counter = _bootstrappedParameters.DayCounter;
-            var periodicity = _bootstrappedParameters.Periodicity;
-            var solveRoot = _bootstrappedParameters.SolveRoot;
-            var target = _bootstrappedParameters.Target;
-            var firstGuess = _bootstrappedParameters.FirstGuess;
-            var tolerance = _bootstrappedParameters.Tolerance;
+            _parameters = parameters;
+        }
+
+        public List<double> Compute(Period lastMaturity, Dictionary<Period, double> interpolatedSwapRates)
+        {
+            var pricingDate = _parameters.PricingDate;
+            var counter = _parameters.DayCounter;
+            var periodicity = _parameters.Periodicity;
+            var newtonSolverParameters = _parameters.NewtonSolverParameters;
+            var solveRoot = newtonSolverParameters.SolveRoot;
+            var target = newtonSolverParameters.Target;
+            var firstGuess = newtonSolverParameters.FirstGuess;
+            var tolerance = newtonSolverParameters.Tolerance;
 
             List<double> yields = new List<double>();
             List<double> ZC = new List<double>();
@@ -54,7 +62,7 @@ namespace Bootstrapping
                 f = counter.YearFraction(datePrevious, date);
 
                 Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
-                swapFunc = SwapFunc.SwapValue(ZCDict, interpolatedSwapRates[fi], _bootstrappedParameters);
+                swapFunc = SwapFunc.SwapValue(ZCDict, interpolatedSwapRates[fi], _parameters);
                 solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                 result = solver.Solve();
                 P = result.Solution;

@@ -8,13 +8,13 @@ namespace Tests.Interpolation
 {
     public class Repricing
     {
-        [TestCase(3, false)]
-        [TestCase(3, true)]
-        [TestCase(6, false)]
-        [TestCase(6, true)]
-        [TestCase(12, false)]
-        [TestCase(12, true)]
-        public void Eval(int testP, bool root)
+        [TestCase(3, InterpolationChoice.UsingDirecSolving)]
+        [TestCase(3, InterpolationChoice.UsingNewtonSolver)]
+        [TestCase(6, InterpolationChoice.UsingDirecSolving)]
+        [TestCase(6, InterpolationChoice.UsingNewtonSolver)]
+        [TestCase(12, InterpolationChoice.UsingDirecSolving)]
+        [TestCase(12, InterpolationChoice.UsingNewtonSolver)]
+        public void Eval(int testP, InterpolationChoice interpolationChoice)
         {
             //var pricingDate = new Date(01, 05, 2024);
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -28,12 +28,13 @@ namespace Tests.Interpolation
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(testP, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
-            var bootstrappingParameters = new BootstrappingParameters(pricingDate, period, dayCouner, root);
+            var newtonSolverParameters = new NewtonSolverParameters();
+            var bootstrappingParameters = new Parameters(pricingDate, period,
+                dayCouner, newtonSolverParameters, interpolationChoice);
 
-            BootstrappingAlgorithm bootstrapping = root
-                ? new BootstrappingUsingNewton(bootstrappingParameters)
-                : new BootstrappingUsingDirectSolving(bootstrappingParameters);
-            var discount = bootstrapping.Curve(swapRates);
+            Algorithm algorithm = new Algorithm(bootstrappingParameters);
+
+            var discount = algorithm.Curve(swapRates);
 
             foreach(var swap in swapRates)
             {

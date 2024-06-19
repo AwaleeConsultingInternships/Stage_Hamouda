@@ -1,6 +1,5 @@
 ﻿using MathematicalFunctions;
 using QuantitativeLibrary.Time;
-using System.Diagnostics.Metrics;
 using static QuantitativeLibrary.Time.Time;
 
 namespace Bootstrapping
@@ -54,7 +53,7 @@ namespace Bootstrapping
         }
 
         public static Dictionary<Period, double> InterpolateSwapRate(PiecewiseLinear SwapInt,
-            Dictionary<Period, double> swapRates, BootstrappingParameters bootstrappingParameters)
+            Dictionary<Period, double> swapRates, Parameters bootstrappingParameters)
         {
             var pricingDate = bootstrappingParameters.PricingDate;
             var periodicity = bootstrappingParameters.Periodicity;

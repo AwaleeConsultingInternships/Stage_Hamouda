@@ -1,11 +1,10 @@
 ﻿using QuantitativeLibrary.Time;
-using System.Diagnostics.Metrics;
 
 namespace Bootstrapping
 {
     public static class SwapPricer 
     {
-        public static double Pricer(Period maturity, Discount discount, BootstrappingParameters bootstrappingParameters)
+        public static double Pricer(Period maturity, Discount discount, Parameters bootstrappingParameters)
         {
             double denum = 0;
             var f = bootstrappingParameters.Periodicity.NbUnit;
