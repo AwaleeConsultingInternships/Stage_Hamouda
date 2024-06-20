@@ -49,17 +49,26 @@ namespace Bootstrapping
 
             Dictionary<Period, RFunction> ZCDict = new Dictionary<Period, RFunction>();
 
-            // Assuming that periodicity <= First Maturity in swapRates
-            var f = Utilities.Duration(periodicity, pricingDate, counter);
-            double delta_total = f;
-            var firstSwap = swapRates[periodicity];
-            RFunction swapFunc = new AffineFunction(1, -1 - firstSwap * f);
+            double xx3 = swapRates.First().Key.NbUnit;
+            for (var freq = periodicity.NbUnit; freq < xx3; freq += periodicity.NbUnit)
+            {
+                var slope = freq / xx3;
+                var origin = (xx3 - freq) / xx3;
+                var PFunction = new AffineFunction(origin, slope);
+                ZCDict.Add(new Period(freq, periodicity.Unit), PFunction);
+            } 
 
+            RFunction swapFunc = SwapFunc.SwapValue(ZCDict, swapRates.First().Value, _parameters);
             NewtonSolver solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
             NewtonResult result = solver.Solve();
             P = result.Solution;
+            ZCDict.Add(swapRates.First().Key, new ConstantFunction(P));
+            for (int freq = periodicity.NbUnit; freq < xx3; freq += periodicity.NbUnit)
+            {
+                var interP = new Period(freq, periodicity.Unit);
+                ZCDict[interP] = new ConstantFunction(ZCDict[interP].Evaluate(P));
+            }
 
-            ZCDict.Add(periodicity, new ConstantFunction(P));
 
             var swapLeft = swapRates.First();
             foreach (var swapRate in swapRates.Skip(1))
@@ -93,7 +102,7 @@ namespace Bootstrapping
             {
                 P = ZCfinal.Value.Evaluate(1);
                 ZC.Add(P);
-                delta_total = Utilities.Duration(ZCfinal.Key, pricingDate, counter);
+                var delta_total = Utilities.Duration(ZCfinal.Key, pricingDate, counter);
                 y = -Math.Log(P) / delta_total;
                 yields.Add(y);
             }
