@@ -1,0 +1,11 @@
+Voici le résumé de notre point :
+	-	Consultation de l’avancement de code et des étapes fixés lors du dernier point
+	-	Discussion sur l’approche adoptée pour calculer les ZC avec des swaps manquants
+	-	Discussion sur le planning pour le futur (pricing par futures, problème de convexité, calibration SABR)
+
+A faire pour le prochain point (à priori jeudi) :
+	-	Continuer l’implémentation de la nouvelle approche de calcul des ZC 
+
+D’autres trucs à faire :
+	-	Récupérer BootstrappingParameters d’un fichier JSON
+	-	Ajouter un sanity check pour les intervalles de Piecewise Function

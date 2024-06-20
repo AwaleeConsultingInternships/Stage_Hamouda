@@ -1,0 +1,13 @@
+Voici le résumé de notre point :
+	-	Discussion des changements apportés au code et l’ajout de la nouvelle approche
+	-	Observation et débogage des calculs faits dans la nouvelle approche
+	-	Discussion sur les hypothèses prises dans l’implémentation (périodicité < première maturité, swapRates ordonnées, …)
+
+A faire pour le prochain point (à priori mardi à midi) :
+	-	Ajouter un enum pour le choix d’interpolation pour les taux swaps
+	-	Résoudre le problème de calcul de ZC entre 0 et 1 an
+	-	Ajouter l’approche de calcul avec la résolution de Newton sur les yields
+	-	Eliminer l’argument LastMaturity dans Compute
+	-	Essayer de travailler avec des dates et pas de périodes
+	-	Simplification des expressions des fonctions (pour bien l’afficher)
+	-	Ajouter un fichier plotting pour les valeurs du yield
