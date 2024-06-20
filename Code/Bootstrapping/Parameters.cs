@@ -39,21 +39,30 @@ namespace Bootstrapping
             set { _interpolationChoice = value; }
         }
 
+        private DataChoice _dataChoice;
+        public DataChoice DataChoice
+        {
+            get { return _dataChoice; }
+            set { _dataChoice = value; }
+        }
+
         public Parameters(Date pricingDate, Period periodicity, DayCounter dayCounter,
-            NewtonSolverParameters newtonSolverParameters, InterpolationChoice interpolationChoice)
+            NewtonSolverParameters newtonSolverParameters, InterpolationChoice interpolationChoice, DataChoice dataChoice)
         {
             _pricingDate = pricingDate;
             _periodicity = periodicity;
             _dayCounter = dayCounter;
             _newtonSolverParameters = newtonSolverParameters;
             _interpolationChoice = interpolationChoice;
+            _dataChoice = dataChoice;
         }
 
         public override string ToString()
         {
             return string.Format("Pricing date = {0}, Periodicity = {1}, Day counter = {2}," +
-                " NewtonSolver parameters = " + _newtonSolverParameters.ToString() + ", Interpolation choice = {3}",
-                _pricingDate, _periodicity, _dayCounter, _interpolationChoice);
+                " NewtonSolver parameters = " + _newtonSolverParameters.ToString() + ", Interpolation choice = {3}" 
+                + ", Data choice = {4}",
+                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _dataChoice);
         }
     }
 }

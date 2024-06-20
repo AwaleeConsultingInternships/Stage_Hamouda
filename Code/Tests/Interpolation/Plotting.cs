@@ -20,12 +20,13 @@ namespace Tests.Interpolation
             RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
-            var period = new Period(3, Unit.Months);
+            var period = new Period(12, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
-            var interpolationChoice = InterpolationChoice.UsingDirecSolving;
+            var interpolationChoice = InterpolationChoice.UsingRawData;
+            var dataChoice = DataChoice.RawData;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice);
 
             var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
 

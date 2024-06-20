@@ -16,9 +16,10 @@ namespace Interpolation
             var period = new Period(3, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
-            var interpolationChoice = InterpolationChoice.UsingDirecSolving;
+            var interpolationChoice = InterpolationChoice.UsingDirectSolving;
+            var dataChoice = DataChoice.InterpolatedData;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice);
 
             if (File.Exists(filePath))
             {

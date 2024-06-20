@@ -35,7 +35,7 @@ namespace Bootstrapping
             double P;
             double y;
 
-            Dictionary<Period, double> ZCDict = new Dictionary<Period, double>();
+            Dictionary<Period, RFunction> ZCDict = new Dictionary<Period, RFunction>();
 
             var f = Utilities.Duration(periodicity, pricingDate, counter);
             double delta_total = f;
@@ -49,7 +49,7 @@ namespace Bootstrapping
             ZC.Add(P);
             yields.Add(y);
 
-            ZCDict.Add(periodicity, P);
+            ZCDict.Add(periodicity, new ConstantFunction(P));
 
             var datePrevious = pricingDate;
             var date = pricingDate.Advance(periodicity);
@@ -72,7 +72,7 @@ namespace Bootstrapping
 
                 ZC.Add(P);
                 yields.Add(y);
-                ZCDict.Add(fi, P);
+                ZCDict.Add(fi, new ConstantFunction(P));
 
                 j++;
             }

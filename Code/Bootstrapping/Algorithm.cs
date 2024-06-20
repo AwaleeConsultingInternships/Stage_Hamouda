@@ -5,8 +5,15 @@ namespace Bootstrapping
 {
     public enum InterpolationChoice
     {
-        UsingDirecSolving,
-        UsingNewtonSolver
+        UsingDirectSolving,
+        UsingNewtonSolver,
+        UsingRawData
+    }
+
+    public enum DataChoice
+    {
+        RawData,
+        InterpolatedData
     }
 
     public class Algorithm
@@ -27,11 +34,15 @@ namespace Bootstrapping
         {
             switch (_parameters.InterpolationChoice)
             {
-                case InterpolationChoice.UsingDirecSolving:
+                case InterpolationChoice.UsingDirectSolving:
                     return new YieldComputerUsingDirectSolving(_parameters);
 
                 case InterpolationChoice.UsingNewtonSolver:
                     return new YieldComputerUsingNewtonSolver(_parameters);
+
+                case InterpolationChoice.UsingRawData:
+                    return new YieldComputerUsingRawData(_parameters);
+
                 default:
                     throw new ArgumentException("Unknown interpolation choice");
             }
@@ -41,7 +52,20 @@ namespace Bootstrapping
         public Discount Curve(Dictionary<Period, double> swapRates)
         {
             // Interpoalte the missing values for the swap rates
-            var interpolatedSwapRates = InterpolateSwapRates(swapRates);
+            Dictionary<Period, double> interpolatedSwapRates;
+            switch (_parameters.DataChoice)
+            {
+                case DataChoice.InterpolatedData:
+                    interpolatedSwapRates = InterpolateSwapRates(swapRates);
+                    break;
+                case DataChoice.RawData:
+                    interpolatedSwapRates = swapRates;
+                    break;
+                default:
+                    throw new ArgumentException("Unknown data format choice");
+            }
+            //var interpolatedSwapRates = InterpolateSwapRates(swapRates);
+            //var interpolatedSwapRates = swapRates;
 
             // Compute and store the ZC prices and yield curve values for the given maturities
             var lastMaturity = Utilities.ConvertYearsToMonths(swapRates.Keys.Last());

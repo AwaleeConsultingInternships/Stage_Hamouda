@@ -6,7 +6,7 @@ namespace Bootstrapping
 {
     public class SwapFunc
     {
-        public static RFunction SwapValue(Dictionary<Period, double> ZCDict, double swapRate, Parameters parameters)
+        public static RFunction SwapValue(Dictionary<Period, RFunction> ZCDict, double swapRate, Parameters parameters)
         {
             var pricingDate = parameters.PricingDate;
             var counter = parameters.DayCounter;
@@ -20,7 +20,7 @@ namespace Bootstrapping
 
             double delta;
             double deltaTotal;
-            double P = 1;
+            RFunction P = new ConstantFunction(1);
 
             foreach (var period in ZCDict.Keys) 
             {
@@ -31,10 +31,10 @@ namespace Bootstrapping
                 var RR = P;
 
                 P = ZCDict[period];
-                fixedLeg = fixedLeg + new AffineFunction(swapRate * delta * P, 0);
+                fixedLeg = fixedLeg + swapRate * delta * P;
 
                 RR = (RR / P - 1) / delta;
-                floatingLeg = floatingLeg + new AffineFunction(RR * delta * P, 0);
+                floatingLeg = floatingLeg + delta * RR * P;
 
                 datePrevious = date;
             }

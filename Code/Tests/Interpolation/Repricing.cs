@@ -8,13 +8,14 @@ namespace Tests.Interpolation
 {
     public class Repricing
     {
-        [TestCase(3, InterpolationChoice.UsingDirecSolving)]
-        [TestCase(3, InterpolationChoice.UsingNewtonSolver)]
-        [TestCase(6, InterpolationChoice.UsingDirecSolving)]
-        [TestCase(6, InterpolationChoice.UsingNewtonSolver)]
-        [TestCase(12, InterpolationChoice.UsingDirecSolving)]
-        [TestCase(12, InterpolationChoice.UsingNewtonSolver)]
-        public void Eval(int testP, InterpolationChoice interpolationChoice)
+        [TestCase(12, InterpolationChoice.UsingRawData, DataChoice.RawData)]
+        [TestCase(3, InterpolationChoice.UsingDirectSolving, DataChoice.InterpolatedData)]
+        [TestCase(3, InterpolationChoice.UsingNewtonSolver, DataChoice.InterpolatedData)]
+        [TestCase(6, InterpolationChoice.UsingDirectSolving, DataChoice.InterpolatedData)]
+        [TestCase(6, InterpolationChoice.UsingNewtonSolver, DataChoice.InterpolatedData)]
+        [TestCase(12, InterpolationChoice.UsingDirectSolving, DataChoice.InterpolatedData)]
+        [TestCase(12, InterpolationChoice.UsingNewtonSolver, DataChoice.InterpolatedData)]
+        public void Eval(int testP, InterpolationChoice interpolationChoice, DataChoice dataChoice)
         {
             //var pricingDate = new Date(01, 05, 2024);
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -30,13 +31,13 @@ namespace Tests.Interpolation
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice);
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 
             var discount = algorithm.Curve(swapRates);
 
-            foreach(var swap in swapRates)
+            foreach (var swap in swapRates)
             {
                 var maturity = swap.Key;
                 var price = SwapPricer.Pricer(maturity, discount, bootstrappingParameters);
