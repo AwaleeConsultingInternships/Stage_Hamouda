@@ -49,53 +49,34 @@ namespace Bootstrapping
 
             Dictionary<Period, RFunction> ZCDict = new Dictionary<Period, RFunction>();
 
-            double xx3 = swapRates.First().Key.NbUnit;
-            for (var freq = periodicity.NbUnit; freq < xx3; freq += periodicity.NbUnit)
-            {
-                var slope = freq / xx3;
-                var origin = (xx3 - freq) / xx3;
-                var PFunction = new AffineFunction(origin, slope);
-                ZCDict.Add(new Period(freq, periodicity.Unit), PFunction);
-            } 
-
-            RFunction swapFunc = SwapFunc.SwapValue(ZCDict, swapRates.First().Value, _parameters);
-            NewtonSolver solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
-            NewtonResult result = solver.Solve();
-            P = result.Solution;
-            ZCDict.Add(swapRates.First().Key, new ConstantFunction(P));
-            for (int freq = periodicity.NbUnit; freq < xx3; freq += periodicity.NbUnit)
-            {
-                var interP = new Period(freq, periodicity.Unit);
-                ZCDict[interP] = new ConstantFunction(ZCDict[interP].Evaluate(P));
-            }
-
-
             var swapLeft = swapRates.First();
-            foreach (var swapRate in swapRates.Skip(1))
+            int x1 = 0;
+            double y1 = 1;
+            foreach (var swapRate in swapRates)
             {
                 var swapRight = swapRate;
-                for (int freq = swapLeft.Key.NbUnit + periodicity.NbUnit;  freq < swapRight.Key.NbUnit; freq += periodicity.NbUnit)
+                var x3 = swapRight.Key.NbUnit;
+                for (int freq = x1 + periodicity.NbUnit;  freq < x3; freq += periodicity.NbUnit)
                 {
-                    var x1 = swapLeft.Key.NbUnit;
                     var x2 = freq;
-                    var x3 = swapRight.Key.NbUnit;
-                    var y1 = ZCDict[swapLeft.Key].Evaluate(1);
                     var slope = (double)(x2 - x1) / (x3 - x1);
                     var origin = y1 * (x3 - x2) / (x3 - x1);
                     var PFunction = new AffineFunction(origin, slope);
                     ZCDict.Add(new Period(freq, periodicity.Unit), PFunction);
                 }
-                swapFunc = SwapFunc.SwapValue(ZCDict, swapRight.Value, _parameters);
-                solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
-                result = solver.Solve();
+                var swapFunc = SwapFunc.SwapValue(ZCDict, swapRight.Value, _parameters);
+                var solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
+                var result = solver.Solve();
                 P = result.Solution;
                 ZCDict.Add(swapRight.Key, new ConstantFunction(P));
-                for (int freq = swapLeft.Key.NbUnit + periodicity.NbUnit; freq < swapRight.Key.NbUnit; freq += periodicity.NbUnit)
+                for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
                 {
                     var interP = new Period(freq, periodicity.Unit);
                     ZCDict[interP] = new ConstantFunction(ZCDict[interP].Evaluate(P));
                 }
                 swapLeft = swapRight;
+                x1 = x3;
+                y1 = ZCDict[swapLeft.Key].Evaluate(1);
             }
             
             foreach (var ZCfinal in ZCDict)
