@@ -32,11 +32,13 @@ namespace Bootstrapping
         }
 
 
-        public static Period ConvertYearsToMonths(Period period)
+        public static Period ConvertPeriodToMonths(Period period)
         {
             if (period.Unit == Unit.Years)
                 return new Period(12 * period.NbUnit, Unit.Months);
-            throw new ArgumentException("Supports only period like xY.");
+            if (period.Unit == Unit.Months)
+                return period;
+            throw new ArgumentException("Supports only period like xY or xM.");
         }
 
         public static Dictionary<Period, double> GetSwapRates(Swap[] swaps)
@@ -61,7 +63,7 @@ namespace Bootstrapping
 
             var maturities = swapRates.Keys.ToArray();
 
-            var lastMaturity = ConvertYearsToMonths(swapRates.Keys.Last());
+            var lastMaturity = ConvertPeriodToMonths(swapRates.Keys.Last());
             var j = 1;
             var f = periodicity.NbUnit;
 

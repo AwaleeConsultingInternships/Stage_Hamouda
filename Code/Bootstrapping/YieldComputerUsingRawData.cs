@@ -1,11 +1,6 @@
 ﻿using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bootstrapping
 {
@@ -23,12 +18,12 @@ namespace Bootstrapping
             _parameters = parameters;
         }
 
-        public List<double> Compute(Period lastMaturity, Dictionary<Period, double> swapRates)
+        public List<double> Compute(Dictionary<Period, double> swapRates)
         {
             var newSwapRates = new Dictionary<Period, double>();
             foreach (var pair in swapRates)
             {
-                newSwapRates.Add(Utilities.ConvertYearsToMonths(pair.Key), pair.Value);
+                newSwapRates.Add(Utilities.ConvertPeriodToMonths(pair.Key), pair.Value);
             }
             swapRates = newSwapRates;
             
@@ -68,11 +63,11 @@ namespace Bootstrapping
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                 var result = solver.Solve();
                 P = result.Solution;
-                ZCDict.Add(swapRight.Key, new ConstantFunction(P));
+                ZCDict.Add(swapRight.Key, P);
                 for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
                 {
                     var interP = new Period(freq, periodicity.Unit);
-                    ZCDict[interP] = new ConstantFunction(ZCDict[interP].Evaluate(P));
+                    ZCDict[interP] = ZCDict[interP].Evaluate(P);
                 }
                 swapLeft = swapRight;
                 x1 = x3;
