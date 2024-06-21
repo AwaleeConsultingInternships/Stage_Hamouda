@@ -37,7 +37,7 @@ namespace Tests.Interpolation
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 
-            var discount = algorithm.Curve(swapRates);
+            var discount = algorithm.Curve(swapRates); 
 
             foreach (var swap in swapRates)
             {

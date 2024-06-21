@@ -30,7 +30,7 @@ namespace Bootstrapping
             _parameters = parameters;
         }
 
-        public IYieldComputer GetYieldComputer()
+        private IYieldComputer GetYieldComputer()
         {
             switch (_parameters.InterpolationChoice)
             {
@@ -48,36 +48,33 @@ namespace Bootstrapping
             }
         }
 
-
-        public Discount Curve(Dictionary<Period, double> swapRates)
+        private Dictionary<Period, double> GetSwapRates(Dictionary<Period, double> swapRates)
         {
-            // Interpoalte the missing values for the swap rates
-            Dictionary<Period, double> interpolatedSwapRates;
             switch (_parameters.DataChoice)
             {
                 case DataChoice.InterpolatedData:
-                    interpolatedSwapRates = InterpolateSwapRates(swapRates);
-                    break;
+                    return InterpolateSwapRates(swapRates);
                 case DataChoice.RawData:
-                    interpolatedSwapRates = swapRates;
-                    break;
+                    return swapRates;
                 default:
                     throw new ArgumentException("Unknown data format choice");
             }
-            //var interpolatedSwapRates = InterpolateSwapRates(swapRates);
-            //var interpolatedSwapRates = swapRates;
+        }
+
+        public Discount Curve(Dictionary<Period, double> swapRates)
+        {
+            // Get the swap rates
+            var newSwapRates = GetSwapRates(swapRates);
 
             // Compute and store the ZC prices and yield curve values for the given maturities
-            var lastMaturity = Utilities.ConvertYearsToMonths(swapRates.Keys.Last());
             var yieldComputer = GetYieldComputer();
-            var yields = yieldComputer.Compute(lastMaturity, interpolatedSwapRates);
+            var yields = yieldComputer.Compute(newSwapRates);
 
             // Define the function: t -> y(0, t)
             var YieldF = ComputeYields(yields);
 
             return new Discount(YieldF);
         }
-
 
         private Dictionary<Period, double> InterpolateSwapRates(Dictionary<Period, double> swapRates)
         {

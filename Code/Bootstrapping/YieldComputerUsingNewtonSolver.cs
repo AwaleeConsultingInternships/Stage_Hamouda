@@ -18,7 +18,7 @@ namespace Bootstrapping
             _parameters = parameters;
         }
 
-        public List<double> Compute(Period lastMaturity, Dictionary<Period, double> interpolatedSwapRates)
+        public List<double> Compute(Dictionary<Period, double> interpolatedSwapRates)
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
@@ -49,11 +49,12 @@ namespace Bootstrapping
             ZC.Add(P);
             yields.Add(y);
 
-            ZCDict.Add(periodicity, new ConstantFunction(P));
+            ZCDict.Add(periodicity, P);
 
             var datePrevious = pricingDate;
             var date = pricingDate.Advance(periodicity);
 
+            var lastMaturity = Utilities.ConvertPeriodToMonths(interpolatedSwapRates.Keys.Last());
             var j = 2;
             while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
             {
@@ -72,7 +73,7 @@ namespace Bootstrapping
 
                 ZC.Add(P);
                 yields.Add(y);
-                ZCDict.Add(fi, new ConstantFunction(P));
+                ZCDict.Add(fi, P);
 
                 j++;
             }

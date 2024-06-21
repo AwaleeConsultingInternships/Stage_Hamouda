@@ -8,7 +8,7 @@ namespace Bootstrapping
         {
             double denum = 0;
             var f = bootstrappingParameters.Periodicity.NbUnit;
-            var m = Utilities.ConvertYearsToMonths(maturity).NbUnit;
+            var m = Utilities.ConvertPeriodToMonths(maturity).NbUnit;
             var pricingDate = bootstrappingParameters.PricingDate;
 
             var datePrevious = pricingDate;
