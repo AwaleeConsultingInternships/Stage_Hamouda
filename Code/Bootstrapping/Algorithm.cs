@@ -7,7 +7,8 @@ namespace Bootstrapping
     {
         UsingDirectSolving,
         UsingNewtonSolver,
-        UsingRawData
+        UsingRawData,
+        UsingNewtonSolverOnYield
     }
 
     public enum DataChoice
@@ -42,6 +43,9 @@ namespace Bootstrapping
 
                 case InterpolationChoice.UsingRawData:
                     return new YieldComputerUsingRawData(_parameters);
+
+                case InterpolationChoice.UsingNewtonSolverOnYield:
+                    return new YieldComputerUsingNewtonSolverOnYield(_parameters);
 
                 default:
                     throw new ArgumentException("Unknown interpolation choice");

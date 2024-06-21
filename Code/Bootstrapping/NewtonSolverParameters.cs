@@ -31,7 +31,7 @@
         }
 
         public NewtonSolverParameters(bool solveRoot = false, double target = 0,
-            double firstGuess = 1, double tolerance = 1e-10)
+            double firstGuess = 0.03, double tolerance = 1e-10)
         {
             _solveRoot = solveRoot;
             _target = target;

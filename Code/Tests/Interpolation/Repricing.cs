@@ -7,16 +7,21 @@ using static QuantitativeLibrary.Time.Time;
 namespace Tests.Interpolation
 {
     public class Repricing
-    {
+    {   
         [TestCase(3, InterpolationChoice.UsingDirectSolving, DataChoice.InterpolatedData)]
         [TestCase(3, InterpolationChoice.UsingNewtonSolver, DataChoice.InterpolatedData)]
         [TestCase(3, InterpolationChoice.UsingRawData, DataChoice.RawData)]
+        [TestCase(3, InterpolationChoice.UsingNewtonSolverOnYield, DataChoice.InterpolatedData)]
+
         [TestCase(6, InterpolationChoice.UsingDirectSolving, DataChoice.InterpolatedData)]
         [TestCase(6, InterpolationChoice.UsingNewtonSolver, DataChoice.InterpolatedData)]
         [TestCase(6, InterpolationChoice.UsingRawData, DataChoice.RawData)]
+        [TestCase(6, InterpolationChoice.UsingNewtonSolverOnYield, DataChoice.InterpolatedData)]
+
         [TestCase(12, InterpolationChoice.UsingDirectSolving, DataChoice.InterpolatedData)]
         [TestCase(12, InterpolationChoice.UsingNewtonSolver, DataChoice.InterpolatedData)]
         [TestCase(12, InterpolationChoice.UsingRawData, DataChoice.RawData)]
+        [TestCase(12, InterpolationChoice.UsingNewtonSolverOnYield, DataChoice.InterpolatedData)]
         public void Eval(int testP, InterpolationChoice interpolationChoice, DataChoice dataChoice)
         {
             //var pricingDate = new Date(01, 05, 2024);
