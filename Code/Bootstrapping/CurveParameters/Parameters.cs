@@ -1,6 +1,6 @@
 ﻿using QuantitativeLibrary.Time;
 
-namespace Bootstrapping
+namespace Bootstrapping.CurveParameters
 {
     public class Parameters
     {
@@ -46,8 +46,16 @@ namespace Bootstrapping
             set { _dataChoice = value; }
         }
 
+        private VariableChoice _variableChoice;
+        public VariableChoice VariableChoice
+        {
+            get { return _variableChoice; }
+            set { _variableChoice = value; }
+        }
+
         public Parameters(Date pricingDate, Period periodicity, DayCounter dayCounter,
-            NewtonSolverParameters newtonSolverParameters, InterpolationChoice interpolationChoice, DataChoice dataChoice)
+            NewtonSolverParameters newtonSolverParameters, InterpolationChoice interpolationChoice,
+            DataChoice dataChoice, VariableChoice variableChoice)
         {
             _pricingDate = pricingDate;
             _periodicity = periodicity;
@@ -55,14 +63,15 @@ namespace Bootstrapping
             _newtonSolverParameters = newtonSolverParameters;
             _interpolationChoice = interpolationChoice;
             _dataChoice = dataChoice;
+            _variableChoice = variableChoice;
         }
 
         public override string ToString()
         {
             return string.Format("Pricing date = {0}, Periodicity = {1}, Day counter = {2}," +
-                " NewtonSolver parameters = " + _newtonSolverParameters.ToString() + ", Interpolation choice = {3}" 
-                + ", Data choice = {4}",
-                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _dataChoice);
+                " NewtonSolver parameters = " + _newtonSolverParameters.ToString() + ", Interpolation choice = {3}"
+                + ", Data choice = {4}, Variable choice = {5}",
+                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _dataChoice, _variableChoice);
         }
     }
 }

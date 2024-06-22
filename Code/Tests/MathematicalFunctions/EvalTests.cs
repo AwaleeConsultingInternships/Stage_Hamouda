@@ -1,4 +1,6 @@
+using Bootstrapping;
 using MathematicalFunctions;
+using QuantitativeLibrary.Time;
 
 namespace Tests.MathematicalFunctions
 {
@@ -47,40 +49,42 @@ namespace Tests.MathematicalFunctions
             Assert.That(y6Bis, Is.EqualTo(y6));
         }
 
-        /*[Test]
-        public void PiecewiseLinearEvalKo()
-        {
-            var x1 = 5;
-            var x2 = 9;
-            var x3 = 10;
-            var x4 = 17;
-            var y1 = 3 * x1 + 7;
-            var y2 = 3 * x2 + 7;
-            var y3 = 5 * x3 - 2;
-            var y4 = 5 * x4 - 2;
+        //[Test]
+        //public void PiecewiseLinearEvalKo()
+        //{
+        //    var x1 = 5;
+        //    var x2 = 9;
+        //    var x3 = 10;
+        //    var x4 = 17;
+        //    var y1 = 3 * x1 + 7;
+        //    var y2 = 3 * x2 + 7;
+        //    var y3 = 5 * x3 - 2;
+        //    var y4 = 5 * x4 - 2;
 
-            var piecewiseLinearFunction = new PiecewiseLinear();
-            piecewiseLinearFunction.AddInterval(x1, y1, x2, y2);
-            piecewiseLinearFunction.AddInterval(x3, y3, x4, y4);
+        //    var piecewiseLinearFunction = new PiecewiseLinear();
+        //    piecewiseLinearFunction.AddInterval(x1, y1, x2, y2);
+        //    piecewiseLinearFunction.AddInterval(x3, y3, x4, y4);
 
-            var x7 = 9.5;
-            var y7Bis = piecewiseLinearFunction.Evaluate(x7);
-        }
+        //    var x7 = 9.5;
+        //    var y7Bis = piecewiseLinearFunction.Evaluate(x7);
+        //}
 
         [TestCase(5)]
         [TestCase(0)]
         [TestCase(-2)]
         public void DiscountFromYieldTest(double asOf)
         {
-            var yield = new Identity();
-            var discount = new Discount(yield);
+            var pricingDate = new Date(01, 05, 2024);
+
+            var yield = Identity.Instance;
+            var discount = new Discount(pricingDate, yield);
 
             var exp = new Exp(-1);
-            var square = new Square();
+            var square = Square.Instance;
 
             var discountBis = new Composite(exp, square);
 
             Assert.That(discount.Evaluate(asOf), Is.EqualTo(discountBis.Evaluate(asOf)));
-        }*/
+        }
     }
 }

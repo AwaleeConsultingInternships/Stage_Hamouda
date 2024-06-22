@@ -2,6 +2,8 @@
 using Bootstrapping;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
+using Bootstrapping.Instruments;
+using Bootstrapping.CurveParameters;
 
 namespace Interpolation
 {
@@ -10,7 +12,7 @@ namespace Interpolation
         public static void Main(string[] args)
         {
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
-            string filePath = Path.Combine(marketDataDirectory, "swaps.json");
+            string filePath = Path.Combine(marketDataDirectory, "Swaps.json");
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(3, Unit.Months);
@@ -18,18 +20,19 @@ namespace Interpolation
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingDirectSolving;
             var dataChoice = DataChoice.InterpolatedData;
+            var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
 
             if (File.Exists(filePath))
             {
                 // Load the data
                 string jsonContent = File.ReadAllText(filePath);
                 //Console.WriteLine(jsonContent);
-                RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
+                Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-                // Store the swaps maturities and rates in a dictionnary
-                var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
+                // Store the Swaps maturities and rates in a dictionnary
+                var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
 
                 var algorithm = new Algorithm(bootstrappingParameters);
                 var discount = algorithm.Curve(swapRates);
@@ -41,10 +44,5 @@ namespace Interpolation
 
             Console.ReadKey();
         }
-    }
-
-    public class RootObject
-    {
-        public Swap[] swaps { get; set; }
     }
 }

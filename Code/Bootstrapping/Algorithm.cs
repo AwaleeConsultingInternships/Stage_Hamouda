@@ -1,22 +1,10 @@
-﻿using MathematicalFunctions;
+﻿using Bootstrapping.CurveParameters;
+using Bootstrapping.YieldComputer;
+using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 
 namespace Bootstrapping
 {
-    public enum InterpolationChoice
-    {
-        UsingDirectSolving,
-        UsingNewtonSolver,
-        UsingRawData,
-        UsingNewtonSolverOnYield
-    }
-
-    public enum DataChoice
-    {
-        RawData,
-        InterpolatedData
-    }
-
     public class Algorithm
     {
         public Parameters _parameters;
@@ -44,11 +32,8 @@ namespace Bootstrapping
                 case InterpolationChoice.UsingRawData:
                     return new YieldComputerUsingRawData(_parameters);
 
-                case InterpolationChoice.UsingNewtonSolverOnYield:
-                    return new YieldComputerUsingNewtonSolverOnYield(_parameters);
-
                 default:
-                    throw new ArgumentException("Unknown interpolation choice");
+                    throw new ArgumentException("Unknown interpolation choice. Found: " + _parameters.InterpolationChoice);
             }
         }
 
@@ -59,9 +44,9 @@ namespace Bootstrapping
                 case DataChoice.InterpolatedData:
                     return InterpolateSwapRates(swapRates);
                 case DataChoice.RawData:
-                    return swapRates;
+                    return swapRates.ToDictionary(pairValue => Utilities.ConvertPeriodToMonths(pairValue.Key), key => key.Value);
                 default:
-                    throw new ArgumentException("Unknown data format choice");
+                    throw new ArgumentException("Unknown data format choice. Found: " + _parameters.DataChoice);
             }
         }
 
@@ -75,9 +60,10 @@ namespace Bootstrapping
             var yields = yieldComputer.Compute(newSwapRates);
 
             // Define the function: t -> y(0, t)
-            var YieldF = ComputeYields(yields);
+            var yield = ComputeYield(yields);
 
-            return new Discount(YieldF);
+            var pricingDate = _parameters.PricingDate;
+            return new Discount(pricingDate, yield);
         }
 
         private Dictionary<Period, double> InterpolateSwapRates(Dictionary<Period, double> swapRates)
@@ -114,7 +100,7 @@ namespace Bootstrapping
             return Utilities.InterpolateSwapRate(SwapInt, swapRates, _parameters);
         }
 
-        private PiecewiseLinear ComputeYields(List<double> yields)
+        private PiecewiseLinear ComputeYield(List<double> yields)
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;

@@ -1,5 +1,6 @@
 ﻿using Bootstrapping;
-using Interpolation;
+using Bootstrapping.CurveParameters;
+using Bootstrapping.Instruments;
 using MathematicalTools;
 using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
@@ -11,13 +12,13 @@ namespace Tests.Interpolation
     internal class Plotting
     {
         [Test]
-        public void Test1()
+        public void DiscountCurve()
         {
             var projectDirectory = Directories.GetMarketDataDirectory();
-            string marketDataFilePath = Path.Combine(projectDirectory, "swaps.json");
+            string marketDataFilePath = Path.Combine(projectDirectory, "Swaps.json");
 
             string jsonContent = File.ReadAllText(marketDataFilePath);
-            RootObject deserializedObject = JsonConvert.DeserializeObject<RootObject>(jsonContent);
+            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(12, Unit.Months);
@@ -25,10 +26,11 @@ namespace Tests.Interpolation
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingRawData;
             var dataChoice = DataChoice.RawData;
+            var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
 
-            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.swaps);
+            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
 
             var algorithm = new Algorithm(bootstrappingParameters);
             var discount = algorithm.Curve(swapRates);

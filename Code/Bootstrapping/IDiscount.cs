@@ -4,6 +4,6 @@ namespace Bootstrapping
 {
     internal interface IDiscount
     {
-        double At(Date startDate, Date endDate);
+        double At(Date endDate);
     }
 }

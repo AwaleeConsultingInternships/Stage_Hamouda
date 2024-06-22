@@ -1,4 +1,6 @@
-﻿using MathematicalFunctions;
+﻿using Bootstrapping.CurveParameters;
+using Bootstrapping.Instruments;
+using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
 
@@ -47,9 +49,9 @@ namespace Bootstrapping
 
             foreach (var swap in swaps)
             {
-                string maturity = swap.maturity;
+                string maturity = swap.Maturity;
                 Period p = GetMaturity(maturity);
-                swapRates.Add(p, swap.rate);
+                swapRates.Add(p, swap.Rate);
             }
             return swapRates;
         }

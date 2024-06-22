@@ -25,8 +25,8 @@ namespace Tests.Newton
         public void Quadratic()
         {
             var f1 = AffineFunction.Create(0, 1, -6, -3);
-            var f2 = new Square();
-            var function = new Composite(f1, f2);
+            var f2 = Square.Instance;
+            var function = Composite.Create(f1, f2);
 
             double target = 0;
             double firstGuess = 1;
@@ -44,7 +44,7 @@ namespace Tests.Newton
         {
             var f1 = new Exp(1);
             var f2 = AffineFunction.Create(0, 1, -1, 1);
-            var f3 = new Composite(f1, f2);
+            var f3 = Composite.Create(f1, f2);
             var f4 = new ConstantFunction(-Math.E * Math.E);
             var function = f3 + f4;
 
