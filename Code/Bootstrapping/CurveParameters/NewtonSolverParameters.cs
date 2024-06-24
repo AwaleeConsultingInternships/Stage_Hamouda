@@ -1,4 +1,4 @@
-﻿namespace Bootstrapping
+﻿namespace Bootstrapping.CurveParameters
 {
     public class NewtonSolverParameters
     {

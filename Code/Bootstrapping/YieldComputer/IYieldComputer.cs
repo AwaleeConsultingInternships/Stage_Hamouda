@@ -1,6 +1,6 @@
 ﻿using QuantitativeLibrary.Time;
 
-namespace Bootstrapping
+namespace Bootstrapping.YieldComputer
 {
     public interface IYieldComputer
     {

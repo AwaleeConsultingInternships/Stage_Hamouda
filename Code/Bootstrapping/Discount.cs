@@ -6,6 +6,13 @@ namespace Bootstrapping
 {
     public class Discount : RFunction, IDiscount
     {
+        private Date _pricingDate;
+        public Date PricingDate
+        {
+            get { return _pricingDate; }
+            set { _pricingDate = value; }
+        }
+
         private RFunction _yieldF;
         public RFunction YieldF
         {
@@ -13,8 +20,9 @@ namespace Bootstrapping
             set { _yieldF = value; }
         }
 
-        public Discount(RFunction yieldF)
+        public Discount(Date pricingDate, RFunction yieldF)
         {
+            _pricingDate = pricingDate;
             _yieldF = yieldF;
         }
 
@@ -24,10 +32,10 @@ namespace Bootstrapping
             return Math.Exp(-yield * x);
         }
 
-        public double At(Date startDate, Date endDate)
+        public double At(Date endDate)
         {
             var counter = new DayCounter(DayConvention.ACT365);
-            double x = counter.YearFraction(startDate, endDate);
+            double x = counter.YearFraction(_pricingDate, endDate);
             return Evaluate(x);
         }
 

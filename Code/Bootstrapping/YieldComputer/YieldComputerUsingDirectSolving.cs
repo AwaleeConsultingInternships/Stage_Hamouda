@@ -1,6 +1,7 @@
-﻿using QuantitativeLibrary.Time;
+﻿using Bootstrapping.CurveParameters;
+using QuantitativeLibrary.Time;
 
-namespace Bootstrapping
+namespace Bootstrapping.YieldComputer
 {
     public class YieldComputerUsingDirectSolving : IYieldComputer
     {

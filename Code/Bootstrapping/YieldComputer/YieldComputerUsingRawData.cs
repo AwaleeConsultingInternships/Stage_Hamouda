@@ -1,8 +1,9 @@
-﻿using QuantitativeLibrary.Maths.Functions;
+﻿using Bootstrapping.CurveParameters;
+using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
 
-namespace Bootstrapping
+namespace Bootstrapping.YieldComputer
 {
     public class YieldComputerUsingRawData : IYieldComputer
     {
@@ -26,7 +27,7 @@ namespace Bootstrapping
                 newSwapRates.Add(Utilities.ConvertPeriodToMonths(pair.Key), pair.Value);
             }
             swapRates = newSwapRates;
-            
+
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
             var periodicity = _parameters.Periodicity;
@@ -51,7 +52,7 @@ namespace Bootstrapping
             {
                 var swapRight = swapRate;
                 var x3 = swapRight.Key.NbUnit;
-                for (int freq = x1 + periodicity.NbUnit;  freq < x3; freq += periodicity.NbUnit)
+                for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
                 {
                     var x2 = freq;
                     var slope = (double)(x2 - x1) / (x3 - x1);
@@ -73,7 +74,7 @@ namespace Bootstrapping
                 x1 = x3;
                 y1 = ZCDict[swapLeft.Key].Evaluate(1);
             }
-            
+
             foreach (var ZCfinal in ZCDict)
             {
                 P = ZCfinal.Value.Evaluate(1);

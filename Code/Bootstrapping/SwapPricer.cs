@@ -1,4 +1,5 @@
-﻿using QuantitativeLibrary.Time;
+﻿using Bootstrapping.CurveParameters;
+using QuantitativeLibrary.Time;
 
 namespace Bootstrapping
 {
