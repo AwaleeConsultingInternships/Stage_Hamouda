@@ -71,8 +71,8 @@ namespace Bootstrapping.YieldComputer
             var swapFunc = SwapFunc.SwapValue(zeroCouponDictionary, interpolatedSwapRates[f1], _parameters);
             NewtonSolver solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
             NewtonResult result = solver.Solve();
-            zeroCoupon = result.Solution;
-            yield = -Math.Log(zeroCoupon) / deltaTotal;
+            zeroCoupon = GetDiscount(result.Solution, deltaTotal, Parameters);
+            yield = GetYield(result.Solution, deltaTotal, Parameters);
             zeroCoupons.Add(zeroCoupon);
             yields.Add(yield);
 

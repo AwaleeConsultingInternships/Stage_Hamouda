@@ -54,6 +54,7 @@ namespace Bootstrapping
 
             date = datePrevious.Advance(periodicity);
             delta = counter.YearFraction(datePrevious, date);
+            deltaTotal += delta;
 
             fixedLeg = fixedLeg + delta * swapRate * Identity.Instance;
 
@@ -62,6 +63,6 @@ namespace Bootstrapping
 
             var price = fixedLeg - floatingLeg;
             return PriceWithVariableChoice(price, deltaTotal, parameters);
-        }
+            }
     }
 }
