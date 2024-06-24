@@ -19,6 +19,19 @@ namespace Bootstrapping.YieldComputer
             _parameters = parameters;
         }
 
+        private static double GetDiscount(double result, double deltaTotal, Parameters parameters)
+        {
+            switch (parameters.VariableChoice)
+            {
+                case VariableChoice.Discount:
+                    return result;
+                case VariableChoice.Yield:
+                    return Math.Exp(-result * deltaTotal);
+                default:
+                    throw new ArgumentException("Unknown variable choice. Found: " + parameters.VariableChoice);
+            }
+        }
+
         public List<double> Compute(Dictionary<Period, double> swapRates)
         {
             var newSwapRates = new Dictionary<Period, double>();
@@ -63,7 +76,9 @@ namespace Bootstrapping.YieldComputer
                 var swapFunc = SwapFunc.SwapValue(ZCDict, swapRight.Value, _parameters);
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                 var result = solver.Solve();
-                P = result.Solution;
+
+                var deltaTotal = Utilities.Duration(swapRate.Key, pricingDate, counter);
+                P = GetDiscount(result.Solution, deltaTotal, Parameters);
                 ZCDict.Add(swapRight.Key, P);
                 for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
                 {
@@ -79,8 +94,8 @@ namespace Bootstrapping.YieldComputer
             {
                 P = ZCfinal.Value.Evaluate(1);
                 ZC.Add(P);
-                var delta_total = Utilities.Duration(ZCfinal.Key, pricingDate, counter);
-                y = -Math.Log(P) / delta_total;
+                var deltaTotal = Utilities.Duration(ZCfinal.Key, pricingDate, counter);
+                y = -Math.Log(P) / deltaTotal;
                 yields.Add(y);
             }
 
