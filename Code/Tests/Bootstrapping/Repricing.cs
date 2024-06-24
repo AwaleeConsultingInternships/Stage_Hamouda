@@ -58,7 +58,7 @@ namespace Tests.Interpolation
         }
 
         [Test]
-        public void RawData([ValueSource(nameof(GetInterpolationChoices))] InterpolationChoice interpolationChoice,
+        public void RawData([ValueSource(nameof(GetNumberOfMonths))] int numberOfMonth, 
             [ValueSource(nameof(GetVariableChoices))] VariableChoice variableChoice)
         {
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -70,9 +70,10 @@ namespace Tests.Interpolation
             var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
 
             var pricingDate = new Date(01, 05, 2024);
-            var period = new Period(12, Unit.Months);
+            var period = new Period(numberOfMonth, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
+            var interpolationChoice = InterpolationChoice.UsingRawData;
             var dataChoice = DataChoice.RawData;
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);

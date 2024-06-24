@@ -53,6 +53,18 @@ namespace MathematicalFunctions
 
         public override string ToString()
         {
+            if (_c == 0)
+            {
+                return "0";
+            }
+            if (_a == 0)
+            {
+                return _c.ToString();
+            }
+            if (_b == 0)
+            {
+                return $"x -> {_c}*Exp({_a}*x)";
+            }
             return "x -> " + _c.ToString() + "*Exp(" + _a.ToString() + "*(x - " + _b.ToString() + "))";
         }
     }
