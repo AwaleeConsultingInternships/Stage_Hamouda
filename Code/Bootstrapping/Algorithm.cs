@@ -1,6 +1,7 @@
 ﻿using Bootstrapping.CurveParameters;
 using Bootstrapping.YieldComputer;
 using MathematicalFunctions;
+using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Time;
 
 namespace Bootstrapping
@@ -64,6 +65,21 @@ namespace Bootstrapping
 
             var pricingDate = _parameters.PricingDate;
             return new Discount(pricingDate, yield);
+        }
+
+        public RFunction YieldCurve(Dictionary<Period, double> swapRates)
+        {
+            // Get the swap rates
+            var newSwapRates = GetSwapRates(swapRates);
+
+            // Compute and store the ZC prices and yield curve values for the given maturities
+            var yieldComputer = GetYieldComputer();
+            var yields = yieldComputer.Compute(newSwapRates);
+
+            // Define the function: t -> y(0, t)
+            var yield = ComputeYield(yields);
+
+            return yield;
         }
 
         private Dictionary<Period, double> InterpolateSwapRates(Dictionary<Period, double> swapRates)

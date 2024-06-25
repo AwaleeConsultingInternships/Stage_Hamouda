@@ -45,7 +45,45 @@ namespace Tests.Interpolation
 
             ChartHtmlGenerator generator = new ChartHtmlGenerator();
             var folderPath = Directories.GetGraphDirectory();
-            var resultFilePath = Path.Combine(folderPath, "chart.html");
+            var resultFilePath = Path.Combine(folderPath, "DiscountCurveChart.html");
+
+            generator.WriteHtmlToFile(list, resultFilePath);
+        }
+        [Test]
+        public void YieldCurve()
+        {
+            var projectDirectory = Directories.GetMarketDataDirectory();
+            string marketDataFilePath = Path.Combine(projectDirectory, "Swaps.json");
+
+            string jsonContent = File.ReadAllText(marketDataFilePath);
+            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
+
+            var pricingDate = new Date(01, 05, 2024);
+            var period = new Period(12, Unit.Months);
+            var dayCouner = new DayCounter(DayConvention.ACT365);
+            var newtonSolverParameters = new NewtonSolverParameters();
+            var interpolationChoice = InterpolationChoice.UsingRawData;
+            var dataChoice = DataChoice.RawData;
+            var variableChoice = VariableChoice.Yield;
+            var bootstrappingParameters = new Parameters(pricingDate, period,
+                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+
+            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+
+            var algorithm = new Algorithm(bootstrappingParameters);
+            var yield = algorithm.YieldCurve(swapRates);
+
+            var nbYears = 40;
+            var shift = 21;
+            var list = new List<Point>();
+            for (int i = 0; i < 365 * nbYears; i += shift)
+            {
+                list.Add(new Point(i / 365.0, yield.Evaluate(i / 365.0)));
+            }
+
+            ChartHtmlGenerator generator = new ChartHtmlGenerator();
+            var folderPath = Directories.GetGraphDirectory();
+            var resultFilePath = Path.Combine(folderPath, "YieldCurveChart.html");
 
             generator.WriteHtmlToFile(list, resultFilePath);
         }
