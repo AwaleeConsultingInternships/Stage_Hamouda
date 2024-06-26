@@ -30,9 +30,6 @@ namespace Bootstrapping
                 case InterpolationChoice.UsingNewtonSolver:
                     return new YieldComputerUsingNewtonSolver(_parameters);
 
-                case InterpolationChoice.UsingRawData:
-                    return new YieldComputerUsingRawData(_parameters);
-
                 default:
                     throw new ArgumentException("Unknown interpolation choice. Found: " + _parameters.InterpolationChoice);
             }
@@ -129,7 +126,7 @@ namespace Bootstrapping
 
             var fN = counter.YearFraction(datePreviousN, dateN);
 
-            YieldF.AddInterval(0, 0, fN, yields[0]);
+            YieldF.AddInterval(0, yields[0], fN, yields[0]);
 
             for (int i = 1; i < yields.Count; i++)
             {

@@ -32,6 +32,19 @@ namespace Bootstrapping
             return Math.Exp(-yield * x);
         }
 
+        public double Yield(double x)
+        {
+            double yield = _yieldF.Evaluate(x);
+            return yield;
+        }
+
+        public double Forward(double x, double y)
+        {
+            double yieldx = _yieldF.Evaluate(x);
+            double yieldy = _yieldF.Evaluate(y);
+            return ((yieldx / yieldy) - 1) / (y - x);
+        }
+
         public double At(Date endDate)
         {
             var counter = new DayCounter(DayConvention.ACT365);

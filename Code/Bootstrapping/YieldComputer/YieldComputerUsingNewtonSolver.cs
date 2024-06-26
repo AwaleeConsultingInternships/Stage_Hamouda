@@ -45,8 +45,15 @@ namespace Bootstrapping.YieldComputer
             }
         }
 
-        public List<double> Compute(Dictionary<Period, double> interpolatedSwapRates)
+        public List<double> Compute(Dictionary<Period, double> swapRates)
         {
+            var newSwapRates = new Dictionary<Period, double>();
+            foreach (var pair in swapRates)
+            {
+                newSwapRates.Add(Utilities.ConvertPeriodToMonths(pair.Key), pair.Value);
+            }
+            swapRates = newSwapRates;
+
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
             var periodicity = _parameters.Periodicity;
@@ -57,52 +64,52 @@ namespace Bootstrapping.YieldComputer
             var tolerance = newtonSolverParameters.Tolerance;
 
             List<double> yields = new List<double>();
-            List<double> zeroCoupons = new List<double>();
+            List<double> ZC = new List<double>();
 
-            double zeroCoupon;
-            double yield;
+            double P;
+            double y;
 
-            Dictionary<Period, RFunction> zeroCouponDictionary = new Dictionary<Period, RFunction>();
+            Dictionary<Period, RFunction> ZCDict = new Dictionary<Period, RFunction>();
 
-            var f = Utilities.Duration(periodicity, pricingDate, counter);
-            double deltaTotal = f;
-            var firstSwap = interpolatedSwapRates[periodicity];
-            Period f1 = new Period(periodicity.NbUnit, periodicity.Unit);
-            var swapFunc = SwapFunc.SwapValue(zeroCouponDictionary, interpolatedSwapRates[f1], _parameters);
-            NewtonSolver solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
-            NewtonResult result = solver.Solve();
-            zeroCoupon = GetDiscount(result.Solution, deltaTotal, Parameters);
-            yield = GetYield(result.Solution, deltaTotal, Parameters);
-            zeroCoupons.Add(zeroCoupon);
-            yields.Add(yield);
-
-            zeroCouponDictionary.Add(periodicity, zeroCoupon);
-
-            var datePrevious = pricingDate;
-            var date = pricingDate.Advance(periodicity);
-
-            var lastMaturity = Utilities.ConvertPeriodToMonths(interpolatedSwapRates.Keys.Last());
-            var j = 2;
-            while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
+            var swapLeft = swapRates.First();
+            int x1 = 0;
+            double y1 = 1;
+            foreach (var swapRate in swapRates)
             {
-                datePrevious = date;
-                date = date.Advance(periodicity);
-                f = counter.YearFraction(datePrevious, date);
+                var swapRight = swapRate;
+                var x3 = swapRight.Key.NbUnit;
+                for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
+                {
+                    var x2 = freq;
+                    var slope = (double)(x2 - x1) / (x3 - x1);
+                    var origin = y1 * (x3 - x2) / (x3 - x1);
+                    var PFunction = new AffineFunction(origin, slope);
+                    ZCDict.Add(new Period(freq, periodicity.Unit), PFunction);
+                }
+                var swapFunc = SwapFunc.SwapValue(ZCDict, swapRight.Value, _parameters);
+                var solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
+                var result = solver.Solve();
 
-                Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
-                swapFunc = SwapFunc.SwapValue(zeroCouponDictionary, interpolatedSwapRates[fi], _parameters);
-                solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
-                result = solver.Solve();
+                var deltaTotal = Utilities.Duration(swapRate.Key, pricingDate, counter);
+                P = GetDiscount(result.Solution, deltaTotal, Parameters);
+                ZCDict.Add(swapRight.Key, P);
+                for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
+                {
+                    var interP = new Period(freq, periodicity.Unit);
+                    ZCDict[interP] = ZCDict[interP].Evaluate(P);
+                }
+                swapLeft = swapRight;
+                x1 = x3;
+                y1 = ZCDict[swapLeft.Key].Evaluate(1);
+            }
 
-                deltaTotal += f;
-                zeroCoupon = GetDiscount(result.Solution, deltaTotal, Parameters);
-                yield = GetYield(result.Solution, deltaTotal, Parameters);
-
-                zeroCoupons.Add(zeroCoupon);
-                yields.Add(yield);
-                zeroCouponDictionary.Add(fi, zeroCoupon);
-
-                j++;
+            foreach (var ZCfinal in ZCDict)
+            {
+                P = ZCfinal.Value.Evaluate(1);
+                ZC.Add(P);
+                var deltaTotal = Utilities.Duration(ZCfinal.Key, pricingDate, counter);
+                y = -Math.Log(P) / deltaTotal;
+                yields.Add(y);
             }
 
             return yields;
