@@ -77,7 +77,8 @@ namespace Tests.MathematicalFunctions
             var pricingDate = new Date(01, 05, 2024);
 
             var yield = Identity.Instance;
-            var discount = new Discount(pricingDate, yield);
+            var dayCounter = new DayCounter(Time.DayConvention.ACT365);
+            var discount = new Discount(pricingDate, dayCounter, yield);
 
             var exp = new Exp(-1);
             var square = Square.Instance;

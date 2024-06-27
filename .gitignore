@@ -399,4 +399,4 @@ FodyWeavers.xsd
 
 # Results of Doxygen.bat
 Code/Documentation/Result/*
-/Code/Graph/chart.html
+/Code/Graph/

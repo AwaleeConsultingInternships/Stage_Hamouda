@@ -1,5 +1,4 @@
 ﻿using QuantitativeLibrary.Time;
-using static QuantitativeLibrary.Time.Time;
 using QuantitativeLibrary.Maths.Functions;
 
 namespace Bootstrapping
@@ -13,6 +12,13 @@ namespace Bootstrapping
             set { _pricingDate = value; }
         }
 
+        private DayCounter _dayCounter;
+        public DayCounter DayCounter
+        {
+            get { return _dayCounter; }
+            set { _dayCounter = value; }
+        }
+
         private RFunction _yieldF;
         public RFunction YieldF
         {
@@ -20,9 +26,10 @@ namespace Bootstrapping
             set { _yieldF = value; }
         }
 
-        public Discount(Date pricingDate, RFunction yieldF)
+        public Discount(Date pricingDate, DayCounter dayCounter, RFunction yieldF)
         {
             _pricingDate = pricingDate;
+            _dayCounter = dayCounter;
             _yieldF = yieldF;
         }
 
@@ -32,24 +39,33 @@ namespace Bootstrapping
             return Math.Exp(-yield * x);
         }
 
-        public double Yield(double x)
+        public double At(Date date)
         {
-            double yield = _yieldF.Evaluate(x);
-            return yield;
-        }
-
-        public double Forward(double x, double y)
-        {
-            double yieldx = _yieldF.Evaluate(x);
-            double yieldy = _yieldF.Evaluate(y);
-            return ((yieldx / yieldy) - 1) / (y - x);
-        }
-
-        public double At(Date endDate)
-        {
-            var counter = new DayCounter(DayConvention.ACT365);
-            double x = counter.YearFraction(_pricingDate, endDate);
+            double x = _dayCounter.YearFraction(_pricingDate, date);
             return Evaluate(x);
+        }
+
+        public double YieldAt(Date date)
+        {
+            double x = _dayCounter.YearFraction(_pricingDate, date);
+            return _yieldF.Evaluate(x);
+        }
+
+        public double ZcYieldAt(Date date)
+        {
+            var ratio = 1 / At(date);
+            var time = _dayCounter.YearFraction(_pricingDate, date);
+            return (ratio - 1) / time;
+        }
+
+        public double ForwardAt(Period period, Date date)
+        {
+            var endDate = date.Advance(period);
+            var ratio = At(endDate) / At(date);
+            var start = _dayCounter.YearFraction(_pricingDate, date);
+            var end = _dayCounter.YearFraction(_pricingDate, endDate);
+            var time = end - start;
+            return (ratio - 1) / time;
         }
 
         public override string ToString()
