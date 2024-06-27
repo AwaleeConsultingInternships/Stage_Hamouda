@@ -7,7 +7,7 @@ using QuantitativeLibrary.Time;
 using Utilities;
 using static QuantitativeLibrary.Time.Time;
 
-namespace Tests.Interpolation
+namespace Tests.BootstrappingTests
 {
     internal class Plotting
     {

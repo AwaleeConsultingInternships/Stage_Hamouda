@@ -87,5 +87,33 @@ namespace Bootstrapping
             result = result.OrderBy(pair => pair.Key).ToDictionary(x => x.Key, x => x.Value);
             return result;
         }
+
+        public static Date GetThirdWednesday(string maturity)
+        {
+            string[] parts = maturity.Split(' ');
+            int month = (int)(Month)Enum.Parse(typeof(Month), parts[0], true);
+            int year = int.Parse(parts[1]);
+
+            DateTime firstDayOfMonth = new DateTime(year, month, 1);
+            int daysToFirstWednesday = ((int)DayOfWeek.Wednesday - (int)firstDayOfMonth.DayOfWeek + 7) % 7;
+
+            Date firstDay = new Date(1, month, year);
+
+            Date firstWednesday = firstDay.Advance(new Period(14 + daysToFirstWednesday, Unit.Days));
+            return firstWednesday;
+        }
+
+        public static Dictionary<Date, double> GetFutureRates(Swap[] futures)
+        {
+            var futureRates = new Dictionary<Date, double>();
+
+            foreach (var future in futures)
+            {
+                string maturity = future.Maturity;
+                Date p = GetThirdWednesday(maturity);
+                futureRates.Add(p, future.Rate);
+            }
+            return futureRates;
+        }
     }
 }

@@ -1,0 +1,40 @@
+{
+  "swaps": [
+    {
+      "maturity": "JUN 2024",
+      "rate": 0.0374
+    },
+    {
+      "maturity": "SEP 2024",
+      "rate": 0.034375
+    },
+    {
+      "maturity": "DEC 2024",
+      "rate": 0.0319
+    },
+    {
+      "maturity": "MAR 2025",
+      "rate": 0.02975
+    },
+    {
+      "maturity": "JUN 2025",
+      "rate": 0.02805
+    },
+    {
+      "maturity": "SEP 2025",
+      "rate": 0.026825
+    },
+    {
+      "maturity": "DEC 2025",
+      "rate": 0.026
+    },
+    {
+      "maturity": "MAR 2026",
+      "rate": 0.0254
+    },
+    {
+      "maturity": "JUN 2026",
+      "rate": 0.025025
+    }
+  ]
+}

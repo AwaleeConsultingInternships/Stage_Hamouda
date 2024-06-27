@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
 
-namespace Tests.Interpolation
+namespace Tests.BootstrappingTests
 {
     public class Repricing
     {
