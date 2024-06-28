@@ -1,25 +1,13 @@
-﻿namespace Bootstrapping.Instruments
+﻿using Bootstrapping.Instruments;
+
+namespace Bootstrapping.MarketInstruments
 {
-    public class Future
+    public class Future : Instrument
     {
-        private string _date;
-        public string Date
+        public Future(InstrumentType instrumentType,
+            string maturity, double rate)
+            : base(instrumentType, maturity, rate)
         {
-            get { return _date; }
-            set { _date = value; }
-        }
-
-        private double _rate;
-        public double Rate
-        {
-            get { return _rate; }
-            set { _rate = value; }
-        }
-
-        public Future(string date, double rate)
-        {
-            _date = date;
-            _rate = rate;
         }
     }
 }

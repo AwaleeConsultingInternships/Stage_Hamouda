@@ -1,7 +1,6 @@
 ﻿using Bootstrapping.CurveParameters;
 using Bootstrapping.YieldComputer;
 using MathematicalFunctions;
-using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Time;
 
 namespace Bootstrapping

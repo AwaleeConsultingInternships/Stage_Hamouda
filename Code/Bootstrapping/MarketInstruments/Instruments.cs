@@ -2,16 +2,16 @@
 {
     public class Instruments
     {
-        private Swap[] _swaps;
-        public Swap[] Swaps
+        private Instrument[] _marketInstruments;
+        public Instrument[] MarketInstruments
         {
-            get { return _swaps; }
-            set { _swaps = value; }
+            get { return _marketInstruments; }
+            set { _marketInstruments = value; }
         }
 
-        public Instruments(Swap[] swaps)
+        public Instruments(Instrument[] swaps)
         {
-            _swaps = swaps;
+            _marketInstruments = swaps;
         }
     }
 }
