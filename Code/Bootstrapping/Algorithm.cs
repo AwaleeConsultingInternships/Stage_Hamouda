@@ -2,6 +2,7 @@
 using Bootstrapping.YieldComputer;
 using MathematicalFunctions;
 using QuantitativeLibrary.Time;
+using Bootstrapping.InterpolationMethods;
 
 namespace Bootstrapping
 {
@@ -34,6 +35,21 @@ namespace Bootstrapping
             }
         }
 
+        private Interpolator GetInterpolationMethod()
+        {
+            switch (_parameters.InterpolationMethod)
+            {
+                case InterpolationMethod.LinearOnYield:
+                    return new LinearOnYield(_parameters);
+
+                case InterpolationMethod.LinearOnYieldLog:
+                    return new LinearOnYieldLog(_parameters);
+
+                default:
+                    throw new ArgumentException("Unknown interpolation choice. Found: " + _parameters.InterpolationMethod);
+            }
+        }
+
         private Dictionary<Period, double> GetSwapRates(Dictionary<Period, double> swapRates)
         {
             switch (_parameters.DataChoice)
@@ -57,7 +73,8 @@ namespace Bootstrapping
             var yields = yieldComputer.Compute(newSwapRates);
 
             // Define the function: t -> y(0, t)
-            var yield = ComputeYield(yields);
+            var interpolator = GetInterpolationMethod();
+            var yield = interpolator.Compute(yields);
 
             var pricingDate = _parameters.PricingDate;
             var dayCounter = _parameters.DayCounter;

@@ -6,6 +6,12 @@
         UsingNewtonSolver
     }
 
+    public enum InterpolationMethod
+    {
+        LinearOnYield,
+        LinearOnYieldLog
+    }
+
     public enum DataChoice
     {
         RawData,

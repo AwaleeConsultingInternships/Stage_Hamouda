@@ -26,10 +26,11 @@ namespace Tests.BootstrappingTests
             var dayCounter = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingNewtonSolver;
+            var interpolationMethod = InterpolationMethod.LinearOnYield;
             var dataChoice = DataChoice.RawData;
             var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCounter, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+                dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
             var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
@@ -68,10 +69,11 @@ namespace Tests.BootstrappingTests
             var dayCounter = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingNewtonSolver;
+            var interpolationMethod = InterpolationMethod.LinearOnYield;
             var dataChoice = DataChoice.RawData;
             var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCounter, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+                dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
             var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
@@ -121,10 +123,11 @@ namespace Tests.BootstrappingTests
             var dayCounter = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingNewtonSolver;
+            var interpolationMethod = InterpolationMethod.LinearOnYield;
             var dataChoice = DataChoice.RawData;
             var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, periodOneYear,
-                dayCounter, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+                dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
             var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 

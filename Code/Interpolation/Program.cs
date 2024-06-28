@@ -20,10 +20,11 @@ namespace Interpolation
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingDirectSolving;
+            var interpolationMethod = InterpolationMethod.LinearOnYield;
             var dataChoice = DataChoice.InterpolatedData;
             var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
             if (File.Exists(filePath))
             {

@@ -25,9 +25,15 @@ namespace Tests.BootstrappingTests
             return Enum.GetValues(typeof(VariableChoice));
         }
 
+        public static Array GetInterpolationMethods()
+        {
+            return Enum.GetValues(typeof(InterpolationMethod));
+        }
+
         [Test]
         public void InterpolatedData([ValueSource(nameof(GetNumberOfMonths))] int numberOfMonth,
             [ValueSource(nameof(GetInterpolationChoices))] InterpolationChoice interpolationChoice,
+            [ValueSource(nameof(GetInterpolationMethods))] InterpolationMethod interpolationMethod,
             [ValueSource(nameof(GetVariableChoices))] VariableChoice variableChoice)
         {
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -44,7 +50,7 @@ namespace Tests.BootstrappingTests
             var newtonSolverParameters = new NewtonSolverParameters();
             var dataChoice = DataChoice.InterpolatedData;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 
@@ -59,7 +65,8 @@ namespace Tests.BootstrappingTests
         }
 
         [Test]
-        public void RawData([ValueSource(nameof(GetNumberOfMonths))] int numberOfMonth, 
+        public void RawData([ValueSource(nameof(GetNumberOfMonths))] int numberOfMonth,
+            [ValueSource(nameof(GetInterpolationMethods))] InterpolationMethod interpolationMethod,
             [ValueSource(nameof(GetVariableChoices))] VariableChoice variableChoice)
         {
             var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
@@ -77,7 +84,7 @@ namespace Tests.BootstrappingTests
             var interpolationChoice = InterpolationChoice.UsingNewtonSolver;
             var dataChoice = DataChoice.RawData;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
+                dayCouner, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 

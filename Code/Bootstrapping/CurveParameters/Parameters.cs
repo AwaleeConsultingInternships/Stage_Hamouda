@@ -39,6 +39,13 @@ namespace Bootstrapping.CurveParameters
             set { _interpolationChoice = value; }
         }
 
+        private InterpolationMethod _interpolationMethod;
+        public InterpolationMethod InterpolationMethod
+        {
+            get { return _interpolationMethod; }
+            set { _interpolationMethod = value; }
+        }
+
         private DataChoice _dataChoice;
         public DataChoice DataChoice
         {
@@ -55,7 +62,7 @@ namespace Bootstrapping.CurveParameters
 
         public Parameters(Date pricingDate, Period periodicity, DayCounter dayCounter,
             NewtonSolverParameters newtonSolverParameters, InterpolationChoice interpolationChoice,
-            DataChoice dataChoice, VariableChoice variableChoice)
+            InterpolationMethod interpolationMethod, DataChoice dataChoice, VariableChoice variableChoice)
         {
             _pricingDate = pricingDate;
             _periodicity = periodicity;
@@ -64,14 +71,15 @@ namespace Bootstrapping.CurveParameters
             _interpolationChoice = interpolationChoice;
             _dataChoice = dataChoice;
             _variableChoice = variableChoice;
+            _interpolationMethod = interpolationMethod;
         }
 
         public override string ToString()
         {
             return string.Format("Pricing date = {0}, Periodicity = {1}, Day counter = {2}," +
                 " NewtonSolver parameters = " + _newtonSolverParameters.ToString() + ", Interpolation choice = {3}"
-                + ", Data choice = {4}, Variable choice = {5}",
-                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _dataChoice, _variableChoice);
+                + ", Interpolation Method = {4}, Data choice = {5}, Variable choice = {6}",
+                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _interpolationMethod, _dataChoice, _variableChoice);
         }
     }
 }
