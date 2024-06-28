@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bootstrapping;
+﻿using Bootstrapping.MarketInstruments;
 using QuantitativeLibrary.Time;
 
 namespace Tests.Dates
@@ -13,7 +8,7 @@ namespace Tests.Dates
         [Test]
         public void FirstWednesdayTest()
         {
-            Date x = Bootstrapping.Utilities.GetThirdWednesday("JUN 2025");
+            Date x = InstrumentParser.GetThirdWednesday("JUN 2025");
             string y = "18/6/2025";
             Assert.That(x.ToString, Is.EqualTo(y));
         }

@@ -1,6 +1,7 @@
 ﻿using Bootstrapping;
 using Bootstrapping.CurveParameters;
 using Bootstrapping.Instruments;
+using Bootstrapping.MarketInstruments;
 using MathematicalTools;
 using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
@@ -30,7 +31,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCounter, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
 
-            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
             var algorithm = new Algorithm(bootstrappingParameters);
             var discount = algorithm.Curve(swapRates);
@@ -72,7 +73,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCounter, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
 
-            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
             var algorithm = new Algorithm(bootstrappingParameters);
             var discount = algorithm.Curve(swapRates);
@@ -125,7 +126,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, periodOneYear,
                 dayCounter, newtonSolverParameters, interpolationChoice, dataChoice, variableChoice);
 
-            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
             var algorithm = new Algorithm(bootstrappingParameters);
             var discount = algorithm.Curve(swapRates);

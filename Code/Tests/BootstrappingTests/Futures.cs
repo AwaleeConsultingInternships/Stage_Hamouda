@@ -1,4 +1,5 @@
 ﻿using Bootstrapping.Instruments;
+using Bootstrapping.MarketInstruments;
 using Newtonsoft.Json;
 
 namespace Tests.BootstrappingTests
@@ -14,7 +15,7 @@ namespace Tests.BootstrappingTests
             string jsonContent = File.ReadAllText(filePath);
             Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-            var futureRates = Bootstrapping.Utilities.GetFutureRates(deserializedObject.Swaps);
+            var futureRates = InstrumentParser.GetFutureRates(deserializedObject.MarketInstruments);
         }
     }
 }

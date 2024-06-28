@@ -1,25 +1,13 @@
-﻿namespace Bootstrapping.Instruments
+﻿using Bootstrapping.Instruments;
+
+namespace Bootstrapping.MarketInstruments
 {
-    public class Swap
+    public class Swap : Instrument
     {
-        private string _maturity;
-        public string Maturity
+        public Swap(InstrumentType instrumentType,
+            string maturity, double rate)
+            : base(instrumentType, maturity, rate)
         {
-            get { return _maturity; }
-            set { _maturity = value; }
-        }
-
-        private double _rate;
-        public double Rate
-        {
-            get { return _rate; }
-            set { _rate = value; }
-        }
-
-        public Swap(string maturity, double rate)
-        {
-            _maturity = maturity;
-            _rate = rate;
         }
     }
 }

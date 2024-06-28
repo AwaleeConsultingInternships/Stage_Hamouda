@@ -4,6 +4,7 @@ using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
 using Bootstrapping.Instruments;
 using Bootstrapping.CurveParameters;
+using Bootstrapping.MarketInstruments;
 
 namespace Interpolation
 {
@@ -32,7 +33,7 @@ namespace Interpolation
                 Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
                 // Store the Swaps maturities and rates in a dictionnary
-                var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+                var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
                 var algorithm = new Algorithm(bootstrappingParameters);
                 var discount = algorithm.Curve(swapRates);

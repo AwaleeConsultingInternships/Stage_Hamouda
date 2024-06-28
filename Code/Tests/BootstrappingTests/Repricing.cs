@@ -1,6 +1,7 @@
 ﻿using Bootstrapping;
 using Bootstrapping.CurveParameters;
 using Bootstrapping.Instruments;
+using Bootstrapping.MarketInstruments;
 using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
@@ -35,7 +36,7 @@ namespace Tests.BootstrappingTests
             string jsonContent = File.ReadAllText(filePath);
             Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(numberOfMonth, Unit.Months);
@@ -67,7 +68,7 @@ namespace Tests.BootstrappingTests
             string jsonContent = File.ReadAllText(filePath);
             Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-            var swapRates = Bootstrapping.Utilities.GetSwapRates(deserializedObject.Swaps);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(numberOfMonth, Unit.Months);

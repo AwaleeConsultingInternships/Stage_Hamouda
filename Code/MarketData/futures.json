@@ -1,40 +1,49 @@
 {
-  "swaps": [
+  "marketInstruments": [
     {
+      "type": "Future",
       "maturity": "JUN 2024",
-      "rate": 0.0374
+      "rate": 96.26
     },
     {
+      "type": "Future",
       "maturity": "SEP 2024",
-      "rate": 0.034375
+      "rate": 96.5625
     },
     {
+      "type": "Future",
       "maturity": "DEC 2024",
-      "rate": 0.0319
+      "rate": 96.81
     },
     {
+      "type": "Future",
       "maturity": "MAR 2025",
-      "rate": 0.02975
+      "rate": 97.025
     },
     {
+      "type": "Future",
       "maturity": "JUN 2025",
-      "rate": 0.02805
+      "rate": 97.195
     },
     {
+      "type": "Future",
       "maturity": "SEP 2025",
-      "rate": 0.026825
+      "rate": 97.3175
     },
     {
+      "type": "Future",
       "maturity": "DEC 2025",
-      "rate": 0.026
+      "rate": 97.4
     },
     {
+      "type": "Future",
       "maturity": "MAR 2026",
-      "rate": 0.0254
+      "rate": 97.46
     },
     {
+      "type": "Future",
       "maturity": "JUN 2026",
-      "rate": 0.025025
+      "rate": 97.4975
     }
   ]
 }
