@@ -2,13 +2,6 @@
 {
     public class NewtonSolverParameters
     {
-        private bool _solveRoot;
-        public bool SolveRoot
-        {
-            get { return _solveRoot; }
-            set { _solveRoot = value; }
-        }
-
         private double _target;
         public double Target
         {
@@ -30,10 +23,9 @@
             set { _tolerance = value; }
         }
 
-        public NewtonSolverParameters(bool solveRoot = false, double target = 0,
+        public NewtonSolverParameters(double target = 0,
             double firstGuess = 0.03, double tolerance = 1e-10)
         {
-            _solveRoot = solveRoot;
             _target = target;
             _firstGuess = firstGuess;
             _tolerance = tolerance;
@@ -41,8 +33,8 @@
 
         public override string ToString()
         {
-            return string.Format("Solve root = {0}, Target = {1}, First guess = {2}, Tolerance = {3}",
-                _solveRoot, _target, _firstGuess, _tolerance);
+            return string.Format("Target = {0}, First guess = {1}, Tolerance = {2}",
+                _target, _firstGuess, _tolerance);
         }
     }
 }

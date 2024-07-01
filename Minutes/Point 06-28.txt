@@ -1,0 +1,11 @@
+Voici le résumé de notre point :
+	-	Observation du fichier JSON des futures
+	-	Discussion sur la partie faite sur les futures et le blocage pour le calcul du yield
+	-	Explication des expressions des futures à utiliser, notamment pour la prmière valeur
+	-	Observation de la notion SOLID dans le code
+
+A faire pour le prochain point (mardi prochain à midi) :
+	-	Ajouter une autre interface pour le calcul du yield par les futures
+	-	Exprimer ce calcul avec des classes pour le futures value
+	-	Montrer que si le yield est constant ou linéaire par morceaux, on aura que le forward est linéaire par morceaux
+	-	Essayer de manipuler un JSON qui contient du data éparpillé (futures et swaps)

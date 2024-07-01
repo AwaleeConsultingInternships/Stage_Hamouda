@@ -7,7 +7,7 @@ namespace Bootstrapping
 {
     public class SwapFunc
     {
-        private static RFunction PriceWithVariableChoice(RFunction price, double deltaTotal, Parameters parameters)
+        public static RFunction PriceWithVariableChoice(RFunction price, double deltaTotal, Parameters parameters)
         {
             switch (parameters.VariableChoice)
             {

@@ -3,7 +3,7 @@ using QuantitativeLibrary.Time;
 
 namespace Bootstrapping.YieldComputer
 {
-    public class YieldComputerUsingDirectSolving : IYieldComputer
+    public class YieldComputerUsingDirectSolving : IYieldComputerUsingSwaps
     {
         public Parameters _parameters;
         public Parameters Parameters

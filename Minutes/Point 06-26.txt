@@ -1,0 +1,13 @@
+Voici le résumé de notre point :
+	-	Discussion sur le code ajouté
+	-	La simplification des expressions mathématiques par le calcul formel
+	-	Observation des courbes ajoutés
+
+A faire pour le prochain point (vendredi à midi) :
+	-	Rectifier le yield pour t entre 0 et 1
+	-	Merger les méthodes RawData et UsingNewtonSolver
+	-	Calcul du yield et forward dans la classe discount
+	-	Ajouter un fichier JSON pour les futures
+	-	Calcul de 3ème mercredi du mois
+	-	Calcul du yield à partir des futures
+	-	Ajouter d'autres méthodes d'interpolation

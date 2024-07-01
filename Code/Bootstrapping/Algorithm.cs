@@ -20,7 +20,7 @@ namespace Bootstrapping
             _parameters = parameters;
         }
 
-        private IYieldComputer GetYieldComputer()
+        private IYieldComputerUsingSwaps GetYieldComputer()
         {
             switch (_parameters.InterpolationChoice)
             {
@@ -81,6 +81,21 @@ namespace Bootstrapping
             return new Discount(pricingDate, dayCounter, yield);
         }
 
+        public Discount Curve(Dictionary<Date, double> futureRates)
+        {
+            // Compute and store the ZC prices and yield curve values for the given maturities
+            var yieldComputer = new YieldComputerUsingFuturesMain(_parameters);
+            var yields = yieldComputer.Compute(futureRates);
+
+            // Define the function: t -> y(0, t)
+            var interpolator = GetInterpolationMethod();
+            var yield = interpolator.Compute(yields);
+
+            var pricingDate = _parameters.PricingDate;
+            var dayCounter = _parameters.DayCounter;
+            return new Discount(pricingDate, dayCounter, yield);
+        }
+
         private Dictionary<Period, double> InterpolateSwapRates(Dictionary<Period, double> swapRates)
         {
             var pricingDate = _parameters.PricingDate;
@@ -113,39 +128,6 @@ namespace Bootstrapping
             SwapInt.AddInterval(lastX, swapRates[lastPeriod], double.PositiveInfinity, swapRates[lastPeriod]);
 
             return Utilities.InterpolateSwapRate(SwapInt, swapRates, _parameters);
-        }
-
-        private PiecewiseLinear ComputeYield(List<double> yields)
-        {
-            var pricingDate = _parameters.PricingDate;
-            var counter = _parameters.DayCounter;
-            var periodicity = _parameters.Periodicity;
-
-            PiecewiseLinear YieldF = new PiecewiseLinear();
-
-            var datePreviousN = pricingDate;
-            var dateN = pricingDate.Advance(periodicity);
-
-            var fN = counter.YearFraction(datePreviousN, dateN);
-
-            YieldF.AddInterval(0, yields[0], fN, yields[0]);
-
-            for (int i = 1; i < yields.Count; i++)
-            {
-                datePreviousN = dateN;
-                dateN = dateN.Advance(periodicity);
-
-                double x1 = counter.YearFraction(pricingDate, datePreviousN);
-                double y1 = yields[i - 1];
-                double x2 = counter.YearFraction(pricingDate, dateN);
-                double y2 = yields[i];
-                YieldF.AddInterval(x1, y1, x2, y2);
-            }
-            double xFinal = counter.YearFraction(pricingDate, dateN);
-
-            YieldF.AddInterval(xFinal, yields.Last(), double.PositiveInfinity, yields.Last());
-
-            return YieldF;
         }
     }
 }

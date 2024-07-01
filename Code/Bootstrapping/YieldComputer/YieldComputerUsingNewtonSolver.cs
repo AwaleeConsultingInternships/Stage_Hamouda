@@ -5,7 +5,7 @@ using QuantitativeLibrary.Time;
 
 namespace Bootstrapping.YieldComputer
 {
-    public class YieldComputerUsingNewtonSolver : IYieldComputer
+    public class YieldComputerUsingNewtonSolver : IYieldComputerUsingSwaps
     {
         public Parameters _parameters;
         public Parameters Parameters
@@ -17,32 +17,6 @@ namespace Bootstrapping.YieldComputer
         public YieldComputerUsingNewtonSolver(Parameters parameters)
         {
             _parameters = parameters;
-        }
-
-        private static double GetYield(double result, double deltaTotal, Parameters parameters)
-        {
-            switch (parameters.VariableChoice)
-            {
-                case VariableChoice.Discount:
-                    return -Math.Log(result) / deltaTotal;
-                case VariableChoice.Yield:
-                    return result;
-                default:
-                    throw new ArgumentException("Unknown variable choice. Found: " + parameters.VariableChoice);
-            }
-        }
-
-        private static double GetDiscount(double result, double deltaTotal, Parameters parameters)
-        {
-            switch (parameters.VariableChoice)
-            {
-                case VariableChoice.Discount:
-                    return result;
-                case VariableChoice.Yield:
-                    return Math.Exp(-result * deltaTotal);
-                default:
-                    throw new ArgumentException("Unknown variable choice. Found: " + parameters.VariableChoice);
-            }
         }
 
         public List<double> Compute(Dictionary<Period, double> swapRates)
@@ -58,7 +32,6 @@ namespace Bootstrapping.YieldComputer
             var counter = _parameters.DayCounter;
             var periodicity = _parameters.Periodicity;
             var newtonSolverParameters = _parameters.NewtonSolverParameters;
-            var solveRoot = newtonSolverParameters.SolveRoot;
             var target = newtonSolverParameters.Target;
             var firstGuess = newtonSolverParameters.FirstGuess;
             var tolerance = newtonSolverParameters.Tolerance;
@@ -91,7 +64,7 @@ namespace Bootstrapping.YieldComputer
                 var result = solver.Solve();
 
                 var deltaTotal = Utilities.Duration(swapRate.Key, pricingDate, counter);
-                P = GetDiscount(result.Solution, deltaTotal, Parameters);
+                P = IYieldComputer.GetDiscount(result.Solution, deltaTotal, Parameters);
                 ZCDict.Add(swapRight.Key, P);
                 for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
                 {
