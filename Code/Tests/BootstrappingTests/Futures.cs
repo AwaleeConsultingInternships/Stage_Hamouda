@@ -16,6 +16,8 @@ namespace Tests.BootstrappingTests
             Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
             var futureRates = InstrumentParser.GetFutureRates(deserializedObject.MarketInstruments);
+
+
         }
     }
 }

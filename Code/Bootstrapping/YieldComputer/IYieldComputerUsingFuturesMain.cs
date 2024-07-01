@@ -1,4 +1,5 @@
 ﻿using Bootstrapping.CurveParameters;
+using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
 
@@ -19,18 +20,19 @@ namespace Bootstrapping.YieldComputer
             _parameters = parameters;
         }
 
-        public List<double> Compute(Dictionary<Date, double> futureRates)
+        public Dictionary<Date, double> Compute(Dictionary<Date, double> futureRates)
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
-            var periodicity = _parameters.Periodicity;
+            var periodicity = _parameters.Periodicity; //given with knowledge of the futures rates data
             var newtonSolverParameters = _parameters.NewtonSolverParameters;
             var target = newtonSolverParameters.Target;
             var firstGuess = newtonSolverParameters.FirstGuess;
             var tolerance = newtonSolverParameters.Tolerance;
 
-            List<double> yields = new List<double>();
-            List<double> ZC = new List<double>();
+            //List<double> yields = new List<double>();
+            Dictionary<Date, double> yields = new Dictionary<Date, double>();
+            //List<double> ZC = new List<double>();
 
             double P = 1;
             double y;
@@ -51,8 +53,8 @@ namespace Bootstrapping.YieldComputer
                 P = IYieldComputer.GetDiscount(result.Solution, deltaTotal, Parameters);
                 y = IYieldComputer.GetYield(result.Solution, deltaTotal, Parameters);
 
-                ZC.Add(P);
-                yields.Add(y);
+                //ZC.Add(P);
+                yields.Add(date, y);
 
                 previousDate = date;
             }

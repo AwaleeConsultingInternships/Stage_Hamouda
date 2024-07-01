@@ -9,6 +9,6 @@ namespace Bootstrapping.YieldComputer
 {
     public interface IYieldComputerUsingFutures : IYieldComputer
     {
-        public List<double> Compute(Dictionary<Date, double> futureRates);
+        public Dictionary<Date, double> Compute(Dictionary<Date, double> futureRates);
     }
 }
