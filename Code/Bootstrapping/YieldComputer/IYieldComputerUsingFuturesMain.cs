@@ -2,6 +2,7 @@
 using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
+using Bootstrapping;
 
 namespace Bootstrapping.YieldComputer
 {
@@ -30,19 +31,18 @@ namespace Bootstrapping.YieldComputer
             var firstGuess = newtonSolverParameters.FirstGuess;
             var tolerance = newtonSolverParameters.Tolerance;
 
-            //List<double> yields = new List<double>();
             Dictionary<Date, double> yields = new Dictionary<Date, double>();
-            //List<double> ZC = new List<double>();
+            List<double> ZC = new List<double>();
 
             double P = 1;
             double y;
 
-            var previousDate = pricingDate;
-
             foreach (var futureRate in futureRates)
             {
-                var date = futureRate.Key;
+                var previousDate = futureRate.Key;
                 var rate = futureRate.Value;
+
+                var date = Utilities.GetFutureMaturity(previousDate);
 
                 var futureFunc = FutureFunc.FutureValue(previousDate, P, date, rate, _parameters);
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, futureFunc, futureFunc.FirstDerivative, firstGuess, tolerance);
@@ -53,7 +53,7 @@ namespace Bootstrapping.YieldComputer
                 P = IYieldComputer.GetDiscount(result.Solution, deltaTotal, Parameters);
                 y = IYieldComputer.GetYield(result.Solution, deltaTotal, Parameters);
 
-                //ZC.Add(P);
+                ZC.Add(P);
                 yields.Add(date, y);
 
                 previousDate = date;

@@ -68,8 +68,8 @@ namespace Bootstrapping.MarketInstruments
 
             Date firstDay = new Date(1, month, year);
 
-            Date firstWednesday = firstDay.Advance(new Period(14 + daysToFirstWednesday, Unit.Days));
-            return firstWednesday;
+            Date thirdWednesday = firstDay.Advance(new Period(14 + daysToFirstWednesday, Unit.Days));
+            return thirdWednesday;
         }
 
         public static Dictionary<Date, double> GetFutureRates(Instrument[] futures)

@@ -88,7 +88,7 @@ namespace Bootstrapping
             var yields = yieldComputer.Compute(futureRates);
 
             // Define the function: t -> y(0, t)
-            var interpolator = GetInterpolationMethod();
+            var interpolator = new LinearOnYield(_parameters);
             var yield = interpolator.Compute(yields);
 
             var pricingDate = _parameters.PricingDate;

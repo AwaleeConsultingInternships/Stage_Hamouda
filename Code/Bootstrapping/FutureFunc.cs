@@ -18,7 +18,7 @@ namespace Bootstrapping
             double deltaTotal = counter.YearFraction(pricingDate, date);
 
             RFunction LHS = futureRate;
-            RFunction RHS = (previousZC * Inverse.Instance) / delta;
+            RFunction RHS = (previousZC * Inverse.Instance - 1) / delta;
 
             var price = LHS - RHS;
             return SwapFunc.PriceWithVariableChoice(price, deltaTotal, parameters);

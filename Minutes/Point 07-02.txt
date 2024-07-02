@@ -1,0 +1,11 @@
+Voici le résumé de notre point :
+	-	Les droits d’accès des méthodes (public, private, sealed, …) et comment les utiliser dans notre projet
+	-	Les 2 push faits pour le calcul du yiel à partir des futures
+	-	Les données de futures (on prend la date comme la date de début du contrat)
+
+A faire pour le prochain point (jeudi à midi) :
+	-	Compléter l’implémentation du calcul du yield en doublant les codes et faisant des tests unitaires avec les futures
+	-	Changer la manipulation de la date de début d’un future et calculer la maturité de chaque future par un switch case
+	-	Effectuer une factorisation (avec les termes LHS et RHS)
+	-	Ajouter un plotting pour le yield
+	-	Vérifier les pentes dans l’interpolation interne des ZC

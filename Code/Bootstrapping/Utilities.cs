@@ -1,8 +1,10 @@
 ﻿using Bootstrapping.CurveParameters;
 using Bootstrapping.Instruments;
+using Bootstrapping.YieldComputer;
 using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
+using Bootstrapping.MarketInstruments;
 
 namespace Bootstrapping
 {
@@ -54,6 +56,28 @@ namespace Bootstrapping
 
             result = result.OrderBy(pair => pair.Key).ToDictionary(x => x.Key, x => x.Value);
             return result;
+        }
+
+        public static Date GetFutureMaturity(Date startDate)
+        {
+            var month = startDate.Month;
+            var year = startDate.Year;
+            switch (month)
+            {
+                case 3:
+                    return InstrumentParser.GetThirdWednesday("JUN " + year);
+
+                case 6:
+                    return InstrumentParser.GetThirdWednesday("SEP " + year);
+
+                case 9:
+                    return InstrumentParser.GetThirdWednesday("DEC " + year);
+
+                case 12:
+                    year++;
+                    return InstrumentParser.GetThirdWednesday("MAR " + year);
+            }
+            return startDate;
         }
     }
 }

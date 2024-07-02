@@ -61,8 +61,11 @@ namespace Bootstrapping.CurveParameters
         }
 
         public Parameters(Date pricingDate, Period periodicity, DayCounter dayCounter,
-            NewtonSolverParameters newtonSolverParameters, InterpolationChoice interpolationChoice,
-            InterpolationMethod interpolationMethod, DataChoice dataChoice, VariableChoice variableChoice)
+            NewtonSolverParameters newtonSolverParameters,
+            InterpolationChoice interpolationChoice = InterpolationChoice.UsingNewtonSolver,
+            InterpolationMethod interpolationMethod = InterpolationMethod.LinearOnYield,
+            DataChoice dataChoice = DataChoice.RawData,
+            VariableChoice variableChoice = VariableChoice.Discount)
         {
             _pricingDate = pricingDate;
             _periodicity = periodicity;
