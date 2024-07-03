@@ -1,0 +1,89 @@
+{
+  "marketInstruments": [
+    {
+      "type": "Future",
+      "maturity": "JUN 2024",
+      "rate": 96.26
+    },
+    {
+      "type": "Swap",
+      "maturity": "1Y",
+      "rate": 0.05181
+    },
+    {
+      "type": "Future",
+      "maturity": "SEP 2024",
+      "rate": 96.5625
+    },
+    {
+      "type": "Swap",
+      "maturity": "2Y",
+      "rate": 0.04816
+    },
+    {
+      "type": "Swap",
+      "maturity": "3Y",
+      "rate": 0.04582
+    },
+    {
+      "type": "Future",
+      "maturity": "DEC 2024",
+      "rate": 96.81
+    },
+    {
+      "type": "Future",
+      "maturity": "MAR 2025",
+      "rate": 97.025
+    },
+    {
+      "type": "Swap",
+      "maturity": "5Y",
+      "rate": 0.04340
+    },
+    {
+      "type": "Future",
+      "maturity": "JUN 2025",
+      "rate": 97.195
+    },
+    {
+      "type": "Swap",
+      "maturity": "7Y",
+      "rate": 0.04250
+    },
+    {
+      "type": "Future",
+      "maturity": "SEP 2025",
+      "rate": 97.3175
+    },
+    {
+      "type": "Future",
+      "maturity": "DEC 2025",
+      "rate": 97.4
+    },
+    {
+      "type": "Swap",
+      "maturity": "10Y",
+      "rate": 0.04203
+    },
+    {
+      "type": "Future",
+      "maturity": "MAR 2026",
+      "rate": 97.46
+    },
+    {
+      "type": "Swap",
+      "maturity": "15Y",
+      "rate": 0.04197
+    },
+    {
+      "type": "Swap",
+      "maturity": "30Y",
+      "rate": 0.03959
+    },
+    {
+      "type": "Future",
+      "maturity": "JUN 2026",
+      "rate": 97.4975
+    }
+  ]
+}

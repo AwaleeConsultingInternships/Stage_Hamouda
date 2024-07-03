@@ -61,7 +61,7 @@ namespace Bootstrapping
         public double ForwardAt(Period period, Date date)
         {
             var endDate = date.Advance(period);
-            var ratio = At(endDate) / At(date);
+            var ratio = At(date) / At(endDate);
             var start = _dayCounter.YearFraction(_pricingDate, date);
             var end = _dayCounter.YearFraction(_pricingDate, endDate);
             var time = end - start;
