@@ -10,6 +10,6 @@ namespace Bootstrapping.InterpolationMethods
 {
     public interface Interpolator
     {
-        public RFunction Compute(List<double> yields);
+        public RFunction Compute(Dictionary<Date, double> yields);
     }
 }

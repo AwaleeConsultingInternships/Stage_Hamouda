@@ -20,7 +20,7 @@ namespace Bootstrapping
             _parameters = parameters;
         }
 
-        private IYieldComputerUsingSwaps GetYieldComputer()
+        private IYieldComputer GetYieldComputer()
         {
             switch (_parameters.InterpolationChoice)
             {
@@ -29,6 +29,9 @@ namespace Bootstrapping
 
                 case InterpolationChoice.UsingNewtonSolver:
                     return new YieldComputerUsingNewtonSolver(_parameters);
+
+                case InterpolationChoice.UsingFuturesMain:
+                    return new YieldComputerUsingFuturesMain(_parameters);
 
                 default:
                     throw new ArgumentException("Unknown interpolation choice. Found: " + _parameters.InterpolationChoice);
@@ -50,27 +53,27 @@ namespace Bootstrapping
             }
         }
 
-        private Dictionary<Period, double> GetSwapRates(Dictionary<Period, double> swapRates)
+        private Dictionary<Date, double> GetSwapRates(Dictionary<Date, double> Rates)
         {
             switch (_parameters.DataChoice)
             {
                 case DataChoice.InterpolatedData:
-                    return InterpolateSwapRates(swapRates);
+                    return InterpolateSwapRates(Rates);
                 case DataChoice.RawData:
-                    return swapRates.ToDictionary(pairValue => Utilities.ConvertPeriodToMonths(pairValue.Key), key => key.Value);
+                    return Rates;
                 default:
                     throw new ArgumentException("Unknown data format choice. Found: " + _parameters.DataChoice);
             }
         }
 
-        public Discount Curve(Dictionary<Period, double> swapRates)
+        public Discount Curve(Dictionary<Date, double> Rates)
         {
             // Get the swap rates
-            var newSwapRates = GetSwapRates(swapRates);
+            var newRates = GetSwapRates(Rates);
 
             // Compute and store the ZC prices and yield curve values for the given maturities
             var yieldComputer = GetYieldComputer();
-            var yields = yieldComputer.Compute(newSwapRates);
+            var yields = yieldComputer.Compute(newRates);
 
             // Define the function: t -> y(0, t)
             var interpolator = GetInterpolationMethod();
@@ -81,22 +84,7 @@ namespace Bootstrapping
             return new Discount(pricingDate, dayCounter, yield);
         }
 
-        public Discount Curve(Dictionary<Date, double> futureRates)
-        {
-            // Compute and store the ZC prices and yield curve values for the given maturities
-            var yieldComputer = new YieldComputerUsingFuturesMain(_parameters);
-            var yields = yieldComputer.Compute(futureRates);
-
-            // Define the function: t -> y(0, t)
-            var interpolator = new LinearOnYield(_parameters);
-            var yield = interpolator.Compute(yields);
-
-            var pricingDate = _parameters.PricingDate;
-            var dayCounter = _parameters.DayCounter;
-            return new Discount(pricingDate, dayCounter, yield);
-        }
-
-        private Dictionary<Period, double> InterpolateSwapRates(Dictionary<Period, double> swapRates)
+        private Dictionary<Date, double> InterpolateSwapRates(Dictionary<Date, double> swapRates)
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
@@ -106,7 +94,7 @@ namespace Bootstrapping
 
             var maturities = swapRates.Keys.ToArray();
             var x00 = Utilities.Duration(periodicity, pricingDate, counter);
-            var x0 = Utilities.Duration(maturities[0], pricingDate, counter);
+            var x0 = counter.YearFraction(pricingDate, maturities[0]);
             var y0 = swapRates[maturities[0]];
             if (x00 < x0)
             {
@@ -115,17 +103,17 @@ namespace Bootstrapping
 
             for (int i = 1; i < swapRates.Keys.Count; i++)
             {
-                Period p1 = maturities[i - 1];
-                double x1 = Utilities.Duration(p1, pricingDate, counter);
-                double y1 = swapRates[p1];
-                Period p2 = maturities[i];
-                double x2 = Utilities.Duration(p2, pricingDate, counter);
-                double y2 = swapRates[p2];
+                Date d1 = maturities[i - 1];
+                double x1 = counter.YearFraction(pricingDate, d1);
+                double y1 = swapRates[d1];
+                Date d2 = maturities[i];
+                double x2 = counter.YearFraction(pricingDate, d2);
+                double y2 = swapRates[d2];
                 SwapInt.AddInterval(x1, y1, x2, y2);
             }
-            Period lastPeriod = maturities[maturities.Length - 1];
-            double lastX = Utilities.Duration(lastPeriod, pricingDate, counter);
-            SwapInt.AddInterval(lastX, swapRates[lastPeriod], double.PositiveInfinity, swapRates[lastPeriod]);
+            Date lastDate = maturities[maturities.Length - 1];
+            double lastX = counter.YearFraction(pricingDate, lastDate);
+            SwapInt.AddInterval(lastX, swapRates[lastDate], double.PositiveInfinity, swapRates[lastDate]);
 
             return Utilities.InterpolateSwapRate(SwapInt, swapRates, _parameters);
         }

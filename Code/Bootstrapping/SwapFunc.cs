@@ -20,14 +20,13 @@ namespace Bootstrapping
             }
         }
 
-        public static RFunction SwapValue(Dictionary<Period, RFunction> ZeroCoupons, double swapRate, Parameters parameters)
+        public static RFunction SwapValue(Dictionary<Date, RFunction> ZeroCoupons, double swapRate, Parameters parameters)
         {
             var pricingDate = parameters.PricingDate;
             var counter = parameters.DayCounter;
             var periodicity = parameters.Periodicity;
 
             Date datePrevious = pricingDate;
-            Date date;
 
             RFunction fixedLeg = 0;
             RFunction floatingLeg = 0;
@@ -36,14 +35,13 @@ namespace Bootstrapping
             double deltaTotal =0;
             RFunction P = 1;
 
-            foreach (var period in ZeroCoupons.Keys) 
+            foreach (var date in ZeroCoupons.Keys) 
             {
-                date = pricingDate.Advance(period);
                 delta = counter.YearFraction(datePrevious, date);
                 deltaTotal += delta;
                 var RR = P;
 
-                P = ZeroCoupons[period];
+                P = ZeroCoupons[date];
                 fixedLeg = fixedLeg + delta * swapRate * P;
 
                 var floatRate = (RR / P - 1) / delta;
@@ -52,8 +50,8 @@ namespace Bootstrapping
                 datePrevious = date;
             }
 
-            date = datePrevious.Advance(periodicity);
-            delta = counter.YearFraction(datePrevious, date);
+            var dateF = datePrevious.Advance(periodicity);
+            delta = counter.YearFraction(datePrevious, dateF);
             deltaTotal += delta;
 
             fixedLeg = fixedLeg + delta * swapRate * Identity.Instance;

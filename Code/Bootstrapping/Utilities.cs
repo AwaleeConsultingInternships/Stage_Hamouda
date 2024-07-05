@@ -26,8 +26,8 @@ namespace Bootstrapping
             throw new ArgumentException("Supports only period like xY or xM.");
         }
 
-        public static Dictionary<Period, double> InterpolateSwapRate(PiecewiseLinear SwapInt,
-            Dictionary<Period, double> swapRates, Parameters bootstrappingParameters)
+        public static Dictionary<Date, double> InterpolateSwapRate(PiecewiseLinear SwapInt,
+            Dictionary<Date, double> swapRates, Parameters bootstrappingParameters)
         {
             var pricingDate = bootstrappingParameters.PricingDate;
             var periodicity = bootstrappingParameters.Periodicity;
@@ -35,27 +35,31 @@ namespace Bootstrapping
 
             var maturities = swapRates.Keys.ToArray();
 
-            var lastMaturity = ConvertPeriodToMonths(swapRates.Keys.Last());
-            var j = 1;
-            var f = periodicity.NbUnit;
+            var result = new Dictionary<Date, double>();
+            var orderDict = new Dictionary<double, Date>();
+            var date = pricingDate.Advance(periodicity);
 
-            var result = new Dictionary<Period, double>();
-            while (j * f <= lastMaturity.NbUnit)
+            while (date < swapRates.Keys.Last().Advance(new Period(1, Unit.Days)))
             {
-                var p = new Period(j * f, periodicity.Unit);
-                if (!maturities.Contains(p))
+                if (!maturities.Contains(date))
                 {
-                    double x = Duration(p, pricingDate, counter);
+                    double x = counter.YearFraction(pricingDate, date);
                     double sw = SwapInt.Evaluate(x);
-                    result.Add(p, sw);
+                    result.Add(date, sw);
+                    orderDict.Add(x, date);
                 }
                 else
-                    result.Add(p, swapRates[p]);
-                j++;
+                {
+                    double x = counter.YearFraction(pricingDate, date);
+                    orderDict.Add(x, date);
+                    result.Add(date, swapRates[date]);
+                }
+                date = date.Advance(periodicity);
             }
 
-            result = result.OrderBy(pair => pair.Key).ToDictionary(x => x.Key, x => x.Value);
-            return result;
+            var sortedDurations = orderDict.OrderBy(pair => pair.Key);
+            var orderedResult = sortedDurations.Select(pair => new KeyValuePair<Date, double>(pair.Value, result[pair.Value])).ToDictionary(x => x.Key, x => x.Value);
+            return orderedResult;
         }
 
         public static Date GetFutureMaturity(Date startDate)
@@ -78,6 +82,23 @@ namespace Bootstrapping
                     return InstrumentParser.GetThirdWednesday("MAR " + year);
             }
             return startDate;
+        }
+
+        public static Dictionary<Date, double> PeriodToDate(Dictionary<Period, double> rates, Parameters parameters)
+        {
+            var pricingDate = parameters.PricingDate;
+            var periodicity = parameters.Periodicity;
+            var counter = parameters.DayCounter;
+
+            var result = new Dictionary<Date, double>();
+
+            foreach ( var pair in rates)
+            {
+                var date = pricingDate.Advance(pair.Key);
+                result.Add(date, pair.Value);
+            }
+
+            return result;
         }
     }
 }

@@ -5,7 +5,7 @@ using QuantitativeLibrary.Time;
 
 namespace Bootstrapping.YieldComputer
 {
-    public class YieldComputerUsingNewtonSolver : IYieldComputerUsingSwaps
+    public class YieldComputerUsingNewtonSolver : IYieldComputer
     {
         public Parameters _parameters;
         public Parameters Parameters
@@ -19,15 +19,8 @@ namespace Bootstrapping.YieldComputer
             _parameters = parameters;
         }
 
-        public List<double> Compute(Dictionary<Period, double> swapRates)
+        public Dictionary<Date, double> Compute(Dictionary<Date, double> swapRates)
         {
-            var newSwapRates = new Dictionary<Period, double>();
-            foreach (var pair in swapRates)
-            {
-                newSwapRates.Add(Utilities.ConvertPeriodToMonths(pair.Key), pair.Value);
-            }
-            swapRates = newSwapRates;
-
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
             var periodicity = _parameters.Periodicity;
@@ -36,42 +29,48 @@ namespace Bootstrapping.YieldComputer
             var firstGuess = newtonSolverParameters.FirstGuess;
             var tolerance = newtonSolverParameters.Tolerance;
 
-            List<double> yields = new List<double>();
+            Dictionary<Date, double> yields = new Dictionary<Date, double>();
             List<double> ZC = new List<double>();
 
             double P;
             double y;
 
-            Dictionary<Period, RFunction> ZCDict = new Dictionary<Period, RFunction>();
+            Dictionary<Date, RFunction> ZCDict = new Dictionary<Date, RFunction>();
 
             var swapLeft = swapRates.First();
-            int x1 = 0;
+            double x1 = 0;
             double y1 = 1;
+            Date leftDate = pricingDate;
+
             foreach (var swapRate in swapRates)
             {
                 var swapRight = swapRate;
-                var x3 = swapRight.Key.NbUnit;
-                for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
+                var x3 = counter.YearFraction(pricingDate, swapRight.Key);
+
+                for (var intermDate = leftDate.Advance(periodicity); intermDate < swapRight.Key; intermDate = intermDate.Advance(periodicity))
                 {
-                    var x2 = freq;
-                    var slope = (double)(x2 - x1) / (x3 - x1);
+                    var x2 = counter.YearFraction(pricingDate, intermDate);
+                    var slope = (x2 - x1) / (x3 - x1);
                     var origin = y1 * (x3 - x2) / (x3 - x1);
                     var PFunction = new AffineFunction(origin, slope);
-                    ZCDict.Add(new Period(freq, periodicity.Unit), PFunction);
+
+                    ZCDict.Add(intermDate, PFunction);
                 }
                 var swapFunc = SwapFunc.SwapValue(ZCDict, swapRight.Value, _parameters);
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                 var result = solver.Solve();
 
-                var deltaTotal = Utilities.Duration(swapRate.Key, pricingDate, counter);
+                var deltaTotal = counter.YearFraction(pricingDate, swapRate.Key);
                 P = IYieldComputer.GetDiscount(result.Solution, deltaTotal, Parameters);
                 ZCDict.Add(swapRight.Key, P);
-                for (int freq = x1 + periodicity.NbUnit; freq < x3; freq += periodicity.NbUnit)
+
+                for (var intermDate = leftDate.Advance(periodicity); intermDate < swapRight.Key; intermDate = intermDate.Advance(periodicity))
                 {
-                    var interP = new Period(freq, periodicity.Unit);
-                    ZCDict[interP] = ZCDict[interP].Evaluate(P);
+                    ZCDict[intermDate] = ZCDict[intermDate].Evaluate(P);
                 }
+
                 swapLeft = swapRight;
+                leftDate = swapLeft.Key;
                 x1 = x3;
                 y1 = ZCDict[swapLeft.Key].Evaluate(1);
             }
@@ -80,9 +79,9 @@ namespace Bootstrapping.YieldComputer
             {
                 P = ZCfinal.Value.Evaluate(1);
                 ZC.Add(P);
-                var deltaTotal = Utilities.Duration(ZCfinal.Key, pricingDate, counter);
+                var deltaTotal = counter.YearFraction(pricingDate, ZCfinal.Key);
                 y = -Math.Log(P) / deltaTotal;
-                yields.Add(y);
+                yields.Add(ZCfinal.Key, y);
             }
 
             return yields;

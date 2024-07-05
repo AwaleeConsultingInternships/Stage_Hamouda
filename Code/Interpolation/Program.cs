@@ -37,7 +37,10 @@ namespace Interpolation
                 var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
 
                 var algorithm = new Algorithm(bootstrappingParameters);
-                var discount = algorithm.Curve(swapRates);
+
+                var newSwapRates = Bootstrapping.Utilities.PeriodToDate(swapRates, bootstrappingParameters);
+
+                var discount = algorithm.Curve(newSwapRates);
             }
             else
             {

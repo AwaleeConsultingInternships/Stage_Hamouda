@@ -23,7 +23,7 @@ namespace Bootstrapping.InterpolationMethods
         {
             _parameters = parameters;
         }
-        public RFunction Compute(List<double> yields)
+        /*public RFunction Compute(List<double> yields)
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
@@ -34,9 +34,9 @@ namespace Bootstrapping.InterpolationMethods
             var datePrevious = pricingDate;
             var date = pricingDate.Advance(periodicity);
 
-            var fN = counter.YearFraction(datePrevious, date);
+            var f = counter.YearFraction(datePrevious, date);
 
-            YieldF.AddInterval(0, yields[0], fN, yields[0]);
+            YieldF.AddInterval(0, yields[0], f, yields[0]);
 
             for (int i = 1; i < yields.Count; i++)
             {
@@ -54,7 +54,7 @@ namespace Bootstrapping.InterpolationMethods
             YieldF.AddInterval(xFinal, yields.Last(), double.PositiveInfinity, yields.Last());
 
             return YieldF;
-        }
+        }*/
 
         public RFunction Compute(Dictionary<Date, double> yields)
         {

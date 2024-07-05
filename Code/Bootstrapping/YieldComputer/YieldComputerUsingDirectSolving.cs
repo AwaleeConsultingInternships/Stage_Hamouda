@@ -3,7 +3,7 @@ using QuantitativeLibrary.Time;
 
 namespace Bootstrapping.YieldComputer
 {
-    public class YieldComputerUsingDirectSolving : IYieldComputerUsingSwaps
+    public class YieldComputerUsingDirectSolving : IYieldComputer
     {
         public Parameters _parameters;
         public Parameters Parameters
@@ -17,46 +17,40 @@ namespace Bootstrapping.YieldComputer
             _parameters = parameters;
         }
 
-        public List<double> Compute(Dictionary<Period, double> interpolatedSwapRates)
+        public Dictionary<Date, double> Compute(Dictionary<Date, double> interpolatedSwapRates)
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
             var periodicity = _parameters.Periodicity;
 
-            List<double> yields = new List<double>();
+            Dictionary<Date, double> yields = new Dictionary<Date, double>();
             List<double> ZC = new List<double>();
 
             double P;
             double y;
 
-            var f = Utilities.Duration(periodicity, pricingDate, counter);
-            double delta_total = f;
+            var delta = counter.YearFraction(pricingDate, interpolatedSwapRates.Keys.First());
+            double delta_total = delta;
             double Q = 0;
-            var firstSwap = interpolatedSwapRates[periodicity];
-            P = 1 / (1 + firstSwap * f);
+            var firstSwap = interpolatedSwapRates.Values.First();
+            P = 1 / (1 + firstSwap * delta);
             y = -Math.Log(P) / delta_total;
             ZC.Add(P);
-            yields.Add(y);
+            yields.Add(interpolatedSwapRates.Keys.First(), y);
 
-            var datePrevious = pricingDate;
-            var date = pricingDate.Advance(periodicity);
-
-            var lastMaturity = Utilities.ConvertPeriodToMonths(interpolatedSwapRates.Keys.Last());
-            var j = 2;
-            while (j * periodicity.NbUnit <= lastMaturity.NbUnit)
+            var datePrevious = interpolatedSwapRates.Keys.First();
+            foreach (var swap in interpolatedSwapRates.Skip(1))
             {
+                Date date = swap.Key;
+                Q += P * delta;
+                delta = counter.YearFraction(datePrevious, date);
+                P = (1 - swap.Value * Q) / (1 + swap.Value * delta);
+                delta_total += delta;
+
                 datePrevious = date;
-                date = date.Advance(periodicity);
-                Q += P * f;
-                f = counter.YearFraction(datePrevious, date);
-                Period fi = new Period(j * periodicity.NbUnit, periodicity.Unit);
-                P = (1 - interpolatedSwapRates[fi] * Q) / (1 + interpolatedSwapRates[fi] * f);
-                delta_total += f;
                 y = -Math.Log(P) / delta_total;
                 ZC.Add(P);
-                yields.Add(y);
-
-                j++;
+                yields.Add(date, y);
             }
 
             return yields;

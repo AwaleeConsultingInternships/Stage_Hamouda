@@ -26,8 +26,9 @@ namespace Tests.BootstrappingTests
             var period = new Period(3, Unit.Months);
             var dayCouner = new DayCounter(DayConvention.ACT365);
             var newtonSolverParameters = new NewtonSolverParameters();
+            var interpolationChoice = InterpolationChoice.UsingFuturesMain;
             var bootstrappingParameters = new Parameters(pricingDate, period,
-                dayCouner, newtonSolverParameters);
+                dayCouner, newtonSolverParameters, interpolationChoice);
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 

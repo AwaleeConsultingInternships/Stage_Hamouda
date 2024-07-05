@@ -17,7 +17,7 @@ namespace Tests.BootstrappingTests
 
         public static Array GetInterpolationChoices()
         {
-            return Enum.GetValues(typeof(InterpolationChoice));
+            return new[] { InterpolationChoice.UsingDirectSolving, InterpolationChoice.UsingNewtonSolver };
         }
 
         public static Array GetVariableChoices()
@@ -54,7 +54,9 @@ namespace Tests.BootstrappingTests
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 
-            var discount = algorithm.Curve(swapRates);
+            var newSwapRates = Bootstrapping.Utilities.PeriodToDate(swapRates, bootstrappingParameters);
+
+            var discount = algorithm.Curve(newSwapRates);
 
             foreach (var swap in swapRates)
             {
@@ -88,7 +90,9 @@ namespace Tests.BootstrappingTests
 
             Algorithm algorithm = new Algorithm(bootstrappingParameters);
 
-            var discount = algorithm.Curve(swapRates);
+            var newSwapRates = Bootstrapping.Utilities.PeriodToDate(swapRates, bootstrappingParameters);
+
+            var discount = algorithm.Curve(newSwapRates);
 
             foreach (var swap in swapRates)
             {

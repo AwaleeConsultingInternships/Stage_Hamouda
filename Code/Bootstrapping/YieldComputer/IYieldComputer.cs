@@ -7,7 +7,7 @@ namespace Bootstrapping.YieldComputer
     {
         //public List<double> Compute(Dictionary<Period, double> interpolatedSwapRates);
 
-        //public List<double> Compute(Dictionary<Date, double> futureRates);
+        public Dictionary<Date, double> Compute(Dictionary<Date, double> Rates);
         public static double GetYield(double result, double deltaTotal, Parameters parameters)
         {
             switch (parameters.VariableChoice)

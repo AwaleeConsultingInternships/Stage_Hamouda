@@ -7,7 +7,7 @@ using Bootstrapping;
 namespace Bootstrapping.YieldComputer
 {
 
-    public class YieldComputerUsingFuturesMain : IYieldComputerUsingFutures
+    public class YieldComputerUsingFuturesMain : IYieldComputer
     {
         public Parameters _parameters;
         public Parameters Parameters
@@ -25,7 +25,6 @@ namespace Bootstrapping.YieldComputer
         {
             var pricingDate = _parameters.PricingDate;
             var counter = _parameters.DayCounter;
-            var periodicity = _parameters.Periodicity; //given with knowledge of the futures rates data
             var newtonSolverParameters = _parameters.NewtonSolverParameters;
             var target = newtonSolverParameters.Target;
             var firstGuess = newtonSolverParameters.FirstGuess;
@@ -41,8 +40,12 @@ namespace Bootstrapping.YieldComputer
             {
                 var previousDate = futureRate.Key;
                 var rate = futureRate.Value;
-
                 var date = Utilities.GetFutureMaturity(previousDate);
+
+                /*if (pricingDate > previousDate)
+                {
+                    rate = futureRate.Value / (Math.Pow(0.05, counter.DaysBetween(previousDate, pricingDate))); ???
+                }*/
 
                 var futureFunc = FutureFunc.FutureValue(previousDate, P, date, rate, _parameters);
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, futureFunc, futureFunc.FirstDerivative, firstGuess, tolerance);

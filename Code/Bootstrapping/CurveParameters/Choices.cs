@@ -3,7 +3,8 @@
     public enum InterpolationChoice
     {
         UsingDirectSolving,
-        UsingNewtonSolver
+        UsingNewtonSolver,
+        UsingFuturesMain
     }
 
     public enum InterpolationMethod
