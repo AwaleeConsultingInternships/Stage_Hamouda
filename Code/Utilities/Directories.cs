@@ -9,10 +9,18 @@
             return Directory.GetParent(exeDirectory)?.Parent?.Parent?.Parent?.Parent;
         }
 
-        public static string GetMarketDataDirectory()
+        private static string GetMarketDataDirectory()
         {
             var projectDirectory = GetProjectDirectory();
             return projectDirectory?.FullName + "\\MarketData\\";
+        }
+
+        public static string GetJsonContent()
+        {
+            var marketDataDirectory = GetMarketDataDirectory();
+            var filePath = Path.Combine(marketDataDirectory, "MarketData.json");
+
+            return File.ReadAllText(filePath);
         }
 
         public static string GetGraphDirectory()

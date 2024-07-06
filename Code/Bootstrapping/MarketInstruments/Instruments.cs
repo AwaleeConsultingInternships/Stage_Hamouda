@@ -2,16 +2,29 @@
 {
     public class Instruments
     {
-        private Instrument[] _marketInstruments;
-        public Instrument[] MarketInstruments
+        private Instrument[] _swaps;
+        public Instrument[] Swaps
         {
-            get { return _marketInstruments; }
-            set { _marketInstruments = value; }
+            get { return _swaps; }
+            set { _swaps = value; }
         }
 
-        public Instruments(Instrument[] swaps)
+        private Instrument[] _futures;
+        public Instrument[] Futures
         {
-            _marketInstruments = swaps;
+            get { return _futures; }
+            set { _futures = value; }
+        }
+
+        public Instruments(Instrument[] swaps, Instrument[] futures)
+        {
+            _swaps = swaps;
+            _futures = futures;
+        }
+
+        public override string ToString()
+        {
+            return "Instruments: " + _swaps.Length + " Swaps" + " and " + _futures.Length + " Futures.";
         }
     }
 }

@@ -2,7 +2,6 @@
 using Bootstrapping.CurveParameters;
 using Bootstrapping.Instruments;
 using Bootstrapping.MarketInstruments;
-using Bootstrapping.YieldComputer;
 using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
@@ -14,13 +13,10 @@ namespace Tests.BootstrappingTests
         [Test]
         public void Test()
         {
-            var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
-            string filePath = Path.Combine(marketDataDirectory, "futures.json");
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var marketInstruments = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-            string jsonContent = File.ReadAllText(filePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
-
-            var futureRates = InstrumentParser.GetFutureRates(deserializedObject.MarketInstruments);
+            var futureRates = InstrumentParser.GetFutureRates(marketInstruments.Futures);
 
             var pricingDate = new Date(19, 06, 2024);
             var period = new Period(3, Unit.Months);
