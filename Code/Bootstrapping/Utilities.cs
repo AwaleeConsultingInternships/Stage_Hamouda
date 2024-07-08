@@ -1,6 +1,4 @@
 ﻿using Bootstrapping.CurveParameters;
-using Bootstrapping.Instruments;
-using Bootstrapping.YieldComputer;
 using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
@@ -15,7 +13,6 @@ namespace Bootstrapping
             Date maturityDate = pricingDate.Advance(p);
             return counter.YearFraction(pricingDate, maturityDate);
         }
-
 
         public static Period ConvertPeriodToMonths(Period period)
         {

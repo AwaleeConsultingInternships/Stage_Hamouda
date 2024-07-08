@@ -1,20 +1,7 @@
 ﻿namespace Bootstrapping.Instruments
 {
-    public enum InstrumentType
-    {
-        Swap,
-        Future
-    }
-
     public class Instrument
     {
-        private InstrumentType _instrumentType;
-        public InstrumentType InstrumentType
-        {
-            get { return _instrumentType; }
-            set { _instrumentType = value; }
-        }
-
         private string _maturity;
         public string Maturity
         {
@@ -29,8 +16,7 @@
             set { _value = value; }
         }
 
-        public Instrument(InstrumentType instrumentType,
-            string maturity, double rate)
+        public Instrument(string maturity, double rate)
         {
             _maturity = maturity;
             _value = rate;

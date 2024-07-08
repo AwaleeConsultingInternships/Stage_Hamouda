@@ -5,8 +5,6 @@ using Bootstrapping.MarketInstruments;
 using MathematicalTools;
 using Newtonsoft.Json;
 using QuantitativeLibrary.Time;
-using System.Diagnostics.Metrics;
-using Utilities;
 using static QuantitativeLibrary.Time.Time;
 
 namespace Tests.BootstrappingTests
@@ -16,11 +14,8 @@ namespace Tests.BootstrappingTests
         [Test]
         public void DiscountCurve()
         {
-            var projectDirectory = Directories.GetMarketDataDirectory();
-            string marketDataFilePath = Path.Combine(projectDirectory, "Swaps.json");
-
-            string jsonContent = File.ReadAllText(marketDataFilePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(12, Unit.Months);
@@ -33,7 +28,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
-            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.Swaps);
 
             var algorithm = new Algorithm(bootstrappingParameters);
 
@@ -53,7 +48,7 @@ namespace Tests.BootstrappingTests
             }
 
             ChartHtmlGenerator generator = new ChartHtmlGenerator();
-            var folderPath = Directories.GetGraphDirectory();
+            var folderPath = Utilities.Directories.GetGraphDirectory();
             var resultFilePath = Path.Combine(folderPath, "DiscountCurveChart.html");
 
             generator.WriteHtmlToFile(list, resultFilePath);
@@ -62,11 +57,8 @@ namespace Tests.BootstrappingTests
         [Test]
         public void ZcYieldCurve()
         {
-            var projectDirectory = Directories.GetMarketDataDirectory();
-            string marketDataFilePath = Path.Combine(projectDirectory, "Swaps.json");
-
-            string jsonContent = File.ReadAllText(marketDataFilePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(12, Unit.Months);
@@ -79,7 +71,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
-            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.Swaps);
 
             var algorithm = new Algorithm(bootstrappingParameters);
 
@@ -99,7 +91,7 @@ namespace Tests.BootstrappingTests
             }
 
             ChartHtmlGenerator generator = new ChartHtmlGenerator();
-            var folderPath = Directories.GetGraphDirectory();
+            var folderPath = Utilities.Directories.GetGraphDirectory();
             var resultFilePath = Path.Combine(folderPath, "ZcYieldCurveChart.html");
 
             generator.WriteHtmlToFile(list, resultFilePath);
@@ -108,11 +100,8 @@ namespace Tests.BootstrappingTests
         [Test]
         public void YieldCurve()
         {
-            var projectDirectory = Directories.GetMarketDataDirectory();
-            string marketDataFilePath = Path.Combine(projectDirectory, "Swaps.json");
-
-            string jsonContent = File.ReadAllText(marketDataFilePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(12, Unit.Months);
@@ -125,7 +114,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
-            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.Swaps);
 
             var algorithm = new Algorithm(bootstrappingParameters);
 
@@ -145,7 +134,7 @@ namespace Tests.BootstrappingTests
             }
 
             ChartHtmlGenerator generator = new ChartHtmlGenerator();
-            var folderPath = Directories.GetGraphDirectory();
+            var folderPath = Utilities.Directories.GetGraphDirectory();
             var resultFilePath = Path.Combine(folderPath, "YieldCurveChart.html");
 
             generator.WriteHtmlToFile(list, resultFilePath);
@@ -164,11 +153,8 @@ namespace Tests.BootstrappingTests
         [Test]
         public void ForwardCurve([ValueSource(nameof(GetNumberOfMonths))] Period period)
         {
-            var projectDirectory = Directories.GetMarketDataDirectory();
-            string marketDataFilePath = Path.Combine(projectDirectory, "Swaps.json");
-
-            string jsonContent = File.ReadAllText(marketDataFilePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
             var pricingDate = new Date(01, 05, 2024);
             var periodOneYear = new Period(12, Unit.Months);
@@ -181,7 +167,7 @@ namespace Tests.BootstrappingTests
             var bootstrappingParameters = new Parameters(pricingDate, periodOneYear,
                 dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
 
-            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.Swaps);
 
             var algorithm = new Algorithm(bootstrappingParameters);
 
@@ -201,7 +187,7 @@ namespace Tests.BootstrappingTests
             }
 
             ChartHtmlGenerator generator = new ChartHtmlGenerator();
-            var folderPath = Directories.GetGraphDirectory();
+            var folderPath = Utilities.Directories.GetGraphDirectory();
             var resultFilePath = Path.Combine(folderPath, period + "_ForwardCurveChart.html");
 
             generator.WriteHtmlToFile(list, resultFilePath);
