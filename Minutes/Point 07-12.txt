@@ -1,0 +1,10 @@
+Voici le résumé de notre point :
+	-	Discussion sur les ressources à utiliser pour la recherche
+	-	Observation du pricing des swaps in-arrears
+	-	Fixation du choix de la variable stochastique sur le taux forward sur OIS (taux RFR, forward comme compounding)
+
+A faire pour le prochain point, mardi à midi :
+	-	Voir s'il y a une relation entre l'ajustement de convexité des swaps (in-arrears) et celui introduit dans le bootstrapping (Forward vs. future)
+	-	Essayer de faire le même travail pour une dynamique pour le forward comme ajustement des futures
+	-	Travailler sur les R_j de l'expression du swap
+	-	Chercher d'autres résultats similaires qui peuvent être utiles

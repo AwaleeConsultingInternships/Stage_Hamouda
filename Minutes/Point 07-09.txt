@@ -1,0 +1,10 @@
+Voici le résumé de notre point :
+	-	Discussion des modifications du code et les graphes
+	-	Résumé de ce qu'on a fait dès le début de stage
+	-	Description du stage par 3 axes (info, finance et maths)
+	-	On se garde toujours dans l'approche do mono-courbe
+	-	Consultation des sujets de recherche et choix u 2ème sujet (Convexité Futures-Forward)
+	-	Contenu du rapport: Description des instruments, les modèles d'interpolation, l'algorithme de bootstrapping, le sujet de recherche
+
+A faire pour le prochain point, vendredi :
+	-	Recherche sur les modèles pour le forward et le calcul de convexité

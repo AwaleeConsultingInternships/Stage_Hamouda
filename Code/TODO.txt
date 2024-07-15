@@ -1,5 +1,4 @@
--	Intégrer les propriétés pour chacune des classes
--	Gérer l’interpolation du Yield et du ZC pour t entre 0 et la première maturité présente
--	Installer .NET core 6.0 et l’intégrer dans Microsoft VS.
--	Complétér Linear class constrcutor using Interval class and Point class
+-	Installer .NET core 6.0 et l’intégrer dans Microsoft VS
 -	Continuer la documentation des classes
+-	Stripping avec les Futures et les Swaps ensemble
+-	Récupération des paramètres à partir d'un fichier JSON

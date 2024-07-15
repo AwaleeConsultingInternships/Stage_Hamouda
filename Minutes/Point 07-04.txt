@@ -1,0 +1,11 @@
+Voici le résumé de notre point :
+	-	Discussion des fonctions mathématiques implémentées dans la librairie (et la méthode Evaluate)
+	-	Observation des nouveaux changements de code
+	-	Explication de l’interpolation du ZC pour les Raw Data
+	-	Discussion sur les sujets de recherche à considérer
+
+A faire pour le prochain point (à priori mardi prochain) :
+	-	Lancer tous le tests pour notre partie (ajouter des figures pour l’utilisation des futures)
+	-	Effectuer la factorisation pour le yield computing (l’utilisation de Period et Date)
+	-	Ajouter d’autres méthodes d’interpolation
+	-	Consulter les sujets de recherche (spread stochastique OIS/BOR, Convexity, CSA Discounting, pricing des swaptions et qualité des interpolations)
