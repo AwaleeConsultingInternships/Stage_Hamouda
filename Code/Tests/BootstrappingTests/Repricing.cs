@@ -36,13 +36,10 @@ namespace Tests.BootstrappingTests
             [ValueSource(nameof(GetInterpolationMethods))] InterpolationMethod interpolationMethod,
             [ValueSource(nameof(GetVariableChoices))] VariableChoice variableChoice)
         {
-            var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
-            string filePath = Path.Combine(marketDataDirectory, "Swaps.json");
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-            string jsonContent = File.ReadAllText(filePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
-
-            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.Swaps);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(numberOfMonth, Unit.Months);
@@ -71,13 +68,10 @@ namespace Tests.BootstrappingTests
             [ValueSource(nameof(GetInterpolationMethods))] InterpolationMethod interpolationMethod,
             [ValueSource(nameof(GetVariableChoices))] VariableChoice variableChoice)
         {
-            var marketDataDirectory = Utilities.Directories.GetMarketDataDirectory();
-            string filePath = Path.Combine(marketDataDirectory, "Swaps.json");
+            var jsonContent = Utilities.Directories.GetJsonContent();
+            var deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
 
-            string jsonContent = File.ReadAllText(filePath);
-            Instruments deserializedObject = JsonConvert.DeserializeObject<Instruments>(jsonContent);
-
-            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.MarketInstruments);
+            var swapRates = InstrumentParser.GetSwapRates(deserializedObject.Swaps);
 
             var pricingDate = new Date(01, 05, 2024);
             var period = new Period(numberOfMonth, Unit.Months);

@@ -1,12 +1,9 @@
 ﻿using Bootstrapping.CurveParameters;
-using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
-using Bootstrapping;
 
 namespace Bootstrapping.YieldComputer
 {
-
     public class YieldComputerUsingFuturesMain : IYieldComputer
     {
         public Parameters _parameters;
