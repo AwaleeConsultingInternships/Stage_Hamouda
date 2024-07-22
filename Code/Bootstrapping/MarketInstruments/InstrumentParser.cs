@@ -63,6 +63,11 @@ namespace Bootstrapping.MarketInstruments
             int month = (int)(Month)Enum.Parse(typeof(Month), parts[0], true);
             int year = int.Parse(parts[1]);
 
+            return GetThirdWednesday(year, month);
+        }
+
+        public static Date GetThirdWednesday(int year, int month)
+        {
             DateTime firstDayOfMonth = new DateTime(year, month, 1);
             int daysToFirstWednesday = ((int)DayOfWeek.Wednesday - (int)firstDayOfMonth.DayOfWeek + 7) % 7;
 

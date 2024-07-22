@@ -1,4 +1,5 @@
 ﻿using Bootstrapping.CurveParameters;
+using Bootstrapping.StrippingInstruments;
 using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
@@ -39,7 +40,7 @@ namespace Bootstrapping.YieldComputer
 
             var swapLeft = swapRates.First();
             double x1 = 0;
-            double y1 = 1;
+            double y1 = 1; 
             Date leftDate = pricingDate;
 
             foreach (var swapRate in swapRates)
@@ -52,11 +53,11 @@ namespace Bootstrapping.YieldComputer
                     var x2 = counter.YearFraction(pricingDate, intermDate);
                     var slope = (x2 - x1) / (x3 - x1);
                     var origin = y1 * (x3 - x2) / (x3 - x1);
-                    var PFunction = new AffineFunction(origin, slope);
+                    var PFunction = new AffineFunction(origin, slope); 
 
                     ZCDict.Add(intermDate, PFunction);
                 }
-                var swapFunc = SwapFunc.SwapValue(ZCDict, swapRight.Value, _parameters);
+                var swapFunc = SwapFunc.SwapValue(ZCDict, swapRight, _parameters);
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, swapFunc, swapFunc.FirstDerivative, firstGuess, tolerance);
                 var result = solver.Solve();
 

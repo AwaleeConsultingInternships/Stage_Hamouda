@@ -2,3 +2,10 @@
 -	Continuer la documentation des classes
 -	Stripping avec les Futures et les Swaps ensemble
 -	Récupération des paramètres à partir d'un fichier JSON
+-	Dans le changement de variable Yield, il faut faire l'interpolation sur le yield et non sur le Zéro-Coupon.
+-	Essayer de faire un stripping en combinant des Swaps et des Futures (pas que des Swaps ou des Futures).
+-	Le forward RFR sur lequel on travaille est un compounding d'un taux forward 1D. Deux cas se présentent :
+		* Soit travailler sur le stripping d'indices BOR, et utiliser les convexités déjà calculées dans le document.
+		* Soit travailler sur le compounding de taux forward 1D et calculer l'ajustement de convexité résultant.
+-	Calibration du modèle de convexité choisi en utilisant des options sur les taux disponibles dans le marché.
+-	Travailler sur un modèle qui calibre les forwards 1D en utilisant un modèle constant par morceaux et des dates de meeting.

@@ -3,28 +3,18 @@ using MathematicalFunctions;
 using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Time;
 
-namespace Bootstrapping
+namespace Bootstrapping.StrippingInstruments
 {
     public class SwapFunc
     {
-        public static RFunction PriceWithVariableChoice(RFunction price, double deltaTotal, Parameters parameters)
-        {
-            switch (parameters.VariableChoice)
-            {
-                case VariableChoice.Discount:
-                    return price;
-                case VariableChoice.Yield:
-                    return Composite.Create(price, new Exp(-deltaTotal));
-                default:
-                    throw new ArgumentException("Unknown variable choice. Found: " + parameters.VariableChoice);
-            }
-        }
-
-        public static RFunction SwapValue(Dictionary<Date, RFunction> ZeroCoupons, double swapRate, Parameters parameters)
+        public static RFunction SwapValue(Dictionary<Date, RFunction> ZeroCoupons,
+            KeyValuePair<Date, double> swap, Parameters parameters)
         {
             var pricingDate = parameters.PricingDate;
             var counter = parameters.DayCounter;
             var periodicity = parameters.Periodicity;
+
+            var swapRate = swap.Value;
 
             Date datePrevious = pricingDate;
 
@@ -32,10 +22,10 @@ namespace Bootstrapping
             RFunction floatingLeg = 0;
 
             double delta;
-            double deltaTotal =0;
+            double deltaTotal = 0;
             RFunction P = 1;
 
-            foreach (var date in ZeroCoupons.Keys) 
+            foreach (var date in ZeroCoupons.Keys)
             {
                 delta = counter.YearFraction(datePrevious, date);
                 deltaTotal += delta;
@@ -60,7 +50,7 @@ namespace Bootstrapping
             floatingLeg = floatingLeg + delta * lastFloatRate * Identity.Instance;
 
             var price = fixedLeg - floatingLeg;
-            return PriceWithVariableChoice(price, deltaTotal, parameters);
-            }
+            return Utilities.PriceWithVariableChoice(price, deltaTotal, parameters);
+        }
     }
 }
