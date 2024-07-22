@@ -1,4 +1,6 @@
 ﻿using Bootstrapping.CurveParameters;
+using Bootstrapping.StrippingInstruments;
+using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
 using QuantitativeLibrary.Time;
 
@@ -39,12 +41,7 @@ namespace Bootstrapping.YieldComputer
                 var rate = futureRate.Value;
                 var date = Utilities.GetFutureMaturity(previousDate);
 
-                /*if (pricingDate > previousDate)
-                {
-                    rate = futureRate.Value / (Math.Pow(0.05, counter.DaysBetween(previousDate, pricingDate))); ???
-                }*/
-
-                var futureFunc = FutureFunc.FutureValue(previousDate, P, date, rate, _parameters);
+                var futureFunc = FutureFunc.FutureValue(previousDate, P, date, futureRate, _parameters);
                 var solver = NewtonSolver.CreateWithAbsolutePrecision(target, futureFunc, futureFunc.FirstDerivative, firstGuess, tolerance);
                 var result = solver.Solve();
 

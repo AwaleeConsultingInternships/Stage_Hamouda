@@ -3,12 +3,12 @@ using MathematicalFunctions;
 using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Time;
 
-namespace Bootstrapping
+namespace Bootstrapping.StrippingInstruments
 {
     public class FutureFunc
     {
-
-        public static RFunction FutureValue(Date previousDate, double previousZC, Date date, double futureRate, Parameters parameters)
+        public static RFunction FutureValue(Date previousDate, double previousZC,
+            Date date, KeyValuePair<Date, double> future, Parameters parameters)
         {
             var pricingDate = parameters.PricingDate;
             var counter = parameters.DayCounter;
@@ -17,11 +17,11 @@ namespace Bootstrapping
             double delta = counter.YearFraction(previousDate, date);
             double deltaTotal = counter.YearFraction(pricingDate, date);
 
-            RFunction LHS = futureRate;
+            RFunction LHS = future.Value;
             RFunction RHS = (previousZC * Inverse.Instance - 1) / delta;
 
             var price = LHS - RHS;
-            return SwapFunc.PriceWithVariableChoice(price, deltaTotal, parameters);
+            return Utilities.PriceWithVariableChoice(price, deltaTotal, parameters);
         }
     }
 }

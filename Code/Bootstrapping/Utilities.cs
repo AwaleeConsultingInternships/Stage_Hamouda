@@ -3,6 +3,7 @@ using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using static QuantitativeLibrary.Time.Time;
 using Bootstrapping.MarketInstruments;
+using QuantitativeLibrary.Maths.Functions;
 
 namespace Bootstrapping
 {
@@ -96,6 +97,19 @@ namespace Bootstrapping
             }
 
             return result;
+        }
+
+        public static RFunction PriceWithVariableChoice(RFunction price, double deltaTotal, Parameters parameters)
+        {
+            switch (parameters.VariableChoice)
+            {
+                case VariableChoice.Discount:
+                    return price;
+                case VariableChoice.Yield:
+                    return Composite.Create(price, new Exp(-deltaTotal));
+                default:
+                    throw new ArgumentException("Unknown variable choice. Found: " + parameters.VariableChoice);
+            }
         }
     }
 }
