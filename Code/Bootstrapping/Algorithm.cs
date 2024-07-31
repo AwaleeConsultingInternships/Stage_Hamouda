@@ -3,6 +3,7 @@ using Bootstrapping.YieldComputer;
 using MathematicalFunctions;
 using QuantitativeLibrary.Time;
 using Bootstrapping.InterpolationMethods;
+using Bootstrapping.ConvexityAdjustment;
 
 namespace Bootstrapping
 {
@@ -66,10 +67,37 @@ namespace Bootstrapping
             }
         }
 
+        private CAModel GetConvexityModel()
+        {
+            switch (_parameters.ConvexityChoice)
+            {
+                case ConvexityChoice.NoConvexity:
+                    return new NoConvexity();
+
+                case ConvexityChoice.HullApproachWithVasicek:
+                    return new HullApproachWithVasicek(_parameters);
+
+                case ConvexityChoice.HullApproachWithHoLee:
+                    return new HullApproachWithHoLee(_parameters);
+
+                case ConvexityChoice.MartingaleApproachWithVasicek:
+                    return new MartingaleApproachWithVasicek(_parameters);
+
+                case ConvexityChoice.MartingaleApproachWithHoLee:
+                    return new MartingaleApproachWithHoLee(_parameters);
+
+                default:
+                    throw new ArgumentException("Unknown convexity adjustment model choice. Found: " + _parameters.ConvexityChoice);
+            }
+        }
+
         public Discount Curve(Dictionary<Date, double> Rates)
         {
             // Get the swap rates
             var newRates = GetSwapRates(Rates);
+
+            var convexityModel = GetConvexityModel();
+            newRates = convexityModel.AdjustConvexity(newRates);
 
             // Compute and store the ZC prices and yield curve values for the given maturities
             var yieldComputer = GetYieldComputer();

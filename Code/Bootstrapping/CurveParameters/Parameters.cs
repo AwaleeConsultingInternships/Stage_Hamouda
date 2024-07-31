@@ -60,12 +60,20 @@ namespace Bootstrapping.CurveParameters
             set { _variableChoice = value; }
         }
 
+        private ConvexityChoice _convexityChoice;
+        public ConvexityChoice ConvexityChoice
+        {
+            get { return _convexityChoice; }
+            set { _convexityChoice = value; }
+        }
+
         public Parameters(Date pricingDate, Period periodicity, DayCounter dayCounter,
             NewtonSolverParameters newtonSolverParameters,
             InterpolationChoice interpolationChoice = InterpolationChoice.UsingNewtonSolver,
             InterpolationMethod interpolationMethod = InterpolationMethod.LinearOnYield,
             DataChoice dataChoice = DataChoice.RawData,
-            VariableChoice variableChoice = VariableChoice.Discount)
+            VariableChoice variableChoice = VariableChoice.Discount,
+            ConvexityChoice convexityChoice = ConvexityChoice.NoConvexity)
         {
             _pricingDate = pricingDate;
             _periodicity = periodicity;
@@ -75,14 +83,15 @@ namespace Bootstrapping.CurveParameters
             _dataChoice = dataChoice;
             _variableChoice = variableChoice;
             _interpolationMethod = interpolationMethod;
+            _convexityChoice = convexityChoice;
         }
 
         public override string ToString()
         {
             return string.Format("Pricing date = {0}, Periodicity = {1}, Day counter = {2}," +
                 " NewtonSolver parameters = " + _newtonSolverParameters.ToString() + ", Interpolation choice = {3}"
-                + ", Interpolation Method = {4}, Data choice = {5}, Variable choice = {6}",
-                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _interpolationMethod, _dataChoice, _variableChoice);
+                + ", Interpolation Method = {4}, Data choice = {5}, Variable choice = {6}, Convexity choice = {7}",
+                _pricingDate, _periodicity, _dayCounter, _interpolationChoice, _interpolationMethod, _dataChoice, _variableChoice, _convexityChoice);
         }
     }
 }

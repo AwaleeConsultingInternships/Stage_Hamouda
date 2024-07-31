@@ -24,4 +24,13 @@
         Discount,
         Yield
     }
+
+    public enum ConvexityChoice
+    {
+        NoConvexity,
+        HullApproachWithVasicek,
+        HullApproachWithHoLee,
+        MartingaleApproachWithVasicek,
+        MartingaleApproachWithHoLee
+    }
 }

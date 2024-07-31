@@ -1,4 +1,5 @@
-﻿using Bootstrapping.CurveParameters;
+﻿using Bootstrapping.ConvexityAdjustment;
+using Bootstrapping.CurveParameters;
 using Bootstrapping.StrippingInstruments;
 using QuantitativeLibrary.Maths.Functions;
 using QuantitativeLibrary.Maths.Solver.RootFinder;
@@ -28,6 +29,7 @@ namespace Bootstrapping.YieldComputer
             var target = newtonSolverParameters.Target;
             var firstGuess = newtonSolverParameters.FirstGuess;
             var tolerance = newtonSolverParameters.Tolerance;
+            var convexityChoice = _parameters.ConvexityChoice;
 
             Dictionary<Date, double> yields = new Dictionary<Date, double>();
             List<double> ZC = new List<double>();
