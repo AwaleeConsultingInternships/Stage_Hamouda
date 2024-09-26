@@ -65,7 +65,9 @@ namespace Bootstrapping
             var start = _dayCounter.YearFraction(_pricingDate, date);
             var end = _dayCounter.YearFraction(_pricingDate, endDate);
             var time = end - start;
-            return (ratio - 1) / time;
+            var t = _dayCounter.YearFraction(date, endDate);
+            //return (ratio - 1) / t;
+            return Math.Log(ratio) / t;
         }
 
         public override string ToString()

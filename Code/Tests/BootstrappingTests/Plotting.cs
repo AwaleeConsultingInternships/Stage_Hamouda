@@ -23,7 +23,7 @@ namespace Tests.BootstrappingTests
             var newtonSolverParameters = new NewtonSolverParameters();
             var interpolationChoice = InterpolationChoice.UsingNewtonSolver;
             var interpolationMethod = InterpolationMethod.LinearOnYield;
-            var dataChoice = DataChoice.RawData;
+            var dataChoice = DataChoice.InterpolatedData;
             var variableChoice = VariableChoice.Yield;
             var bootstrappingParameters = new Parameters(pricingDate, period,
                 dayCounter, newtonSolverParameters, interpolationChoice, interpolationMethod, dataChoice, variableChoice);
@@ -40,8 +40,8 @@ namespace Tests.BootstrappingTests
             var shift = 21;
             var shiftPeriod = new Period(shift, Unit.Days);
             var list = new List<Point>();
-            var date = pricingDate.Advance(new Period(15, Unit.Years));
-            for (int i = 365 * 15; i < 365 * nbYears; i+= shift)
+            var date = pricingDate;
+            for (int i = 0; i < 365 * nbYears; i += shift)
             {
                 list.Add(new Point(i / 365.0, discount.At(date)));
                 date = date.Advance(shiftPeriod);
@@ -175,8 +175,8 @@ namespace Tests.BootstrappingTests
 
             var discount = algorithm.Curve(newSwapRates);
 
-            var nbYears = 40;
-            var shift = 21;
+            var nbYears = 30;
+            var shift = 5;
             var shiftPeriod = new Period(shift, Unit.Days);
             var list = new List<Point>();
             var date = pricingDate;
